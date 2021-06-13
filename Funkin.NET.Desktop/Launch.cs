@@ -1,4 +1,7 @@
-﻿namespace Funkin.NET.Desktop
+﻿using System.IO;
+using GetFunkin.Logging;
+
+namespace Funkin.NET.Desktop
 {
     /// <summary>
     ///     Entry-point class.
@@ -26,13 +29,25 @@
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            using osu.Framework.Platform.GameHost host = osu.Framework.Host.GetSuitableHost(SuitableHostName);
-            RunningHost = host;
+            string path = Path.Combine(FunkinGame.ExecutablePath, "Logs", "latest.log");
 
-            using osu.Framework.Game game = new FunkinGame();
-            RunningGame = (FunkinGame) game;
+            if (File.Exists(path))
+                File.Delete(path);
 
-            RunningHost.Run(RunningGame);
+            using (FunkinLogger.FileLogger = new FileLogger(path))
+            {
+                FunkinLogger.Initialize();
+
+                using osu.Framework.Platform.GameHost host = osu.Framework.Host.GetSuitableHost(SuitableHostName);
+                RunningHost = host;
+
+                using osu.Framework.Game game = new FunkinGame();
+                RunningGame = (FunkinGame)game;
+
+                RunningHost.Run(RunningGame);
+            }
+
+            FunkinLogger.SaveAndExit();
         }
     }
 }

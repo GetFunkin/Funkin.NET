@@ -14,4 +14,8 @@
     <PackageReference Include="ppy.osu.Framework" Version="2021.611.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GetFunkin.Logging\GetFunkin.Logging.csproj" />
+  </ItemGroup>
+
 </Project>

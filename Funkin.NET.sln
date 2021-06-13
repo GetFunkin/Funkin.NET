@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET.Desktop", "Funki
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET", "Funkin.Net\Funkin.NET.csproj", "{9D77002F-E9D0-4BDC-85EB-3C4379AD305B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFunkin.Logging", "GetFunkin.Logging\GetFunkin.Logging.csproj", "{149D7D48-01C7-4411-9457-421EBCABA37E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9D77002F-E9D0-4BDC-85EB-3C4379AD305B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D77002F-E9D0-4BDC-85EB-3C4379AD305B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D77002F-E9D0-4BDC-85EB-3C4379AD305B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{149D7D48-01C7-4411-9457-421EBCABA37E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{149D7D48-01C7-4411-9457-421EBCABA37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{149D7D48-01C7-4411-9457-421EBCABA37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{149D7D48-01C7-4411-9457-421EBCABA37E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
