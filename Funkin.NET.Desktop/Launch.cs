@@ -1,7 +1,4 @@
-﻿using System.IO;
-using GetFunkin.Logging;
-
-namespace Funkin.NET.Desktop
+﻿namespace Funkin.NET.Desktop
 {
     /// <summary>
     ///     Entry-point class.
@@ -29,12 +26,12 @@ namespace Funkin.NET.Desktop
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            string path = Path.Combine(FunkinGame.ExecutablePath, "Logs", "latest.log");
+            string path = System.IO.Path.Combine(FunkinGame.ExecutablePath, "Logs", "latest.log");
 
-            if (File.Exists(path))
-                File.Delete(path);
+            if (System.IO.File.Exists(path))
+                System.IO.File.Delete(path);
 
-            using (FunkinLogger.FileLogger = new FileLogger(path))
+            using (FunkinLogger.FileLogger = new GetFunkin.Logging.FileLogger(path))
             {
                 FunkinLogger.Initialize();
 

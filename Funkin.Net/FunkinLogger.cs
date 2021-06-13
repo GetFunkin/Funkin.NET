@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using GetFunkin.Logging;
 using GetFunkin.Logging.Loggers;
 using GetFunkin.Logging.LogLevels;
