@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\**\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Textures\Icon.png" />
+  </ItemGroup>
+
+</Project>

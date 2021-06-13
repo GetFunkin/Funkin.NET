@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Funkin.NET.Resources\Funkin.NET.Resources.csproj" />
     <ProjectReference Include="..\GetFunkin.Logging\GetFunkin.Logging.csproj" />
   </ItemGroup>
 

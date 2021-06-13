@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Funkin.NET.Resources;
 using osu.Framework;
 using osu.Framework.Allocation;
-using osu.Framework.Graphics;
-using osu.Framework.Graphics.Shapes;
-using osuTK;
-using osuTK.Graphics;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
+using osu.Framework.IO.Stores;
 
 [assembly: InternalsVisibleTo("Funkin.NET.Desktop")]
 
@@ -22,25 +22,37 @@ namespace Funkin.NET
         /// </summary>
         public static string ExecutablePath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+        public const string ProgramName = "Funkin'";
+        
+        public TextureStore TextureStore { get; private set; }
+
+        public DependencyContainer DependencyContainer { get; private set; }
+
         /* Sample game code. Temporary. */
-        private Box box;
+        private Sprite _test;
+
+        public FunkinGame()
+        {
+            Name = ProgramName;
+        }
 
         [BackgroundDependencyLoader]
-        private void load()
+        private void DepLoad()
         {
-            Add(box = new Box
+            Host.Window.Title = ProgramName;
+
+            Resources.AddStore(new DllResourceStore(ResourcesAssembly.Assembly));
+
+            TextureStore = new TextureStore(Textures);
+            DependencyContainer.Cache(TextureStore);
+
+            Add(_test = new Sprite
             {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                Size = new Vector2(150, 150),
-                Colour = Color4.Tomato
+                Texture = TextureStore.Get("Logo")
             });
         }
 
-        protected override void Update()
-        {
-            base.Update();
-            box.Rotation += (float)Time.Elapsed / 10;
-        }
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
+            DependencyContainer = new DependencyContainer(base.CreateChildDependencies(parent));
     }
 }
