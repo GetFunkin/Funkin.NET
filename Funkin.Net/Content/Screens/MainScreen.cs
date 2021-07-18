@@ -8,7 +8,7 @@ using osuTK.Graphics;
 
 namespace Funkin.NET.Content.Screens
 {
-    public class MainScreen : Screen, IBackgroundDependencyLoadable
+    public class IntroScreen : Screen, IBackgroundDependencyLoadable
     {
         #region BackgroundDependencyLoader
 
@@ -19,17 +19,17 @@ namespace Funkin.NET.Content.Screens
             {
                 new Box
                 {
-                    Colour = Color4.Red,
+                    Colour = Color4.Black,
                     RelativeSizeAxes = Axes.Both
                 },
 
                 new SpriteText
                 {
                     Y = 20,
-                    Text = "Main Screen",
+                    Text = "MAIN SCREEN",
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,
-                    Font = FontUsage.Default.With(size: 40)
+                    Font = new FontUsage("VCR", 40f)
                 }
             };
         }

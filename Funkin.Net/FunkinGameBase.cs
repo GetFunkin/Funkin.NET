@@ -1,12 +1,20 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using Funkin.NET.Common.KeyBinds.ArrowKeys;
+using Funkin.NET.Common.KeyBinds.SelectionKey;
+using Funkin.NET.Common.KeyBinds.WindowModeKeys;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
 using osu.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Textures;
+using osu.Framework.Input.Bindings;
 using osu.Framework.IO.Stores;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
@@ -16,7 +24,8 @@ namespace Funkin.NET
     /// <summary>
     ///     Base Funkin' game. Contains data shared between the test browser and game implementation.
     /// </summary>
-    public class FunkinGame : Game, IBackgroundDependencyLoadable
+    public class FunkinGame : Game, IBackgroundDependencyLoadable, IKeyBindingHandler<ArrowKeyAction>,
+        IKeyBindingHandler<SelectionKeyAction>, IKeyBindingHandler<WindowModeKeyAction>
     {
         #region Constants
 
@@ -41,6 +50,16 @@ namespace Funkin.NET
             ResourcesAssembly.Assembly
         };
 
+        public static readonly string[] FontMarket =
+        {
+            @"Fonts/VCR",
+            @"Fonts/Funkin"
+        };
+
+        public TextureStore TextureStore { get; private set; }
+
+        public DependencyContainer Dependencies { get; private set; }
+
         #endregion
 
         #region Instanced Fields & Properties
@@ -54,14 +73,14 @@ namespace Funkin.NET
         protected override Container<Drawable> Content { get; }
 
         #endregion
-        
+
         #region Constructors
 
         public FunkinGame()
         {
             base.Content.Add(Content = new DrawSizePreservingFillContainer
             {
-                TargetDrawSize = new Vector2(1366f, 768f)
+                TargetDrawSize = new Vector2(1920f, 1080f)
             });
         }
 
@@ -73,8 +92,13 @@ namespace Funkin.NET
         {
             base.LoadComplete();
 
-            ScreenStack.Push(new MainScreen());
+            ScreenStack.Push(new IntroScreen());
+
+            Window.WindowMode.Value = WindowMode.Fullscreen;
         }
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
+            Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         #endregion
 
@@ -86,7 +110,41 @@ namespace Funkin.NET
             foreach (Assembly store in ResourceMarket)
                 Resources.AddStore(new DllResourceStore(store));
 
-            Child = ScreenStack = new ScreenStack { RelativePositionAxes = Axes.Both };
+            foreach (string font in FontMarket)
+                AddFont(Resources, font);
+
+            TextureStore = new TextureStore(Textures);
+            Child = ScreenStack = new ScreenStack {RelativePositionAxes = Axes.Both};
+            Dependencies.Cache(TextureStore);
+        }
+
+        #endregion
+
+        #region Key Binding Handlers
+
+        public bool OnPressed(ArrowKeyAction action) => false;
+
+        public void OnReleased(ArrowKeyAction action)
+        {
+        }
+
+        public bool OnPressed(SelectionKeyAction action) => false;
+
+        public void OnReleased(SelectionKeyAction action)
+        {
+        }
+
+        public bool OnPressed(WindowModeKeyAction action) => true;
+
+        public void OnReleased(WindowModeKeyAction action)
+        {
+            Window.WindowMode.Value = Window.WindowMode.Value switch
+            {
+                WindowMode.Windowed => WindowMode.Borderless,
+                WindowMode.Borderless => WindowMode.Fullscreen,
+                WindowMode.Fullscreen => WindowMode.Windowed,
+                _ => throw new ArgumentOutOfRangeException(nameof(Window.WindowMode), "Invalid Window type.")
+            };
         }
 
         #endregion
