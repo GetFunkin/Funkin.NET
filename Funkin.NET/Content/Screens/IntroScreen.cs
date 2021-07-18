@@ -6,6 +6,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
 using osuTK;
@@ -194,20 +195,69 @@ namespace Funkin.NET.Content.Screens
                 }
             }
 
-            SpriteText enterText = new()
+            void CircularOffset(Drawable drawable)
+            {
+                int offset = 999;
+
+                if (drawable.Colour == Colour4.Blue)
+                    offset = 333;
+
+                if (drawable.Colour == Colour4.Green)
+                    offset = 666;
+
+                drawable.Position = new Vector2((float) Math.Sin((Clock.CurrentTime + offset) / 200f) * 5f,
+                    (float) Math.Cos((Clock.CurrentTime + offset) / 200f) * 5f + 180f);
+            }
+
+            SpriteText GetEnterText() => new()
             {
                 Anchor = Anchor.Centre,
                 RelativeAnchorPosition = Size / 2f,
                 Text = "Press Enter to Begin",
                 Position = new Vector2(0f, 180f),
                 Origin = Anchor.Centre,
-                Font = new FontUsage("VCR", 40f),
+                Font = new FontUsage("VCR", 80f),
                 AlwaysPresent = true
             };
 
+            SpriteText enterText = GetEnterText();
+            SpriteText enterRed = GetEnterText();
+            SpriteText enterBlue = GetEnterText();
+            SpriteText enterGreen = GetEnterText();
+
+            enterRed.Colour = Colour4.Red;
+            enterBlue.Colour = Colour4.Blue;
+            enterGreen.Colour = Colour4.Green;
+            enterRed.Alpha = 1f / 3f;
+            enterBlue.Alpha = 1f / 3f;
+            enterGreen.Alpha = 1f / 3f;
+            enterRed.Blending = BlendingParameters.Additive;
+            enterBlue.Blending = BlendingParameters.Additive;
+            enterGreen.Blending = BlendingParameters.Additive;
             enterText.OnUpdate += Fade;
+            enterRed.OnUpdate += CircularOffset;
+            enterBlue.OnUpdate += CircularOffset;
+            enterGreen.OnUpdate += CircularOffset;
 
             AddInternal(enterText);
+            AddInternal(enterRed);
+            AddInternal(enterBlue);
+            AddInternal(enterGreen);
+
+            Box box = new()
+            {
+                Colour = Colour4.White,
+                RelativeSizeAxes = Axes.Both,
+                Alpha = 1f
+            };
+
+            box.OnUpdate += drawable =>
+            {
+                if (drawable.Alpha >= 1f)
+                    drawable.FadeOutFromOne(4000D);
+            };
+
+            AddInternal(box);
         }
 
         public bool OnPressed(SelectionKeyAction action) => false;
