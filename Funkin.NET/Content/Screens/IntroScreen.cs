@@ -20,6 +20,13 @@ namespace Funkin.NET.Content.Screens
         private readonly List<string> _addedText = new();
         private bool _quirkyIntroFinished;
 
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            InitializeInternals();
+        }
+
         protected override void Update()
         {
             base.Update();
@@ -28,6 +35,11 @@ namespace Funkin.NET.Content.Screens
 
             if (!_quirkyIntroFinished)
                 UpdateTextDisplay();
+        }
+
+        public void InitializeInternals()
+        {
+            AddInternal(new SelectionKeyBindingContainer(FunkinGame.RunningGame));
         }
 
         public void UpdateSongVolume()
@@ -69,6 +81,7 @@ namespace Funkin.NET.Content.Screens
             {
                 _addedText.Clear();
                 ClearInternal();
+                InitializeInternals();
             }
 
             switch (CurrentBeat)
@@ -123,9 +136,10 @@ namespace Funkin.NET.Content.Screens
 
                 case 16D:
                     Clear();
+                    _quirkyIntroFinished = true;
                     break;
 
-                case 17D:
+                /*case 17D:
                     AddText("PRETEND THE", -80f);
                     break;
 
@@ -135,7 +149,7 @@ namespace Funkin.NET.Content.Screens
 
                 case 19D:
                     AddText("NOW!!", 0f);
-                    break;
+                    break;*/
             }
 
             /*ClearInternal();

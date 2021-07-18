@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Funkin.NET.Common.KeyBinds.SelectionKey;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
@@ -11,6 +12,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
@@ -90,6 +92,11 @@ namespace Funkin.NET
                 Child = new DrawSizePreservingFillContainer
                 {
                     RelativeSizeAxes = Axes.Both,
+
+                    Children = new Drawable[]
+                    {
+                        new SelectionKeyBindingContainer(this)
+                    }
                 }
             });
 
@@ -108,9 +115,6 @@ namespace Funkin.NET
             base.LoadComplete();
 
             Window.WindowMode.Value = WindowMode.Fullscreen;
-
-            Add(ScreenStack = new ScreenStack());
-            ScreenStack.Push(IntroScreen = new IntroScreen());
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -131,6 +135,9 @@ namespace Funkin.NET
 
             TextureStore = new TextureStore(Textures);
             DependencyContainer.Cache(TextureStore);
+
+            Add(ScreenStack = new ScreenStack());
+            ScreenStack.Push(IntroScreen = new IntroScreen());
         }
 
         #endregion

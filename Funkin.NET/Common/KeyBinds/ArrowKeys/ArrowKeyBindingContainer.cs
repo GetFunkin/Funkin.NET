@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using osu.Framework.Graphics;
 using osu.Framework.Input.Bindings;
 
 namespace Funkin.NET.Common.KeyBinds.ArrowKeys
@@ -6,9 +7,9 @@ namespace Funkin.NET.Common.KeyBinds.ArrowKeys
     /// <summary>
     ///     Container for an arrow key action.
     /// </summary>
-    public class ArrowKeyBindingContainer : KeyBindingContainer<ArrowKeyAction>
+    public class ArrowKeyBindingContainer : FunkinBindingContainer<ArrowKeyAction>
     {
-        public ArrowKeyBindingContainer() : base(SimultaneousBindingMode.All)
+        public ArrowKeyBindingContainer(Drawable handler) : base(handler, SimultaneousBindingMode.All)
         {
         }
 
