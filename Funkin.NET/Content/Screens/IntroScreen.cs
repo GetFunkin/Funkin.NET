@@ -19,6 +19,7 @@ namespace Funkin.NET.Content.Screens
         private double _lastUpdatedTime;
         private readonly List<string> _addedText = new();
         private bool _quirkyIntroFinished;
+        private bool _initializedEnter;
 
         protected override void LoadComplete()
         {
@@ -35,6 +36,9 @@ namespace Funkin.NET.Content.Screens
 
             if (!_quirkyIntroFinished)
                 UpdateTextDisplay();
+
+            if (!_initializedEnter && _quirkyIntroFinished)
+                InitializeEnterState();
         }
 
         public void InitializeInternals()
@@ -172,19 +176,39 @@ namespace Funkin.NET.Content.Screens
             });*/
         }
 
-        #region BackgroundDependencyLoader
-
-        [BackgroundDependencyLoader]
-        void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
+        public void InitializeEnterState()
         {
-            Music = new DrawableTrack(AudioManager.Tracks.Get(@"Main/FreakyMenu.ogg"));
-            Music.Stop();
-            Music.Looping = true;
-            Music.Start();
-            Music.VolumeTo(0D);
-        }
+            _initializedEnter = true;
 
-        #endregion
+            static void Fade(Drawable drawable)
+            {
+                switch (drawable.Alpha)
+                {
+                    case 1f:
+                        drawable.FadeOutFromOne(1000D);
+                        break;
+
+                    case 0f:
+                        drawable.FadeInFromZero(1000D);
+                        break;
+                }
+            }
+
+            SpriteText enterText = new()
+            {
+                Anchor = Anchor.Centre,
+                RelativeAnchorPosition = Size / 2f,
+                Text = "Press Enter to Begin",
+                Position = new Vector2(0f, 180f),
+                Origin = Anchor.Centre,
+                Font = new FontUsage("VCR", 40f),
+                AlwaysPresent = true
+            };
+
+            enterText.OnUpdate += Fade;
+
+            AddInternal(enterText);
+        }
 
         public bool OnPressed(SelectionKeyAction action) => false;
 
@@ -199,5 +223,19 @@ namespace Funkin.NET.Content.Screens
             if (_quirkyIntroFinished)
                 ; // TODO: game
         }
+
+        #region BackgroundDependencyLoader
+
+        [BackgroundDependencyLoader]
+        void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
+        {
+            Music = new DrawableTrack(AudioManager.Tracks.Get(@"Main/FreakyMenu.ogg"));
+            Music.Stop();
+            Music.Looping = true;
+            Music.Start();
+            Music.VolumeTo(0D);
+        }
+
+        #endregion
     }
 }
