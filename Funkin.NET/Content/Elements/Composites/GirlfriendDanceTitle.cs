@@ -50,10 +50,10 @@ namespace Funkin.NET.Content.Elements.Composites
             };
 
             foreach (int frame in _leftFrames)
-                _leftAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), (1D / 24D) * 1000D);
+                _leftAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
 
             foreach (int frame in _rightFrames)
-                _rightAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), (1D / 24D) * 1000D);
+                _rightAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
         }
     }
 }

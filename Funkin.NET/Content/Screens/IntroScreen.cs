@@ -23,6 +23,7 @@ namespace Funkin.NET.Content.Screens
         private bool _quirkyIntroFinished;
         private bool _initializedEnter;
         private GirlfriendDanceTitle _girlfriend;
+        private LogoTitle _logo;
         private Box _flashBang;
         private bool _bangCycled;
 
@@ -262,12 +263,14 @@ namespace Funkin.NET.Content.Screens
             enterBlue.OnUpdate += MagicallyAppear;
             enterGreen.OnUpdate += MagicallyAppear;
             _girlfriend.OnUpdate += MagicallyAppear;
+            _logo.OnUpdate += MagicallyAppear;
 
             AddInternal(enterText);
             AddInternal(enterRed);
             AddInternal(enterBlue);
             AddInternal(enterGreen);
             AddInternal(_girlfriend);
+            AddInternal(_logo);
 
             _flashBang = new Box
             {
@@ -336,6 +339,16 @@ namespace Funkin.NET.Content.Screens
                 Position = new Vector2(80f, 120f),
                 Origin = Anchor.Centre,
                 Scale = new Vector2(1.5f),
+                AlwaysPresent = true,
+                Alpha = 0f
+            };
+
+            _logo = new LogoTitle
+            {
+                Anchor = Anchor.Centre,
+                Position = new Vector2(-780f, 90f),
+                Origin = Anchor.Centre,
+                Scale = new Vector2(2f),
                 AlwaysPresent = true,
                 Alpha = 0f
             };
