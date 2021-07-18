@@ -14,4 +14,18 @@
     <ProjectReference Include="..\Funkin.Net\Funkin.NET.csproj" />
   </ItemGroup>
 
+  <!-- lol thanks tml -->
+  <Target Name="BuildRedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths>
+        <DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))).Replace('/', '\'))</DirectoryInPackage>
+      </ReferenceCopyLocalPaths>
+    </ItemGroup>
+    <ItemGroup>
+      <ReferenceCopyLocalPaths>
+        <DestinationSubDirectory>Libraries\$([System.String]::Copy('%(NuGetPackageID)').ToLower())\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
+      </ReferenceCopyLocalPaths>
+    </ItemGroup>
+  </Target>
+
 </Project>

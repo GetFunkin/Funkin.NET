@@ -1,7 +1,11 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
+using Newtonsoft.Json;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
@@ -61,6 +65,10 @@ namespace Funkin.NET
 
         public IntroScreen IntroScreen { get; private set; }
 
+        public List<string[]> FunnyTextList { get; }
+
+        public string[] FunnyText { get; }
+
         #endregion
 
         #region Overridden Properties
@@ -75,10 +83,20 @@ namespace Funkin.NET
         {
             Name = ProgramName;
 
-            base.Content.Add(Content = new DrawSizePreservingFillContainer
+            base.Content.Add(Content = new SafeAreaContainer
             {
-                TargetDrawSize = new Vector2(1920f, 1080f)
+                RelativeSizeAxes = Axes.Both,
+
+                Child = new DrawSizePreservingFillContainer
+                {
+                    RelativeSizeAxes = Axes.Both,
+                }
             });
+
+            string path = Path.Combine("Json", "IntroText.json");
+            string text = File.ReadAllText(path);
+            FunnyTextList = JsonConvert.DeserializeObject<List<string[]>>(text);
+            FunnyText = FunnyTextList?[new Random().Next(0, FunnyTextList.Count)];
         }
 
         #endregion
@@ -113,16 +131,6 @@ namespace Funkin.NET
 
             TextureStore = new TextureStore(Textures);
             DependencyContainer.Cache(TextureStore);
-
-            base.Content.Add(new SafeAreaContainer
-            {
-                RelativeSizeAxes = Axes.Both,
-
-                Child = new DrawSizePreservingFillContainer
-                {
-                    RelativeSizeAxes = Axes.Both,
-                }
-            });
         }
 
         #endregion

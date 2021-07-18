@@ -98,11 +98,11 @@ namespace Funkin.NET.Content.Screens
                     break;
 
                 case 9D:
-                    AddText("PLACEHOLDER", -80f);
+                    AddText(FunkinGame.RunningGame.FunnyText[0].ToUpper(), -80f);
                     break;
 
                 case 11D:
-                    AddText("TEXT", -40f);
+                    AddText(FunkinGame.RunningGame.FunnyText[1].ToUpper(), -40f);
                     break;
 
                 case 12D:
