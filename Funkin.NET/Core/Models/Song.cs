@@ -26,13 +26,13 @@ namespace Funkin.NET.Core.Models
         public string SongName { get; set; }
 
         [JsonPropertyName("notes")]
-        public List<Note> Notes { get; set; }
+        public List<Section> Sections { get; set; }
 
         [JsonPropertyName("bpm")]
         public int Bpm { get; set; }
 
         [JsonPropertyName("sections")]
-        public int Sections { get; set; }
+        public int NumSections { get; set; }
         
         public static Song GetSong(string json)
         {

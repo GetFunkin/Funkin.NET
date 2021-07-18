@@ -1,26 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using Funkin.NET.Common.KeyBinds.ArrowKeys;
 
 namespace Funkin.NET.Core.Models
 {
     public class Note
     {
-        [JsonPropertyName("mustHitSection")]
-        public bool MustHitSection { get; set; }
+        /// <summary>
+        /// The time when the note has to be pressed (in milliseconds)
+        /// </summary>
+        public int Offset { get; }
+        /// <summary>
+        /// The key that has to be pressed
+        /// </summary>
+        public ArrowKeyAction Key { get; }
+        /// <summary>
+        /// How long the player has to hold the note (in milliseconds)
+        /// </summary>
+        public int HoldLength { get; }
 
-        [JsonPropertyName("typeOfSection")]
-        public int TypeOfSection { get; set; }
-
-        [JsonPropertyName("lengthInSteps")]
-        public int LengthInSteps { get; set; }
-
-        [JsonPropertyName("sectionNotes")]
-        public List<List<int>> SectionNotes { get; set; }
-
-        [JsonPropertyName("bpm")]
-        public int? Bpm { get; set; }
-
-        [JsonPropertyName("changeBPM")]
-        public bool? ChangeBPM { get; set; }
+        public Note(int offset, ArrowKeyAction key, int holdLength)
+        {
+            Offset = offset;
+            Key = key;
+            HoldLength = holdLength;
+        }
     }
 }

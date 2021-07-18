@@ -18,7 +18,7 @@ namespace Funkin.NET.Core.Models
         public int Sections { get; set; }
 
         [JsonPropertyName("notes")]
-        public List<Note> Notes { get; set; }
+        public List<Section> Notes { get; set; }
 
         public static RootTrack GetTrack(string json)
         {
