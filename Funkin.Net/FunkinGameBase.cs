@@ -58,7 +58,7 @@ namespace Funkin.NET
 
         public TextureStore TextureStore { get; private set; }
 
-        public DependencyContainer Dependencies { get; private set; }
+        public DependencyContainer DependencyContainer { get; private set; }
 
         #endregion
 
@@ -98,7 +98,7 @@ namespace Funkin.NET
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
-            Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+            DependencyContainer = new DependencyContainer(base.CreateChildDependencies(parent));
 
         #endregion
 
@@ -115,7 +115,7 @@ namespace Funkin.NET
 
             TextureStore = new TextureStore(Textures);
             Child = ScreenStack = new ScreenStack {RelativePositionAxes = Axes.Both};
-            Dependencies.Cache(TextureStore);
+            DependencyContainer.Cache(TextureStore);
         }
 
         #endregion
