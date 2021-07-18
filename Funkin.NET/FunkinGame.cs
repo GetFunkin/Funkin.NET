@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Funkin.NET.Common.KeyBinds.ArrowKeys;
+using Funkin.NET.Common.KeyBinds.SelectionKey;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
@@ -59,6 +61,8 @@ namespace Funkin.NET
 
         public DependencyContainer DependencyContainer { get; private set; }
 
+        public IntroScreen IntroScreen { get; private set; }
+
         #endregion
 
         #region Overridden Properties
@@ -86,9 +90,7 @@ namespace Funkin.NET
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
-            ScreenStack.Push(new IntroScreen());
-
+            
             Window.WindowMode.Value = WindowMode.Fullscreen;
         }
 
@@ -109,8 +111,33 @@ namespace Funkin.NET
                 AddFont(Resources, font);
 
             TextureStore = new TextureStore(Textures);
-            Child = ScreenStack = new ScreenStack {RelativePositionAxes = Axes.Both};
             DependencyContainer.Cache(TextureStore);
+
+            base.Content.Add(new SafeAreaContainer
+            {
+                RelativeSizeAxes = Axes.Both,
+
+                Child = new DrawSizePreservingFillContainer
+                {
+                    RelativeSizeAxes = Axes.Both,
+
+                    Children = new Drawable[]
+                    {
+                        new ArrowKeyBindingContainer
+                        {
+                            RelativeSizeAxes = Axes.Both
+                        },
+
+                        new SelectionKeyBindingContainer
+                        {
+                            RelativeSizeAxes = Axes.Both
+                        }
+                    }
+                }
+            });
+
+            Add(ScreenStack = new ScreenStack());
+            ScreenStack.Push(new IntroScreen());
         }
 
         #endregion

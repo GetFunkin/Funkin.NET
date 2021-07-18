@@ -20,8 +20,8 @@ namespace Funkin.NET.Content.Screens
         public override double ExpectedBpm => 102D;
 
         private double _lastUpdatedTime;
-        private readonly List<string> AddedText = new();
-        private bool quirkyIntroFinished;
+        private readonly List<string> _addedText = new();
+        private bool _quirkyIntroFinished;
 
         // [Resolved] private TextureStore Textures { get; set; }
 
@@ -33,7 +33,7 @@ namespace Funkin.NET.Content.Screens
 
             UpdateSongVolume();
 
-            if (!quirkyIntroFinished) 
+            if (!_quirkyIntroFinished) 
                 UpdateTextDisplay();
         }
 
@@ -52,10 +52,10 @@ namespace Funkin.NET.Content.Screens
         {
             void AddText(string text, float positionOffset)
             {
-                if (AddedText.Contains(text))
+                if (_addedText.Contains(text))
                     return;
 
-                AddedText.Add(text);
+                _addedText.Add(text);
 
                 List<TexturedCharacterGlyph> glyphs =
                     text.Select(character => (TexturedCharacterGlyph)Fonts.Get("Funkin", character)).ToList();
@@ -75,7 +75,7 @@ namespace Funkin.NET.Content.Screens
 
             void Clear()
             {
-                AddedText.Clear();
+                _addedText.Clear();
                 ClearInternal();
             }
 
@@ -180,22 +180,18 @@ namespace Funkin.NET.Content.Screens
 
         #endregion
 
-        public bool OnPressed(SelectionKeyAction action)
-        {
-            if (!quirkyIntroFinished)
-            {
-                ClearInternal();
-                quirkyIntroFinished = true;
-            }
-
-            if (quirkyIntroFinished)
-                ; // TODO: game
-
-            return true;
-        }
+        public bool OnPressed(SelectionKeyAction action) => false;
 
         public void OnReleased(SelectionKeyAction action)
         {
+            if (!_quirkyIntroFinished)
+            {
+                ClearInternal();
+                _quirkyIntroFinished = true;
+            }
+
+            if (_quirkyIntroFinished)
+                ; // TODO: game
         }
     }
 }
