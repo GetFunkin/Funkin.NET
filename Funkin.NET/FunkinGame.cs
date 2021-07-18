@@ -92,6 +92,9 @@ namespace Funkin.NET
             base.LoadComplete();
             
             Window.WindowMode.Value = WindowMode.Fullscreen;
+
+            Add(ScreenStack = new ScreenStack());
+            ScreenStack.Push(new IntroScreen());
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -135,9 +138,6 @@ namespace Funkin.NET
                     }
                 }
             });
-
-            Add(ScreenStack = new ScreenStack());
-            ScreenStack.Push(new IntroScreen());
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Funkin.NET.Common.KeyBinds.SelectionKey;
+using Funkin.NET.Content.Sprites;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -57,17 +58,15 @@ namespace Funkin.NET.Content.Screens
 
                 _addedText.Add(text);
 
-                List<TexturedCharacterGlyph> glyphs =
-                    text.Select(character => (TexturedCharacterGlyph)Fonts.Get("Funkin", character)).ToList();
+                FontUsage fontUsage = new("Funkin", 40f);
 
-                float totalWidth = glyphs.Sum(glyph => (glyph?.Width ?? 0f) * 40f);
-
-                SpriteText spriteText = new()
+                LocallyCenteredSpriteText spriteText = new()
                 {
                     Anchor = Anchor.Centre,
-                    Position = new Vector2(-(totalWidth / 2f), positionOffset),
+                    RelativeAnchorPosition = Size / 2f,
                     Text = text,
-                    Font = new FontUsage("Funkin", 40f)
+                    Font = fontUsage,
+                    OffCenterPosition = new Vector2(0f, positionOffset)
                 };
 
                 AddInternal(spriteText);
@@ -94,7 +93,7 @@ namespace Funkin.NET.Content.Screens
                     break;
 
                 case 5D:
-                    AddText("UNASSOCIATED WITH ", -80f);
+                    AddText("UNASSOCIATED WITH", -80f);
                     break;
 
                 case 7D:
@@ -142,7 +141,7 @@ namespace Funkin.NET.Content.Screens
                     break;
 
                 case 19D:
-                    AddText(" NOW!! ", 0f);
+                    AddText("NOW!!", 0f);
                     break;
             }
 
