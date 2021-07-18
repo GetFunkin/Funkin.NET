@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Funkin.NET.Common.KeyBinds.SelectionKey;
-using Funkin.NET.Content.Sprites;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -9,7 +8,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
-using osu.Framework.IO.Stores;
 using osuTK;
 
 namespace Funkin.NET.Content.Screens
@@ -21,8 +19,6 @@ namespace Funkin.NET.Content.Screens
         private double _lastUpdatedTime;
         private readonly List<string> _addedText = new();
         private bool _quirkyIntroFinished;
-
-        // [Resolved] private TextureStore Textures { get; set; }
 
         protected override void Update()
         {
