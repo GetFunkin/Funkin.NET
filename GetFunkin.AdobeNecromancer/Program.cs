@@ -33,7 +33,7 @@ namespace GetFunkin.AdobeNecromancer
 
             using (Stream stream = File.Open(args[0], FileMode.Open))
             {
-                XmlReader reader = XmlReader.Create(stream);
+                XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings {CheckCharacters = false});
                 bool startingElement = true;
 
                 while (reader.Read())
@@ -80,41 +80,51 @@ namespace GetFunkin.AdobeNecromancer
 
             Console.WriteLine($"Opening associated image file ({imageName})...");
 
-            using Image png = Image.FromFile(Path.Combine(directory ?? "", imageName ?? ""));
-            Console.WriteLine("Generating output directory...");
-            DirectoryInfo outputDir = Directory.CreateDirectory(Path.Combine(directory ?? "", "Output"));
-            Console.WriteLine($"Output directory generated at: {outputDir.FullName}");
-
-            Console.WriteLine("Cutting up textures based on texture data...");
-
-            // partial implementation of
-            // https://github.com/HaxeFlixel/flixel/blob/dev/flixel/graphics/frames/FlxAtlasFrames.hx#L252
-            // in c#
-            foreach (SubTexture texture in textures)
+            using (Image png = Image.FromFile(Path.Combine(directory ?? "", imageName ?? "")))
             {
-                // TODO: implement rotated, flipX, and flipY
-                bool trimmed = texture.FrameX != 0;
-                Rectangle frame = new(texture.X, texture.Y, texture.Width, texture.Height);
-                Rectangle size = trimmed
-                    ? new Rectangle(texture.FrameX, texture.FrameY, texture.FrameWidth, texture.FrameHeight)
-                    : new Rectangle(0, 0, frame.Width, frame.Height);
-                Point offset = new(-size.Left, -size.Top);
+                Console.WriteLine("Generating output directory...");
+                DirectoryInfo outputDir = Directory.CreateDirectory(Path.Combine(directory ?? "", "Output"));
+                Console.WriteLine($"Output directory generated at: {outputDir.FullName}");
 
-                using Bitmap bitmap = new(png);
-                Rectangle crop = new(frame.X - offset.X, frame.Y - offset.Y, frame.Width, frame.Height);
+                Console.WriteLine("Cutting up textures based on texture data...");
 
-                if (crop.X < 0)
-                    crop.X = 0;
+                // partial implementation of
+                // https://github.com/HaxeFlixel/flixel/blob/dev/flixel/graphics/frames/FlxAtlasFrames.hx#L252
+                // in c#
+                foreach (SubTexture texture in textures)
+                {
+                    // TODO: implement rotated, flipX, and flipY
+                    bool trimmed = texture.FrameX != 0;
+                    Rectangle frame = new(texture.X, texture.Y, texture.Width, texture.Height);
+                    Rectangle size = trimmed
+                        ? new Rectangle(texture.FrameX, texture.FrameY, texture.FrameWidth, texture.FrameHeight)
+                        : new Rectangle(0, 0, frame.Width, frame.Height);
+                    Point offset = new(-size.Left, -size.Top);
 
-                if (crop.Y < 0)
-                    crop.Y = 0;
+                    using (Bitmap bitmap = new(png))
+                    {
+                        Rectangle crop = new(frame.X - offset.X, frame.Y - offset.Y, frame.Width, frame.Height);
 
-                Console.WriteLine($"Cropping frame: {texture.Name}, cropX: {crop.X}, cropY: {crop.Y}, " +
-                                  $"width: {crop.Width}, height: {crop.Height}, " +
-                                  $"originalX: {frame.X}, originalY: {frame.Y}");
+                        if (crop.X < 0)
+                            crop.X = 0;
 
-                bitmap.Clone(crop, bitmap.PixelFormat);
-                bitmap.Save(Path.Combine(outputDir.FullName, $"{texture.Name}.png"));
+                        if (crop.Y < 0)
+                            crop.Y = 0;
+
+                        Console.WriteLine($"Cropping frame: {texture.Name}, cropX: {crop.X}, cropY: {crop.Y}, " +
+                                          $"width: {crop.Width}, height: {crop.Height}, " +
+                                          $"originalX: {frame.X}, originalY: {frame.Y}");
+
+                        try
+                        {
+                            bitmap.Clone(crop, bitmap.PixelFormat).Save(Path.Combine(outputDir.FullName, $"{texture.Name}.png"));
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Exception thrown while cropping and saving \"{texture.Name}\": {e}");
+                        }
+                    }
+                }
             }
         }
     }
