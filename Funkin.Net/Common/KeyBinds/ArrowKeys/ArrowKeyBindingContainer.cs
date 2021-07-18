@@ -8,6 +8,7 @@ namespace Funkin.NET.Common.KeyBinds.ArrowKeys
     /// </summary>
     public class ArrowKeyBindingContainer : KeyBindingContainer<ArrowKeyAction>
     {
+        /// <inheritdoc cref="ArrowKeyBindingContainer.DefaultKeyBindings"/>
         public override IEnumerable<IKeyBinding> DefaultKeyBindings => new[]
         {
             new KeyBinding(new[] { InputKey.Left, InputKey.D }, ArrowKeyAction.Left),
