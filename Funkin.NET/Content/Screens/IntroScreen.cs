@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Funkin.NET.Common.KeyBinds.SelectionKey;
+using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -21,6 +22,13 @@ namespace Funkin.NET.Content.Screens
         private readonly List<string> _addedText = new();
         private bool _quirkyIntroFinished;
         private bool _initializedEnter;
+        private GirlfriendDanceTitle _girlfriend;
+        private LogoTitle _logo;
+        private Box _flashBang;
+        private bool _bangCycled;
+        private bool _entering;
+        private double _enteringRecord = TimeSpan.Zero.Milliseconds;
+        private bool _introFinishedThisCycle;
 
         protected override void LoadComplete()
         {
@@ -32,6 +40,15 @@ namespace Funkin.NET.Content.Screens
         protected override void Update()
         {
             base.Update();
+
+            _introFinishedThisCycle = false;
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (_entering && _enteringRecord == TimeSpan.Zero.Milliseconds)
+                _enteringRecord = Clock.CurrentTime;
+
+            if (_entering && _flashBang?.Alpha >= 1f)
+                FunkinGame.RunningGame.ScreenStack.Push(new IntroScreen()); // temp introscreen: todo, put new screen
 
             UpdateSongVolume();
 
@@ -142,6 +159,7 @@ namespace Funkin.NET.Content.Screens
                 case 16D:
                     Clear();
                     _quirkyIntroFinished = true;
+                    _introFinishedThisCycle = true;
                     break;
 
                 /*case 17D:
@@ -181,8 +199,14 @@ namespace Funkin.NET.Content.Screens
         {
             _initializedEnter = true;
 
-            static void Fade(Drawable drawable)
+            void Fade(Drawable drawable)
             {
+                if (!_bangCycled)
+                {
+                    drawable.Alpha = 0f;
+                    return;
+                }
+
                 switch (drawable.Alpha)
                 {
                     case 1f:
@@ -197,6 +221,15 @@ namespace Funkin.NET.Content.Screens
 
             void CircularOffset(Drawable drawable)
             {
+                if (!_bangCycled)
+                    drawable.Alpha = 0f;
+                else
+                    drawable.Alpha = 1f / 3f;
+
+                double rotOffset = 0D;
+                if (_entering)
+                    rotOffset = (Clock.CurrentTime - _enteringRecord) / 100D * 25D;
+
                 int offset = 999;
 
                 if (drawable.Colour == Colour4.Blue)
@@ -205,8 +238,15 @@ namespace Funkin.NET.Content.Screens
                 if (drawable.Colour == Colour4.Green)
                     offset = 666;
 
-                drawable.Position = new Vector2((float) Math.Sin((Clock.CurrentTime + offset) / 200f) * 5f,
-                    (float) Math.Cos((Clock.CurrentTime + offset) / 200f) * 5f + 180f);
+                drawable.Position = new Vector2(
+                    (float) ((float) Math.Sin((Clock.CurrentTime + offset) / 200f) * (5f + rotOffset)),
+                    (float) ((float) Math.Cos((Clock.CurrentTime + offset) / 200f) * (5f + rotOffset) + 280f));
+            }
+
+            void MagicallyAppear(Drawable drawable)
+            {
+                if (_flashBang.Alpha >= 1f)
+                    drawable.Alpha = 1f; // basically activates 'em
             }
 
             SpriteText GetEnterText() => new()
@@ -214,9 +254,10 @@ namespace Funkin.NET.Content.Screens
                 Anchor = Anchor.Centre,
                 RelativeAnchorPosition = Size / 2f,
                 Text = "Press Enter to Begin",
-                Position = new Vector2(0f, 180f),
+                Position = new Vector2(0f, 280f),
                 Origin = Anchor.Centre,
                 Font = new FontUsage("VCR", 80f),
+                Alpha = 0f,
                 AlwaysPresent = true
             };
 
@@ -228,9 +269,6 @@ namespace Funkin.NET.Content.Screens
             enterRed.Colour = Colour4.Red;
             enterBlue.Colour = Colour4.Blue;
             enterGreen.Colour = Colour4.Green;
-            enterRed.Alpha = 1f / 3f;
-            enterBlue.Alpha = 1f / 3f;
-            enterGreen.Alpha = 1f / 3f;
             enterRed.Blending = BlendingParameters.Additive;
             enterBlue.Blending = BlendingParameters.Additive;
             enterGreen.Blending = BlendingParameters.Additive;
@@ -238,40 +276,77 @@ namespace Funkin.NET.Content.Screens
             enterRed.OnUpdate += CircularOffset;
             enterBlue.OnUpdate += CircularOffset;
             enterGreen.OnUpdate += CircularOffset;
+            enterText.OnUpdate += MagicallyAppear;
+            enterRed.OnUpdate += MagicallyAppear;
+            enterBlue.OnUpdate += MagicallyAppear;
+            enterGreen.OnUpdate += MagicallyAppear;
+            _girlfriend.OnUpdate += MagicallyAppear;
+            _logo.OnUpdate += MagicallyAppear;
 
             AddInternal(enterText);
             AddInternal(enterRed);
             AddInternal(enterBlue);
             AddInternal(enterGreen);
+            AddInternal(_girlfriend);
+            AddInternal(_logo);
 
-            Box box = new()
+            _flashBang = new Box
             {
                 Colour = Colour4.White,
                 RelativeSizeAxes = Axes.Both,
-                Alpha = 1f
+                Alpha = 0f,
+                AlwaysPresent = true
             };
 
-            box.OnUpdate += drawable =>
+            _flashBang.OnUpdate += drawable =>
             {
-                if (drawable.Alpha >= 1f)
-                    drawable.FadeOutFromOne(4000D);
+                if (_bangCycled && !_entering)
+                    return;
+
+                switch (drawable.Alpha)
+                {
+                    case >= 1f when !_entering:
+                        drawable.FadeOutFromOne(4000D);
+                        _bangCycled = true;
+                        break;
+
+                    case >= 1f when _entering:
+                        drawable.FadeOutFromOne(8000D);
+                        break;
+
+                    case <= 0f:
+                        drawable.FadeInFromZero(1500D);
+                        break;
+                }
             };
 
-            AddInternal(box);
+            AddInternal(_flashBang);
         }
 
         public bool OnPressed(SelectionKeyAction action) => false;
 
         public void OnReleased(SelectionKeyAction action)
         {
-            if (!_quirkyIntroFinished)
+            switch (_quirkyIntroFinished)
             {
-                ClearInternal();
-                _quirkyIntroFinished = true;
-            }
+                case false:
+                    ClearInternal();
+                    _entering = false;
+                    _quirkyIntroFinished = true;
+                    _introFinishedThisCycle = true;
+                    return;
 
-            if (_quirkyIntroFinished)
-                ; // TODO: game
+                case true when !_introFinishedThisCycle:
+                    _entering = true;
+                    break;
+            }
+        }
+
+        protected override void BeatHit()
+        {
+            base.BeatHit();
+
+            _girlfriend.SwapAnimation();
         }
 
         #region BackgroundDependencyLoader
@@ -284,6 +359,26 @@ namespace Funkin.NET.Content.Screens
             Music.Looping = true;
             Music.Start();
             Music.VolumeTo(0D);
+
+            _girlfriend = new GirlfriendDanceTitle
+            {
+                Anchor = Anchor.Centre,
+                Position = new Vector2(80f, 220f),
+                Origin = Anchor.Centre,
+                Scale = new Vector2(1.5f),
+                AlwaysPresent = true,
+                Alpha = 0f
+            };
+
+            _logo = new LogoTitle
+            {
+                Anchor = Anchor.Centre,
+                Position = new Vector2(-780f, 190f),
+                Origin = Anchor.Centre,
+                Scale = new Vector2(2f),
+                AlwaysPresent = true,
+                Alpha = 0f
+            };
         }
 
         #endregion
