@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Funkin.NET.Common.KeyBinds.SelectionKey;
+using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -21,6 +22,7 @@ namespace Funkin.NET.Content.Screens
         private readonly List<string> _addedText = new();
         private bool _quirkyIntroFinished;
         private bool _initializedEnter;
+        private GirlfriendDanceTitle _girlfriend;
 
         protected override void LoadComplete()
         {
@@ -244,6 +246,8 @@ namespace Funkin.NET.Content.Screens
             AddInternal(enterBlue);
             AddInternal(enterGreen);
 
+            AddInternal(_girlfriend);
+
             Box box = new()
             {
                 Colour = Colour4.White,
@@ -274,6 +278,13 @@ namespace Funkin.NET.Content.Screens
                 ; // TODO: game
         }
 
+        protected override void BeatHit()
+        {
+            base.BeatHit();
+
+            _girlfriend.SwapAnimation();
+        }
+
         #region BackgroundDependencyLoader
 
         [BackgroundDependencyLoader]
@@ -284,6 +295,13 @@ namespace Funkin.NET.Content.Screens
             Music.Looping = true;
             Music.Start();
             Music.VolumeTo(0D);
+
+            _girlfriend = new GirlfriendDanceTitle
+            {
+                Anchor = Anchor.CentreLeft,
+                Position = new Vector2(80f, 0f),
+                Origin = Anchor.Centre
+            };
         }
 
         #endregion

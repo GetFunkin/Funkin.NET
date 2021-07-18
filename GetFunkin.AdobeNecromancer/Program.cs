@@ -103,7 +103,7 @@ namespace GetFunkin.AdobeNecromancer
 
                     using (Bitmap bitmap = new(png))
                     {
-                        Rectangle crop = new(frame.X - offset.X, frame.Y - offset.Y, frame.Width, frame.Height);
+                        Rectangle crop = new(frame.X, frame.Y, frame.Width, frame.Height);
 
                         if (crop.X < 0)
                             crop.X = 0;

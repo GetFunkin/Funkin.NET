@@ -25,4 +25,37 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Textures\Title\gfDance0.png" />
+    <None Remove="Textures\Title\gfDance1.png" />
+    <None Remove="Textures\Title\gfDance10.png" />
+    <None Remove="Textures\Title\gfDance11.png" />
+    <None Remove="Textures\Title\gfDance12.png" />
+    <None Remove="Textures\Title\gfDance13.png" />
+    <None Remove="Textures\Title\gfDance14.png" />
+    <None Remove="Textures\Title\gfDance15.png" />
+    <None Remove="Textures\Title\gfDance16.png" />
+    <None Remove="Textures\Title\gfDance17.png" />
+    <None Remove="Textures\Title\gfDance18.png" />
+    <None Remove="Textures\Title\gfDance19.png" />
+    <None Remove="Textures\Title\gfDance2.png" />
+    <None Remove="Textures\Title\gfDance20.png" />
+    <None Remove="Textures\Title\gfDance21.png" />
+    <None Remove="Textures\Title\gfDance22.png" />
+    <None Remove="Textures\Title\gfDance23.png" />
+    <None Remove="Textures\Title\gfDance24.png" />
+    <None Remove="Textures\Title\gfDance25.png" />
+    <None Remove="Textures\Title\gfDance26.png" />
+    <None Remove="Textures\Title\gfDance27.png" />
+    <None Remove="Textures\Title\gfDance28.png" />
+    <None Remove="Textures\Title\gfDance29.png" />
+    <None Remove="Textures\Title\gfDance3.png" />
+    <None Remove="Textures\Title\gfDance4.png" />
+    <None Remove="Textures\Title\gfDance5.png" />
+    <None Remove="Textures\Title\gfDance6.png" />
+    <None Remove="Textures\Title\gfDance7.png" />
+    <None Remove="Textures\Title\gfDance8.png" />
+    <None Remove="Textures\Title\gfDance9.png" />
+  </ItemGroup>
+
 </Project>

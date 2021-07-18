@@ -71,6 +71,7 @@ namespace Funkin.NET.Content.Screens
 
         protected virtual void BeatHit()
         {
+            Console.WriteLine("hit");
         }
     }
 }
