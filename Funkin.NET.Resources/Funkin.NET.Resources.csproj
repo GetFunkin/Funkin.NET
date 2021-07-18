@@ -19,4 +19,8 @@
     <EmbeddedResource Include="Tracks\**\*.mp3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Textures\NewgroundsLogo.png" />
+  </ItemGroup>
+
 </Project>
