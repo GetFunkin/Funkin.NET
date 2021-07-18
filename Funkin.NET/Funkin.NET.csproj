@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Content\Conductor\" />
-    <Folder Include="Content\Sprites\" />
   </ItemGroup>
 
 </Project>

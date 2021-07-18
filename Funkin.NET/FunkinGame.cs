@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using Funkin.NET.Common.KeyBinds.ArrowKeys;
-using Funkin.NET.Common.KeyBinds.SelectionKey;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
@@ -90,11 +88,11 @@ namespace Funkin.NET
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            
+
             Window.WindowMode.Value = WindowMode.Fullscreen;
 
             Add(ScreenStack = new ScreenStack());
-            ScreenStack.Push(new IntroScreen());
+            ScreenStack.Push(IntroScreen = new IntroScreen());
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -123,19 +121,6 @@ namespace Funkin.NET
                 Child = new DrawSizePreservingFillContainer
                 {
                     RelativeSizeAxes = Axes.Both,
-
-                    Children = new Drawable[]
-                    {
-                        new ArrowKeyBindingContainer
-                        {
-                            RelativeSizeAxes = Axes.Both
-                        },
-
-                        new SelectionKeyBindingContainer
-                        {
-                            RelativeSizeAxes = Axes.Both
-                        }
-                    }
                 }
             });
         }

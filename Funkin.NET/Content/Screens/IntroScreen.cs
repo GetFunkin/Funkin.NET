@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Funkin.NET.Common.KeyBinds.SelectionKey;
 using Funkin.NET.Content.Sprites;
 using Funkin.NET.Core.BackgroundDependencyLoading;
@@ -11,7 +10,6 @@ using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
 using osu.Framework.IO.Stores;
-using osu.Framework.Text;
 using osuTK;
 
 namespace Funkin.NET.Content.Screens
@@ -26,15 +24,13 @@ namespace Funkin.NET.Content.Screens
 
         // [Resolved] private TextureStore Textures { get; set; }
 
-        [Resolved] private FontStore Fonts { get; set; }
-
         protected override void Update()
         {
             base.Update();
 
             UpdateSongVolume();
 
-            if (!_quirkyIntroFinished) 
+            if (!_quirkyIntroFinished)
                 UpdateTextDisplay();
         }
 
@@ -60,13 +56,14 @@ namespace Funkin.NET.Content.Screens
 
                 FontUsage fontUsage = new("Funkin", 40f);
 
-                LocallyCenteredSpriteText spriteText = new()
+                SpriteText spriteText = new()
                 {
                     Anchor = Anchor.Centre,
                     RelativeAnchorPosition = Size / 2f,
                     Text = text,
                     Font = fontUsage,
-                    OffCenterPosition = new Vector2(0f, positionOffset)
+                    Position = new Vector2(0f, positionOffset),
+                    Origin = Anchor.Centre
                 };
 
                 AddInternal(spriteText);

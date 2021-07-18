@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Funkin.NET.Common.KeyBinds.ArrowKeys;
 using osu.Framework.Input.Bindings;
-using osu.Framework.Input.Events;
 
 namespace Funkin.NET.Common.KeyBinds.SelectionKey
 {
