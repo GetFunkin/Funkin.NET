@@ -8,6 +8,10 @@ namespace Funkin.NET.Common.KeyBinds.ArrowKeys
     /// </summary>
     public class ArrowKeyBindingContainer : KeyBindingContainer<ArrowKeyAction>
     {
+        public ArrowKeyBindingContainer() : base(SimultaneousBindingMode.All)
+        {
+        }
+
         /// <inheritdoc cref="ArrowKeyBindingContainer.DefaultKeyBindings"/>
         public override IEnumerable<IKeyBinding> DefaultKeyBindings => new[]
         {

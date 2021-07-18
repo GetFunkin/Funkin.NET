@@ -8,7 +8,6 @@ using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
 using osu.Framework.IO.Stores;
 using osu.Framework.Text;
@@ -16,14 +15,15 @@ using osuTK;
 
 namespace Funkin.NET.Content.Screens
 {
-    public class IntroScreen : MusicScreen, IBackgroundDependencyLoadable
+    public class IntroScreen : MusicScreen, IBackgroundDependencyLoadable, IKeyBindingHandler<SelectionKeyAction>
     {
         public override double ExpectedBpm => 102D;
 
         private double _lastUpdatedTime;
         private readonly List<string> AddedText = new();
+        private bool quirkyIntroFinished;
 
-        [Resolved] private TextureStore Textures { get; set; }
+        // [Resolved] private TextureStore Textures { get; set; }
 
         [Resolved] private FontStore Fonts { get; set; }
 
@@ -32,7 +32,9 @@ namespace Funkin.NET.Content.Screens
             base.Update();
 
             UpdateSongVolume();
-            UpdateTextDisplay();
+
+            if (!quirkyIntroFinished) 
+                UpdateTextDisplay();
         }
 
         public void UpdateSongVolume()
@@ -177,5 +179,23 @@ namespace Funkin.NET.Content.Screens
         }
 
         #endregion
+
+        public bool OnPressed(SelectionKeyAction action)
+        {
+            if (!quirkyIntroFinished)
+            {
+                ClearInternal();
+                quirkyIntroFinished = true;
+            }
+
+            if (quirkyIntroFinished)
+                ; // TODO: game
+
+            return true;
+        }
+
+        public void OnReleased(SelectionKeyAction action)
+        {
+        }
     }
 }

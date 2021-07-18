@@ -1,8 +1,4 @@
-﻿using System;
-using System.Reflection;
-using Funkin.NET.Common.KeyBinds.ArrowKeys;
-using Funkin.NET.Common.KeyBinds.SelectionKey;
-using Funkin.NET.Common.KeyBinds.WindowModeKeys;
+﻿using System.Reflection;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
@@ -12,7 +8,6 @@ using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Input.Bindings;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
@@ -23,8 +18,7 @@ namespace Funkin.NET
     /// <summary>
     ///     Base Funkin' game. Contains data shared between the test browser and game implementation.
     /// </summary>
-    public class FunkinGame : Game, IBackgroundDependencyLoadable, IKeyBindingHandler<ArrowKeyAction>,
-        IKeyBindingHandler<SelectionKeyAction>, IKeyBindingHandler<WindowModeKeyAction>
+    public class FunkinGame : Game, IBackgroundDependencyLoadable
     {
         #region Constants
 
@@ -35,7 +29,7 @@ namespace Funkin.NET
         #region Static Fields & Properties
 
         /// <summary>
-        ///     Active <see cref="osu.Framework.Platform.GameHost"/> instance. Resolved at runtime in <see cref="Main"/>.
+        ///     Active <see cref="GameHost"/> instance. Resolved at runtime in <see cref="Main"/>.
         /// </summary>
         public static GameHost RunningHost { get; set; }
 
@@ -117,35 +111,6 @@ namespace Funkin.NET
             TextureStore = new TextureStore(Textures);
             Child = ScreenStack = new ScreenStack {RelativePositionAxes = Axes.Both};
             DependencyContainer.Cache(TextureStore);
-        }
-
-        #endregion
-
-        #region Key Binding Handlers
-
-        public bool OnPressed(ArrowKeyAction action) => false;
-
-        public void OnReleased(ArrowKeyAction action)
-        {
-        }
-
-        public bool OnPressed(SelectionKeyAction action) => false;
-
-        public void OnReleased(SelectionKeyAction action)
-        {
-        }
-
-        public bool OnPressed(WindowModeKeyAction action) => true;
-
-        public void OnReleased(WindowModeKeyAction action)
-        {
-            Window.WindowMode.Value = Window.WindowMode.Value switch
-            {
-                WindowMode.Windowed => WindowMode.Borderless,
-                WindowMode.Borderless => WindowMode.Fullscreen,
-                WindowMode.Fullscreen => WindowMode.Windowed,
-                _ => throw new ArgumentOutOfRangeException(nameof(Window.WindowMode), "Invalid Window type.")
-            };
         }
 
         #endregion
