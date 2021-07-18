@@ -11,40 +11,17 @@
         public const string SuitableHostName = "funkin.net";
 
         /// <summary>
-        ///     Active <see cref="osu.Framework.Platform.GameHost"/> instance. Resolved at runtime in <see cref="Main"/>.
-        /// </summary>
-        public static osu.Framework.Platform.GameHost RunningHost { get; private set; }
-
-        /// <summary>
-        ///     Active <see cref="FunkinGame"/> instance. Resolved at runtime in <see cref="Main"/>.
-        /// </summary>
-        public static FunkinGame RunningGame { get; private set; }
-
-        /// <summary>
         ///     Entry-point method, runs the game with a <see cref="osu.Framework.Host"/> instance.
         /// </summary>
-        /// <param name="args"></param>
-        public static void Main(string[] args)
+        public static void Main()
         {
-            string path = System.IO.Path.Combine(FunkinGame.ExecutablePath, "Logs", "latest.log");
+            using osu.Framework.Platform.GameHost host = osu.Framework.Host.GetSuitableHost(SuitableHostName);
+            FunkinGame.RunningHost = host;
 
-            if (System.IO.File.Exists(path))
-                System.IO.File.Delete(path);
-
-            using (FunkinLogger.FileLogger = new GetFunkin.Logging.FileLogger(path))
-            {
-                FunkinLogger.Initialize();
-
-                using osu.Framework.Platform.GameHost host = osu.Framework.Host.GetSuitableHost(SuitableHostName);
-                RunningHost = host;
-
-                using osu.Framework.Game game = new FunkinGame();
-                RunningGame = (FunkinGame)game;
-
-                RunningHost.Run(RunningGame);
-            }
-
-            FunkinLogger.SaveAndExit();
+            using FunkinGame game = new();
+            FunkinGame.RunningGame = game;
+            FunkinGame.RunningGame.Name = FunkinGame.ProgramName;
+            FunkinGame.RunningHost.Run(FunkinGame.RunningGame);
         }
     }
 }

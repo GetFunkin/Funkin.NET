@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ppy.osu.Framework" Version="2021.611.0" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.7.8.3" />
+    <PackageReference Include="ppy.osu.Framework" Version="2021.714.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Funkin.NET.Resources\Funkin.NET.Resources.csproj" />
-    <ProjectReference Include="..\GetFunkin.Logging\GetFunkin.Logging.csproj" />
   </ItemGroup>
 
 </Project>
