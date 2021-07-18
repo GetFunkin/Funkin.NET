@@ -78,6 +78,8 @@ namespace Funkin.NET
 
         public FunkinGame()
         {
+            Name = ProgramName;
+
             base.Content.Add(Content = new DrawSizePreservingFillContainer
             {
                 TargetDrawSize = new Vector2(1920f, 1080f)

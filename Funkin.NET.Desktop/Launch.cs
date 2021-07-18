@@ -21,7 +21,6 @@
             using FunkinGame game = new();
             FunkinGame.RunningGame = game;
             FunkinGame.RunningHost.Run(FunkinGame.RunningGame);
-            FunkinGame.RunningGame.Name = FunkinGame.ProgramName;
         }
     }
 }
