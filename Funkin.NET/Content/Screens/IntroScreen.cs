@@ -3,7 +3,6 @@ using System.Timers;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
-using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 
@@ -16,7 +15,7 @@ namespace Funkin.NET.Content.Screens
         [Resolved] private AudioManager Audio { get; set; }
 
         private float _audioLevel;
-        private Timer _audioLevelTimer;
+        private double _lastUpdatedTime;
 
         #region BackgroundDependencyLoader
 
@@ -28,21 +27,19 @@ namespace Funkin.NET.Content.Screens
             MenuMusic.Looping = true;
             MenuMusic.Start();
             MenuMusic.VolumeTo(_audioLevel);
-
-            _audioLevelTimer = new Timer(100D) {AutoReset = true};
-            _audioLevelTimer.Elapsed += (_, _) =>
-            {
-                if (_audioLevel < 1f)
-                    _audioLevel += 0.0025f;
-            };
-            _audioLevelTimer.Start();
         }
 
         protected override void Update()
         {
             base.Update();
 
-            MenuMusic.VolumeTo(_audioLevel);
+            TimeSpan time = TimeSpan.FromMilliseconds(Clock.CurrentTime - _lastUpdatedTime);
+
+            if (!(MenuMusic.Volume.Value < 1D) || time.Milliseconds < 100) 
+                return;
+
+            _lastUpdatedTime = Clock.CurrentTime;
+            MenuMusic.Volume.Value += 0.0025D;
         }
 
         #endregion
