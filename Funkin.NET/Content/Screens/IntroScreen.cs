@@ -26,6 +26,9 @@ namespace Funkin.NET.Content.Screens
         private LogoTitle _logo;
         private Box _flashBang;
         private bool _bangCycled;
+        private bool _entering;
+        private double _enteringRecord = TimeSpan.Zero.Milliseconds;
+        private bool _introFinishedThisCycle;
 
         protected override void LoadComplete()
         {
@@ -37,6 +40,15 @@ namespace Funkin.NET.Content.Screens
         protected override void Update()
         {
             base.Update();
+
+            _introFinishedThisCycle = false;
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (_entering && _enteringRecord == TimeSpan.Zero.Milliseconds)
+                _enteringRecord = Clock.CurrentTime;
+
+            if (_entering && _flashBang?.Alpha >= 1f)
+                FunkinGame.RunningGame.ScreenStack.Push(new IntroScreen()); // temp introscreen: todo, put new screen
 
             UpdateSongVolume();
 
@@ -147,6 +159,7 @@ namespace Funkin.NET.Content.Screens
                 case 16D:
                     Clear();
                     _quirkyIntroFinished = true;
+                    _introFinishedThisCycle = true;
                     break;
 
                 /*case 17D:
@@ -213,6 +226,10 @@ namespace Funkin.NET.Content.Screens
                 else
                     drawable.Alpha = 1f / 3f;
 
+                double rotOffset = 0D;
+                if (_entering)
+                    rotOffset = (Clock.CurrentTime - _enteringRecord) / 100D * 25D;
+
                 int offset = 999;
 
                 if (drawable.Colour == Colour4.Blue)
@@ -221,8 +238,9 @@ namespace Funkin.NET.Content.Screens
                 if (drawable.Colour == Colour4.Green)
                     offset = 666;
 
-                drawable.Position = new Vector2((float) Math.Sin((Clock.CurrentTime + offset) / 200f) * 5f,
-                    (float) Math.Cos((Clock.CurrentTime + offset) / 200f) * 5f + 280f);
+                drawable.Position = new Vector2(
+                    (float) ((float) Math.Sin((Clock.CurrentTime + offset) / 200f) * (5f + rotOffset)),
+                    (float) ((float) Math.Cos((Clock.CurrentTime + offset) / 200f) * (5f + rotOffset) + 280f));
             }
 
             void MagicallyAppear(Drawable drawable)
@@ -282,14 +300,18 @@ namespace Funkin.NET.Content.Screens
 
             _flashBang.OnUpdate += drawable =>
             {
-                if (_bangCycled)
+                if (_bangCycled && !_entering)
                     return;
 
                 switch (drawable.Alpha)
                 {
-                    case >= 1f:
+                    case >= 1f when !_entering:
                         drawable.FadeOutFromOne(4000D);
                         _bangCycled = true;
+                        break;
+
+                    case >= 1f when _entering:
+                        drawable.FadeOutFromOne(8000D);
                         break;
 
                     case <= 0f:
@@ -305,14 +327,19 @@ namespace Funkin.NET.Content.Screens
 
         public void OnReleased(SelectionKeyAction action)
         {
-            if (!_quirkyIntroFinished)
+            switch (_quirkyIntroFinished)
             {
-                ClearInternal();
-                _quirkyIntroFinished = true;
-            }
+                case false:
+                    ClearInternal();
+                    _entering = false;
+                    _quirkyIntroFinished = true;
+                    _introFinishedThisCycle = true;
+                    return;
 
-            if (_quirkyIntroFinished)
-                ; // TODO: game
+                case true when !_introFinishedThisCycle:
+                    _entering = true;
+                    break;
+            }
         }
 
         protected override void BeatHit()
