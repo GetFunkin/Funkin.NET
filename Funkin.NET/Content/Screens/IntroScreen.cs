@@ -222,7 +222,7 @@ namespace Funkin.NET.Content.Screens
                     offset = 666;
 
                 drawable.Position = new Vector2((float) Math.Sin((Clock.CurrentTime + offset) / 200f) * 5f,
-                    (float) Math.Cos((Clock.CurrentTime + offset) / 200f) * 5f + 180f);
+                    (float) Math.Cos((Clock.CurrentTime + offset) / 200f) * 5f + 280f);
             }
 
             void MagicallyAppear(Drawable drawable)
@@ -236,7 +236,7 @@ namespace Funkin.NET.Content.Screens
                 Anchor = Anchor.Centre,
                 RelativeAnchorPosition = Size / 2f,
                 Text = "Press Enter to Begin",
-                Position = new Vector2(0f, 180f),
+                Position = new Vector2(0f, 280f),
                 Origin = Anchor.Centre,
                 Font = new FontUsage("VCR", 80f),
                 Alpha = 0f,
@@ -336,7 +336,7 @@ namespace Funkin.NET.Content.Screens
             _girlfriend = new GirlfriendDanceTitle
             {
                 Anchor = Anchor.Centre,
-                Position = new Vector2(80f, 120f),
+                Position = new Vector2(80f, 220f),
                 Origin = Anchor.Centre,
                 Scale = new Vector2(1.5f),
                 AlwaysPresent = true,
@@ -346,7 +346,7 @@ namespace Funkin.NET.Content.Screens
             _logo = new LogoTitle
             {
                 Anchor = Anchor.Centre,
-                Position = new Vector2(-780f, 90f),
+                Position = new Vector2(-780f, 190f),
                 Origin = Anchor.Centre,
                 Scale = new Vector2(2f),
                 AlwaysPresent = true,
