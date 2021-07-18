@@ -10,11 +10,11 @@ using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
 using osu.Framework.IO.Stores;
-using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
@@ -56,15 +56,15 @@ namespace Funkin.NET
             @"Fonts/Funkin"
         };
 
-        public TextureStore TextureStore { get; private set; }
-
-        public DependencyContainer DependencyContainer { get; private set; }
-
         #endregion
 
         #region Instanced Fields & Properties
 
         public ScreenStack ScreenStack { get; private set; }
+
+        public TextureStore TextureStore { get; private set; }
+
+        public DependencyContainer DependencyContainer { get; private set; }
 
         #endregion
 

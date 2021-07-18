@@ -8,7 +8,7 @@ using osuTK.Graphics;
 
 namespace Funkin.NET.Content.Screens
 {
-    public class IntroScreen : Screen, IBackgroundDependencyLoadable
+    public class MainScreen : Screen, IBackgroundDependencyLoadable
     {
         #region BackgroundDependencyLoader
 
