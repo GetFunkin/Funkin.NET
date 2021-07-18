@@ -23,6 +23,8 @@ namespace Funkin.NET.Content.Screens
         private bool _quirkyIntroFinished;
         private bool _initializedEnter;
         private GirlfriendDanceTitle _girlfriend;
+        private Box _flashBang;
+        private bool _bangCycled;
 
         protected override void LoadComplete()
         {
@@ -183,8 +185,14 @@ namespace Funkin.NET.Content.Screens
         {
             _initializedEnter = true;
 
-            static void Fade(Drawable drawable)
+            void Fade(Drawable drawable)
             {
+                if (!_bangCycled)
+                {
+                    drawable.Alpha = 0f;
+                    return;
+                }
+
                 switch (drawable.Alpha)
                 {
                     case 1f:
@@ -199,6 +207,11 @@ namespace Funkin.NET.Content.Screens
 
             void CircularOffset(Drawable drawable)
             {
+                if (!_bangCycled)
+                    drawable.Alpha = 0f;
+                else
+                    drawable.Alpha = 1f / 3f;
+
                 int offset = 999;
 
                 if (drawable.Colour == Colour4.Blue)
@@ -211,6 +224,12 @@ namespace Funkin.NET.Content.Screens
                     (float) Math.Cos((Clock.CurrentTime + offset) / 200f) * 5f + 180f);
             }
 
+            void MagicallyAppear(Drawable drawable)
+            {
+                if (_flashBang.Alpha >= 1f)
+                    drawable.Alpha = 1f; // basically activates 'em
+            }
+
             SpriteText GetEnterText() => new()
             {
                 Anchor = Anchor.Centre,
@@ -219,6 +238,7 @@ namespace Funkin.NET.Content.Screens
                 Position = new Vector2(0f, 180f),
                 Origin = Anchor.Centre,
                 Font = new FontUsage("VCR", 80f),
+                Alpha = 0f,
                 AlwaysPresent = true
             };
 
@@ -230,9 +250,6 @@ namespace Funkin.NET.Content.Screens
             enterRed.Colour = Colour4.Red;
             enterBlue.Colour = Colour4.Blue;
             enterGreen.Colour = Colour4.Green;
-            enterRed.Alpha = 1f / 3f;
-            enterBlue.Alpha = 1f / 3f;
-            enterGreen.Alpha = 1f / 3f;
             enterRed.Blending = BlendingParameters.Additive;
             enterBlue.Blending = BlendingParameters.Additive;
             enterGreen.Blending = BlendingParameters.Additive;
@@ -240,28 +257,45 @@ namespace Funkin.NET.Content.Screens
             enterRed.OnUpdate += CircularOffset;
             enterBlue.OnUpdate += CircularOffset;
             enterGreen.OnUpdate += CircularOffset;
+            enterText.OnUpdate += MagicallyAppear;
+            enterRed.OnUpdate += MagicallyAppear;
+            enterBlue.OnUpdate += MagicallyAppear;
+            enterGreen.OnUpdate += MagicallyAppear;
+            _girlfriend.OnUpdate += MagicallyAppear;
 
             AddInternal(enterText);
             AddInternal(enterRed);
             AddInternal(enterBlue);
             AddInternal(enterGreen);
-
             AddInternal(_girlfriend);
 
-            Box box = new()
+            _flashBang = new Box
             {
                 Colour = Colour4.White,
                 RelativeSizeAxes = Axes.Both,
-                Alpha = 1f
+                Alpha = 0f,
+                AlwaysPresent = true
             };
 
-            box.OnUpdate += drawable =>
+            _flashBang.OnUpdate += drawable =>
             {
-                if (drawable.Alpha >= 1f)
-                    drawable.FadeOutFromOne(4000D);
+                if (_bangCycled)
+                    return;
+
+                switch (drawable.Alpha)
+                {
+                    case >= 1f:
+                        drawable.FadeOutFromOne(4000D);
+                        _bangCycled = true;
+                        break;
+
+                    case <= 0f:
+                        drawable.FadeInFromZero(1500D);
+                        break;
+                }
             };
 
-            AddInternal(box);
+            AddInternal(_flashBang);
         }
 
         public bool OnPressed(SelectionKeyAction action) => false;
@@ -298,9 +332,12 @@ namespace Funkin.NET.Content.Screens
 
             _girlfriend = new GirlfriendDanceTitle
             {
-                Anchor = Anchor.CentreLeft,
-                Position = new Vector2(80f, 0f),
-                Origin = Anchor.Centre
+                Anchor = Anchor.Centre,
+                Position = new Vector2(80f, 120f),
+                Origin = Anchor.Centre,
+                Scale = new Vector2(1.5f),
+                AlwaysPresent = true,
+                Alpha = 0f
             };
         }
 
