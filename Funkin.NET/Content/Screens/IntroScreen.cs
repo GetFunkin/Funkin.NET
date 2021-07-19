@@ -48,7 +48,10 @@ namespace Funkin.NET.Content.Screens
                 _enteringRecord = Clock.CurrentTime;
 
             if (_entering && _flashBang?.Alpha >= 1f)
-                FunkinGame.RunningGame.ScreenStack.Push(new IntroScreen()); // temp introscreen: todo, put new screen
+            {
+                FunkinGame.RunningGame.ScreenStack.Push(new SimpleKeyScreen()); // temp introscreen: todo, put new screen
+                Music.Volume.Value = 0;
+            }
 
             UpdateSongVolume();
 
