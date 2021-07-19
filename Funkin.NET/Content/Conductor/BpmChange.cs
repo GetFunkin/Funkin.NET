@@ -1,6 +1,6 @@
 ﻿namespace Funkin.NET.Content.Conductor
 {
-    public class BpmChange
+    public class BpmChange : IBpmChange
     {
         public int StepTime { get; }
 

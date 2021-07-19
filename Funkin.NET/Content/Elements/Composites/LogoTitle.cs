@@ -2,21 +2,17 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Textures;
 
 namespace Funkin.NET.Content.Elements.Composites
 {
-    public class LogoTitle : CompositeDrawable, IBackgroundDependencyLoadable
+    public class LogoTitle : FunkinCompositeDrawable, IBackgroundDependencyLoadable
     {
-        [Resolved] private TextureStore Textures { get; set; }
-
-        private TextureAnimation _anim;
+        public TextureAnimation Anim;
 
         [BackgroundDependencyLoader]
         void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
         {
-            _anim = new TextureAnimation
+            Anim = new TextureAnimation
             {
                 Origin = Anchor.BottomLeft,
                 Anchor = Anchor.Centre,
@@ -24,9 +20,9 @@ namespace Funkin.NET.Content.Elements.Composites
             };
 
             for (int i = 0; i < 15; i++)
-                _anim.AddFrame(Textures.Get($"Title/logo bumpin{i}"), 1D / 24D * 1000D);
+                Anim.AddFrame(ResolvedTextureStore.Get($"Title/logo bumpin{i}"), 1D / 24D * 1000D);
 
-            AddInternal(_anim);
+            AddInternal(Anim);
         }
     }
 }

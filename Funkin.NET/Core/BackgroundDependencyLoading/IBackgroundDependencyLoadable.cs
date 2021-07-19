@@ -1,10 +1,15 @@
-﻿using osu.Framework.Allocation;
+﻿using Funkin.NET.Content.Configuration;
 
 namespace Funkin.NET.Core.BackgroundDependencyLoading
 {
     public interface IBackgroundDependencyLoadable
     {
-        [BackgroundDependencyLoader]
-        void BackgroundDependencyLoad();
+        void BackgroundDependencyLoad()
+        {
+        }
+
+        void BackgroundDependencyLoad(FunkinConfigManager config)
+        {
+        }
     }
 }

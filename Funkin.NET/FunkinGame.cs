@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using Funkin.NET.Common.KeyBinds.SelectionKey;
+using Funkin.NET.Content.Configuration;
+using Funkin.NET.Content.osu.Configuration;
+using Funkin.NET.Content.osu.Graphics.Containers;
+using Funkin.NET.Content.osu.Screens;
 using Funkin.NET.Content.Screens;
 using Funkin.NET.Core.BackgroundDependencyLoading;
 using Funkin.NET.Resources;
@@ -12,10 +14,8 @@ using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
-using osu.Framework.Screens;
 
 namespace Funkin.NET
 {
@@ -26,64 +26,26 @@ namespace Funkin.NET
     {
         public const string ProgramName = "Funkin.NET";
 
+        public static List<string[]> FunnyTextList { get; private set; }
 
-        /// <summary>
-        ///     Active <see cref="GameHost"/> instance. Resolved at runtime in <see cref="Main"/>.
-        /// </summary>
-        public static GameHost RunningHost { get; set; }
+        public static string[] FunnyText { get; private set; }
 
-        /// <summary>
-        ///     Active <see cref="FunkinGame"/> instance. Resolved at runtime in <see cref="Main"/>.
-        /// </summary>
-        public static FunkinGame RunningGame { get; set; }
+        protected Storage Storage { get; private set; }
 
-        public static readonly Assembly[] ResourceMarket =
-        {
-            ResourcesAssembly.Assembly
-        };
+        protected FunkinConfigManager Config { get; private set; }
 
-        public static readonly string[] FontMarket =
-        {
-            @"Fonts/VCR",
-            @"Fonts/Funkin"
-        };
+        protected OsuScreenStack ScreenStack;
 
-        public ScreenStack ScreenStack { get; private set; }
+        protected override Container<Drawable> Content => _content;
 
-        public TextureStore TextureStore { get; private set; }
-
-        public DependencyContainer DependencyContainer { get; private set; }
-
-        public IntroScreen IntroScreen { get; private set; }
-
-        public List<string[]> FunnyTextList { get; }
-
-        public string[] FunnyText { get; }
-
-
-        protected override Container<Drawable> Content { get; }
+        private DependencyContainer _dependencies;
+        private Container _content;
+        private Container _screenOffsetContainer;
+        private ScalingContainer _screenContainer;
 
         public FunkinGame()
         {
             Name = ProgramName;
-
-            /*
-            Content = new SafeAreaContainer
-            {
-                RelativeSizeAxes = Axes.Both,
-
-                Child = new DrawSizePreservingFillContainer
-                {
-                    RelativeSizeAxes = Axes.Both,
-
-                    Children = new Drawable[]
-                    {
-                        new SelectionKeyBindingContainer(this)
-                    }
-                }
-            }
-             */
-            base.Content.Add(null);
 
             string path = Path.Combine("Json", "IntroText.json");
             string text = File.ReadAllText(path);
@@ -95,27 +57,80 @@ namespace Funkin.NET
         {
             base.LoadComplete();
 
-            Window.WindowMode.Value = WindowMode.Fullscreen;
+            Window.WindowMode.BindTarget = Config.GetBindable<WindowMode>(FunkinSetting.DefaultWindowType);
+
+            AddRange(new Drawable[]
+            {
+                _screenOffsetContainer = new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Children = new Drawable[]
+                    {
+                        _screenContainer = new ScalingContainer(ScalingMode.ExcludeOverlays)
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            Children = new Drawable[]
+                            {
+                                ScreenStack = new OsuScreenStack
+                                {
+                                    RelativeSizeAxes = Axes.Both
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            ScreenStack.Push(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro));
+        }
+
+        public override void SetHost(GameHost host)
+        {
+            base.SetHost(host);
+
+            Storage ??= host.Storage;
+            Config = new FunkinConfigManager(Storage);
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
-            DependencyContainer = new DependencyContainer(base.CreateChildDependencies(parent));
+            _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
+        protected override void Dispose(bool isDisposing)
+        {
+            base.Dispose(isDisposing);
+            
+            Config?.Dispose();
+        }
 
         [BackgroundDependencyLoader]
         void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
         {
-            foreach (Assembly store in ResourceMarket)
-                Resources.AddStore(new DllResourceStore(store));
+            // Resources.AddStore(new DllResourceStore(ResourcesAssembly.Assembly));
 
-            foreach (string font in FontMarket)
-                AddFont(Resources, font);
+            _dependencies.CacheAs(Storage);
 
-            TextureStore = new TextureStore(Textures);
-            DependencyContainer.Cache(TextureStore);
+            _dependencies.CacheAs(this);
+            _dependencies.CacheAs(Config);
 
-            Add(ScreenStack = new ScreenStack());
-            ScreenStack.Push(IntroScreen = new IntroScreen());
+            Resources.AddStore(new DllResourceStore(ResourcesAssembly.Assembly));
+
+            AddFont(Resources, "Fonts/VCR");
+            AddFont(Resources, "Fonts/Funkin");
+
+            // global input container would go here
+
+            _content = new Container
+            {
+                RelativeSizeAxes = Axes.Both
+            };
+
+            base.Content.Add(CreateScalingContainer());
+
+            // todo: port over osu!'s key binding store system?
         }
+
+        protected virtual Container CreateScalingContainer() => new ScalingContainer(ScalingMode.Everything);
     }
 }

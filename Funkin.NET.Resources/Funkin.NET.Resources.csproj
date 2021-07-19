@@ -20,12 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Json\*">
+    <Content Include="Json\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Textures\Icon.ico" />
     <None Remove="Textures\Title\gfDance0.png" />
     <None Remove="Textures\Title\gfDance1.png" />
     <None Remove="Textures\Title\gfDance10.png" />
@@ -71,6 +72,10 @@
     <None Remove="Textures\Title\logo bumpin7.png" />
     <None Remove="Textures\Title\logo bumpin8.png" />
     <None Remove="Textures\Title\logo bumpin9.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Icon.ico" />
   </ItemGroup>
 
 </Project>
