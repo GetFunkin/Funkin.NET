@@ -49,6 +49,7 @@ namespace Funkin.NET.Content.Screens
 
             if (_entering && _flashBang?.Alpha >= 1f)
             {
+                // TODO: Fade out music
                 FunkinGame.RunningGame.ScreenStack.Push(new SimpleKeyScreen()); // temp introscreen: todo, put new screen
                 Music.Volume.Value = 0;
             }

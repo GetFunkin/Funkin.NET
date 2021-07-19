@@ -13,6 +13,11 @@ namespace Funkin.NET.Content.Screens
 {
     public class SimpleKeyScreen : MusicScreen, IBackgroundDependencyLoadable
     {
+        // TODO: handle input
+        // TODO: draw characters
+        // TODO: draw enemy keys
+        // TODO: draw all song keys
+        
         public override double ExpectedBpm { get; }
 
         public Song Song { get; }
@@ -35,7 +40,6 @@ namespace Funkin.NET.Content.Screens
                 foreach (ArrowKeyDrawable drawable in _arrows) AddInternal(drawable);
             }
         }
-
 
         [BackgroundDependencyLoader]
         void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
