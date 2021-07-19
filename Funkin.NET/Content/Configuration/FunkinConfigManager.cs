@@ -1,7 +1,5 @@
-﻿using Funkin.NET.Content.osu.Configuration;
-using osu.Framework.Configuration;
+﻿using osu.Framework.Configuration;
 using osu.Framework.Configuration.Tracking;
-using osu.Framework.Extensions;
 using osu.Framework.Platform;
 
 namespace Funkin.NET.Content.Configuration

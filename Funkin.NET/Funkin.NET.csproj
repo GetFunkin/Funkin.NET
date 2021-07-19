@@ -22,9 +22,6 @@
   <ItemGroup>
     <Folder Include="Content\Conductor\" />
     <Folder Include="Content\Elements\Composites\" />
-    <Folder Include="Content\osu\Graphics\Backgrounds\" />
-    <Folder Include="Content\osu\Screens\Backgrounds\" />
-    <Folder Include="Core\Resolving\" />
   </ItemGroup>
 
 </Project>
