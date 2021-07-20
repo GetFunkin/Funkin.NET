@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Funkin.NET.Configuration;
+using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.Cursor;
 using Funkin.NET.Resources;
 using Funkin.NET.Screens;
@@ -19,7 +20,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Graphics.UserInterface;
 using osu.Framework.IO.Stores;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -198,7 +198,8 @@ namespace Funkin.NET
             LocalConfig = new FunkinConfigManager(Storage);
         }
 
-        protected virtual Container CreateScalingContainer() => new ScalingContainer(FunkinConfigManager.ScalingMode.Everything);
+        protected virtual Container CreateScalingContainer() =>
+            new ScalingContainer(FunkinConfigManager.ScalingMode.Everything);
 
         protected override void Dispose(bool isDisposing)
         {
@@ -255,7 +256,7 @@ namespace Funkin.NET
         private void Load()
         {
             // don't care about android lol!
-            using (FileStream hash = File.OpenRead(typeof(FunkinGame).Assembly.Location)) 
+            using (FileStream hash = File.OpenRead(typeof(FunkinGame).Assembly.Location))
                 VersionHash = hash.ComputeMD5Hash();
 
             Resources.AddStore(new DllResourceStore(ResourcesAssembly.Assembly));
