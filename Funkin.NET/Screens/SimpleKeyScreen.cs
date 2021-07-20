@@ -6,11 +6,12 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
+using osu.Framework.Input.Bindings;
 using osuTK;
 
 namespace Funkin.NET.Screens
 {
-    public class SimpleKeyScreen : MusicScreen
+    public class SimpleKeyScreen : MusicScreen, IKeyBindingHandler<ArrowKeyAction>
     {
         // TODO: handle input
         // TODO: draw characters
@@ -28,6 +29,11 @@ namespace Funkin.NET.Screens
         {
             Song = song;
             ExpectedBpm = Song.Bpm;
+        }
+
+        protected override void LoadComplete()
+        {
+            AddInternal(new ArrowKeyBindingContainer(Game));
         }
 
         protected override void Update()
@@ -68,6 +74,25 @@ namespace Funkin.NET.Screens
 
                 offset += 170;
             }
+        }
+
+        public bool OnPressed(ArrowKeyAction action)
+        {
+            int value = (int) action;
+            if (value >= _arrows.Length) return false;
+
+            _arrows[value].ArrowPressAnim.PlaybackPosition = 0;
+            _arrows[value].ArrowPressAnim.Show();
+
+            return true;
+        }
+
+        public void OnReleased(ArrowKeyAction action)
+        {
+            int value = (int) action;
+            if (value >= _arrows.Length) return;
+
+            _arrows[value].ArrowPressAnim.Hide();
         }
     }
 }

@@ -27,14 +27,14 @@ namespace Funkin.NET.Content.Elements.Composites
             {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
-                IsPlaying = false,
+                IsPlaying = true,
                 Loop = false
             };
             ArrowConfirmAnim = new TextureAnimation
             {
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
-                IsPlaying = false,
+                IsPlaying = true,
                 Loop = false
             };
         }
