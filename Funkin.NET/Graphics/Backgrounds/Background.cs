@@ -38,7 +38,7 @@ namespace Funkin.NET.Graphics.Backgrounds
         }
 
         [BackgroundDependencyLoader]
-        private void Load(LargeTextureStore textures)
+        private void Load(TextureStore textures)
         {
             if (!string.IsNullOrEmpty(_textureName))
                 Sprite.Texture = textures.Get(_textureName);

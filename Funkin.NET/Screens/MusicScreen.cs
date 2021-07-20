@@ -41,6 +41,9 @@ namespace Funkin.NET.Screens
 
         protected virtual void UpdateCurrentStep()
         {
+            if (Music is null)
+                return;
+
             MusicConductor.SongPosition = Music.CurrentTime;
 
             IBpmChange lastChange = new BpmChange(0, 0D, 0D);

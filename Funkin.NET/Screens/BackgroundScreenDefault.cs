@@ -2,6 +2,7 @@
 using Funkin.NET.Graphics.Backgrounds;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Screens;
 using osu.Framework.Threading;
 using osu.Framework.Utils;
 
@@ -18,19 +19,26 @@ namespace Funkin.NET.Screens
         private ScheduledDelegate _nextTask;
         private CancellationTokenSource _cancellationTokenSource;
 
-        protected virtual bool AllowStoryboardBackground => true;
-
         public BackgroundScreenDefault(bool animateOnEnter = true)
             : base(animateOnEnter)
         {
         }
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(FunkinGame game)
         {
             _currentDisplay = RNG.Next(0, BackgroundCount);
 
             Next();
+
+            game.OnScreenPushed += (_, _) => Next();
+        }
+
+        public override void OnEntering(IScreen last)
+        {
+            base.OnEntering(last);
+
+            Show();
         }
 
         /// <summary>
@@ -50,14 +58,14 @@ namespace Funkin.NET.Screens
 
             _nextTask?.Cancel();
             _nextTask = Scheduler.AddDelayed(
-                () => { LoadComponentAsync(nextBackground, DisplayNext, _cancellationTokenSource.Token); }, 100);
+                () => { LoadComponentAsync(nextBackground, DisplayNext, _cancellationTokenSource.Token); }, 100D);
 
             return true;
         }
 
         private void DisplayNext(Background newBackground)
         {
-            _background?.FadeOut(800D, Easing.InOutSine);
+            _background?.FadeOut(8000D, Easing.InOutSine);
             _background?.Expire();
 
             AddInternal(_background = newBackground);

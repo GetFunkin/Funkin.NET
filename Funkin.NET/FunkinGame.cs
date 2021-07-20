@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Funkin.NET.Configuration;
 using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.Cursor;
@@ -15,7 +14,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
 using osu.Framework.Extensions;
-using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
@@ -69,6 +67,8 @@ namespace Funkin.NET
         public MenuScreen MenuScreen { get; private set; }
 
         public FunnyTextScreen IntroScreen { get; private set; }
+
+        public ScreenChangedDelegate OnScreenPushed;
 
         public FunkinGame()
         {
@@ -169,6 +169,8 @@ namespace Funkin.NET
             _screenStack.ScreenPushed += ScreenPushed;
             _screenStack.ScreenExited += ScreenExited;
 
+            _screenStack.Push(new MenuScreen());
+
             /*_dependencies.CacheAs(_settings = new SettingsOverlay());
             LoadComponentAsync(_settings, _leftFloatingOverlayContent.Add, CancellationToken.None);
 
@@ -225,6 +227,8 @@ namespace Funkin.NET
 
         protected virtual void ScreenChanged(IScreen current, IScreen newScreen)
         {
+            OnScreenPushed?.Invoke(current, newScreen);
+
             switch (newScreen)
             {
                 case FunnyTextScreen funny:
@@ -264,11 +268,6 @@ namespace Funkin.NET
             Resources.AddStore(new DllResourceStore(ResourcesAssembly.Assembly));
 
             _dependencies.CacheAs(Storage);
-
-            LargeTextureStore largeStore = new(Host.CreateTextureLoaderStore(
-                new NamespacedResourceStore<byte[]>(Resources, "Textures")));
-            largeStore.AddStore(Host.CreateTextureLoaderStore(new DllResourceStore(ResourcesAssembly.Assembly)));
-            _dependencies.Cache(largeStore);
 
             _dependencies.CacheAs(this);
             _dependencies.CacheAs(LocalConfig);

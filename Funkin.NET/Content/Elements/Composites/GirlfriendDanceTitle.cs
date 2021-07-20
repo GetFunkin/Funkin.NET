@@ -16,21 +16,10 @@ namespace Funkin.NET.Content.Elements.Composites
 
         [Resolved] private TextureStore Textures { get; set; }
 
-        public void SwapAnimation()
+        protected override void LoadComplete()
         {
-            ClearInternal(false);
+            base.LoadComplete();
 
-            IsDancingLeft = !IsDancingLeft;
-
-            LeftAnim.GotoFrame(0);
-            RightAnim.GotoFrame(0);
-
-            AddInternal(IsDancingLeft ? LeftAnim : RightAnim);
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load()
-        {
             LeftAnim = new TextureAnimation
             {
                 Origin = Anchor.BottomLeft,
@@ -50,6 +39,21 @@ namespace Funkin.NET.Content.Elements.Composites
 
             foreach (int frame in RightFrames)
                 RightAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
+        }
+
+        public void SwapAnimation()
+        {
+            if (LeftAnim is null || RightAnim is null)
+                return;
+
+            ClearInternal(false);
+
+            IsDancingLeft = !IsDancingLeft;
+
+            LeftAnim.GotoFrame(0);
+            RightAnim.GotoFrame(0);
+
+            AddInternal(IsDancingLeft ? LeftAnim : RightAnim);
         }
     }
 }

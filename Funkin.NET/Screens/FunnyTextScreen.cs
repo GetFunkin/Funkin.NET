@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Funkin.NET.Content.Elements.Composites;
+using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings.SelectionKey;
 using JetBrains.Annotations;
 using osu.Framework.Allocation;
@@ -441,9 +442,9 @@ namespace Funkin.NET.Screens
             LogoAnimation = new LogoTitle
             {
                 Anchor = Anchor.Centre,
-                Position = new Vector2(-780f, 190f),
+                Position = new Vector2(-680f, 190f),
                 Origin = Anchor.Centre,
-                Scale = new Vector2(2f),
+                Scale = new Vector2(1.5f),
                 AlwaysPresent = true,
                 Alpha = 0f
             };

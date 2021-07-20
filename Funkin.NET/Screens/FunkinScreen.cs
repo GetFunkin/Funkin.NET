@@ -32,8 +32,6 @@ namespace Funkin.NET.Screens
 
         protected new FunkinGame Game => base.Game as FunkinGame;
 
-        protected virtual bool PlayResumeSound => true;
-
         public virtual float BackgroundParallaxAmount => 1;
 
         /// <summary>
@@ -100,6 +98,6 @@ namespace Funkin.NET.Screens
         ///     Override to create a BackgroundMode for the current screen. <br />
         ///     Note that the instance created may not be the used instance if it matches the BackgroundMode equality clause.
         /// </summary>
-        protected virtual BackgroundScreen CreateBackground() => null;
+        protected virtual BackgroundScreen CreateBackground() => new BackgroundScreenDefault();
     }
 }
