@@ -18,9 +18,9 @@ namespace Funkin.NET.Desktop
         /// </summary>
         public static void Main()
         {
-            // TESTING :)
-            // LegacySong song = LegacySong.FromJson("Json/Songs/test.json");
-            // _ = song;
+             // TESTING :)
+             //LegacySong song = LegacySong.FromJson("Json/Songs/test.json");
+             //_ = song;
 
             using GameHost host = Host.GetSuitableHost(SuitableHostName);
             using FunkinDesktop game = new();

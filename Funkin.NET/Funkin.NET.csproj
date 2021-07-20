@@ -20,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\Conductor\" />
+    <Folder Include="Conductor\" />
     <Folder Include="Content\Elements\Composites\" />
+    <Folder Include="Graphics\Sprites\" />
   </ItemGroup>
 
 </Project>

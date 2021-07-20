@@ -12,6 +12,7 @@
     <EmbeddedResource Include="Fonts\**\*.bmfc" />
     <EmbeddedResource Include="Fonts\**\*.fnt" />
     <EmbeddedResource Include="Fonts\**\*.png" />
+    <EmbeddedResource Include="Fonts\**\*.bin" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Textures\Cursor\osu-cursor-additive.png" />
+    <None Remove="Textures\Cursor\osu-cursor.png" />
     <None Remove="Textures\Icon.ico" />
     <None Remove="Textures\Title\gfDance0.png" />
     <None Remove="Textures\Title\gfDance1.png" />

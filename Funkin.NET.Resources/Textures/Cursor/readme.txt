@@ -1,0 +1,1 @@
+﻿osu!'s cursor textures. Temporarily used.
