@@ -30,7 +30,7 @@ namespace Funkin.NET.Conductor
 
         private static List<IBpmChange> _bpmChangeMap = new();
 
-        public static void MapBpmChanges(ISong song)
+        public static void MapBpmChanges(Song song)
         {
             _bpmChangeMap = new List<IBpmChange>();
 
@@ -38,12 +38,12 @@ namespace Funkin.NET.Conductor
             int totalSteps = 0;
             double totalPos = 0;
 
-            foreach (INote note in song.Notes)
+            foreach (Section note in song.Sections)
             {
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (note.ChangeBpm && note.Bpm != bpm)
+                if ((note.ChangeBpm ?? false) && note.Bpm != bpm)
                 {
-                    bpm = note.Bpm;
+                    bpm = note.Bpm ?? bpm;
                     _bpmChangeMap.Add(new BpmChange(totalSteps, totalPos, bpm));
                 }
 

@@ -4,7 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Funkin.NET.Core.Models
+namespace Funkin.NET.Songs
 {
     public class RootTrack
     {

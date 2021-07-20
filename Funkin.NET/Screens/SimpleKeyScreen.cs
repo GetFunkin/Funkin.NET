@@ -1,50 +1,49 @@
 ﻿using System;
-using Funkin.NET.Common.KeyBinds.ArrowKeys;
 using Funkin.NET.Content.Elements.Composites;
-using Funkin.NET.Core.BackgroundDependencyLoading;
-using Funkin.NET.Core.Models;
+using Funkin.NET.Input.Bindings.ArrowKeys;
+using Funkin.NET.Songs;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osuTK;
 
-namespace Funkin.NET.Content.Screens
+namespace Funkin.NET.Screens
 {
-    public class SimpleKeyScreen : MusicScreen, IBackgroundDependencyLoadable
+    public class SimpleKeyScreen : MusicScreen
     {
         // TODO: handle input
         // TODO: draw characters
         // TODO: draw enemy keys
         // TODO: draw all song keys
-        
+
         public override double ExpectedBpm { get; }
 
         public Song Song { get; }
 
         private ArrowKeyDrawable[] _arrows;
         private bool _initialized;
-        
-        public SimpleKeyScreen()
+
+        public SimpleKeyScreen(Song song)
         {
-            Song = Song.GetSongFromFile("Json/bopeebo/bopeebo.json");
+            Song = song;
             ExpectedBpm = Song.Bpm;
         }
 
         protected override void Update()
         {
-            if (!_initialized)
-            {
-                _initialized = true;
+            if (_initialized) return;
 
-                foreach (ArrowKeyDrawable drawable in _arrows) AddInternal(drawable);
-            }
+            _initialized = true;
+
+            foreach (ArrowKeyDrawable drawable in _arrows)
+                AddInternal(drawable);
         }
 
         [BackgroundDependencyLoader]
-        void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
+        private void Load(AudioManager audio)
         {
-            Music = new DrawableTrack(AudioManager.Tracks.Get(@"Bopeebo/Bopeebo_Inst.ogg"));
+            Music = new DrawableTrack(audio.Tracks.Get(@"Songs/Bopeebo/Bopeebo_Inst.ogg"));
             Music.Stop();
             Music.Looping = true;
             Music.Start();
@@ -61,7 +60,7 @@ namespace Funkin.NET.Content.Screens
                 _arrows[i] = new ArrowKeyDrawable(arrowKey)
                 {
                     Anchor = Anchor.Centre,
-                    Position = new Vector2(offset, -400),
+                    Position = new Vector2(offset, -200),
                     Origin = Anchor.Centre,
                     AlwaysPresent = true,
                     Alpha = 1f

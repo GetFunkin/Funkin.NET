@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using Funkin.NET.Configuration;
 using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.Cursor;
 using Funkin.NET.Resources;
 using Funkin.NET.Screens;
-using Newtonsoft.Json;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -17,7 +17,6 @@ using osu.Framework.Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -76,7 +75,7 @@ namespace Funkin.NET
 
             string path = Path.Combine("Json", "IntroText.json");
             string text = File.ReadAllText(path);
-            FunnyTextList = JsonConvert.DeserializeObject<List<string[]>>(text);
+            FunnyTextList = JsonSerializer.Deserialize<List<string[]>>(text);
             FunnyText = FunnyTextList?[new Random().Next(0, FunnyTextList.Count)];
         }
 
@@ -169,7 +168,7 @@ namespace Funkin.NET
             _screenStack.ScreenPushed += ScreenPushed;
             _screenStack.ScreenExited += ScreenExited;
 
-            _screenStack.Push(new MenuScreen());
+            _screenStack.Push(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro));
 
             /*_dependencies.CacheAs(_settings = new SettingsOverlay());
             LoadComponentAsync(_settings, _leftFloatingOverlayContent.Add, CancellationToken.None);

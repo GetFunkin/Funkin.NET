@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Funkin.NET.Common.KeyBinds.ArrowKeys;
+using Funkin.NET.Input.Bindings.ArrowKeys;
 
-namespace Funkin.NET.Core.Models
+namespace Funkin.NET.Songs
 {
-    internal class NoteConverter : JsonConverter<List<Note>>
+    public class NoteConverter : JsonConverter<List<Note>>
     {
         public override List<Note> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -23,7 +23,7 @@ namespace Funkin.NET.Core.Models
                 int offset = noteArray[0].GetInt32();
                 int key = noteArray[1].GetInt32();
                 int holdTime = noteArray[2].GetInt32();
-                notes.Add(new Note(offset, (ArrowKeyAction) key, holdTime));
+                notes.Add(new Note(offset, (ArrowKeyAction)key, holdTime));
             }
 
             return notes;

@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Conductor\" />
     <Folder Include="Content\Elements\Composites\" />
+    <Folder Include="Content\Screens\" />
     <Folder Include="Graphics\Containers\" />
     <Folder Include="Graphics\Backgrounds\" />
     <Folder Include="Graphics\Sprites\" />

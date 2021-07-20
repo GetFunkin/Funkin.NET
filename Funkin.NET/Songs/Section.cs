@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Funkin.NET.Core.Models
+namespace Funkin.NET.Songs
 {
     public class Section
     {
@@ -22,6 +22,6 @@ namespace Funkin.NET.Core.Models
         public int? Bpm { get; set; }
 
         [JsonPropertyName("changeBPM")]
-        public bool? ChangeBPM { get; set; }
+        public bool? ChangeBpm { get; set; }
     }
 }

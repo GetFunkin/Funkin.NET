@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
 
-namespace Funkin.NET.Core.Models
+namespace Funkin.NET.Songs
 {
     public class Song
     {
@@ -33,7 +33,7 @@ namespace Funkin.NET.Core.Models
 
         [JsonPropertyName("sections")]
         public int NumSections { get; set; }
-        
+
         public static Song GetSong(string json)
         {
             RootTrack track = RootTrack.GetTrack(json);
@@ -44,7 +44,7 @@ namespace Funkin.NET.Core.Models
         {
             if (!File.Exists(filePath))
                 throw new ArgumentException("File doesn't exist", nameof(filePath));
-            
+
             string json = File.ReadAllText(filePath);
             return RootTrack.GetTrack(json).Song;
         }

@@ -1,6 +1,5 @@
 ﻿using System;
-using Funkin.NET.Common.KeyBinds.ArrowKeys;
-using Funkin.NET.Core.BackgroundDependencyLoading;
+using Funkin.NET.Input.Bindings.ArrowKeys;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
@@ -10,12 +9,12 @@ using osu.Framework.Graphics.Textures;
 
 namespace Funkin.NET.Content.Elements.Composites
 {
-    public class ArrowKeyDrawable : CompositeDrawable, IBackgroundDependencyLoadable
+    public class ArrowKeyDrawable : CompositeDrawable
     {
         // Notes:
         // "x press" is for when you incorrectly press a key, or continue holding a key after key ends
         // "x confirm" is for when you correctly press a key, and continue holding while the key hasn't ended
-        
+
         public ArrowKeyDrawable(ArrowKeyAction arrowKey)
         {
             ArrowKey = arrowKey;
@@ -29,7 +28,7 @@ namespace Funkin.NET.Content.Elements.Composites
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre,
                 IsPlaying = false,
-                Loop = false 
+                Loop = false
             };
             ArrowConfirmAnim = new TextureAnimation
             {
@@ -45,13 +44,14 @@ namespace Funkin.NET.Content.Elements.Composites
         public Sprite ArrowIdleSprite { get; }
         public TextureAnimation ArrowPressAnim { get; }
         public TextureAnimation ArrowConfirmAnim { get; }
-        
-        
+
+
         [BackgroundDependencyLoader]
-        void IBackgroundDependencyLoadable.BackgroundDependencyLoad()
+        private void Load()
         {
-            string keyName = Enum.GetName(ArrowKey)?.ToUpperInvariant() ?? throw new ArgumentOutOfRangeException(nameof(ArrowKey));
-            
+            string keyName = Enum.GetName(ArrowKey)?.ToUpperInvariant() ??
+                             throw new ArgumentOutOfRangeException(nameof(ArrowKey));
+
             // Get the arrow texture
             string arrowName = keyName;
             string textureName = "Arrow/arrow" + arrowName;
@@ -63,12 +63,12 @@ namespace Funkin.NET.Content.Elements.Composites
                 ArrowPressAnim.AddFrame(Textures.Get($"Arrow/{keyName} press{i}"));
                 ArrowConfirmAnim.AddFrame(Textures.Get($"Arrow/{keyName} confirm{i}"));
             }
-            
+
             // Add the textures
             AddInternal(ArrowIdleSprite);
             AddInternal(ArrowPressAnim);
             AddInternal(ArrowConfirmAnim);
-            
+
             ArrowPressAnim.Hide();
             ArrowConfirmAnim.Hide();
         }

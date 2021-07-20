@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Input.Bindings.SelectionKey;
+using Funkin.NET.Songs;
 using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -87,7 +88,7 @@ namespace Funkin.NET.Screens
             if (IsEntering && ScreenFlashBang?.Alpha >= 1f)
             {
                 // TODO: fade-out music
-                this.Push(new SimpleKeyScreen());
+                this.Push(new SimpleKeyScreen(RootTrack.GetTrackFromFile("Json/Songs/bopeebo/bopeebo.json").Song));
 
                 Music.Stop();
             }
@@ -400,6 +401,7 @@ namespace Funkin.NET.Screens
                             IsEntering = true;
                             break;
                     }
+
                     break;
 
                 case TextDisplayType.Exit:
