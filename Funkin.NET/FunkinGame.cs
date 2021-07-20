@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Funkin.NET.Configuration;
 using Funkin.NET.Graphics.Cursor;
 using Funkin.NET.Resources;
+using Funkin.NET.Screens;
 using Newtonsoft.Json;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
+using osu.Framework.Configuration;
 using osu.Framework.Extensions;
+using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.IO.Stores;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
+using osu.Framework.Screens;
 
 namespace Funkin.NET
 {
@@ -56,6 +63,10 @@ namespace Funkin.NET
         private SettingsOverlay _settings;
         private readonly List<OverlayContainer> _overlays = new();
         private readonly List<OverlayContainer> _visibleBlockingOverlays = new();
+
+        public MenuScreen MenuScreen { get; private set; }
+
+        public FunnyTextScreen IntroScreen { get; private set; }
 
         public FunkinGame()
         {
@@ -101,6 +112,79 @@ namespace Funkin.NET
             _showFpsDisplay.TriggerChange();
 
             FrameStatistics.ValueChanged += x => _showFpsDisplay.Value = x.NewValue != FrameStatisticsMode.None;
+
+            // todo: localization
+
+            FunkinCursorContainer.CanShowCursor = MenuScreen?.CursorVisible ?? false;
+
+            // todo: implement osu!'s volume control receptor
+            AddRange(new Drawable[]
+            {
+                _screenOffsetContainer = new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+
+                    Children = new Drawable[]
+                    {
+                        _screenContainer = new ScalingContainer(FunkinConfigManager.ScalingMode.ExcludeOverlays)
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+
+                            Children = new Drawable[]
+                            {
+                                _screenStack = new FunkinScreenStack
+                                {
+                                    RelativeSizeAxes = Axes.Both
+                                }
+                            }
+                        }
+                    }
+                },
+
+                _overlayContent = new Container
+                {
+                    RelativeSizeAxes = Axes.Both
+                },
+
+                _rightFloatingOverlayContent = new Container
+                {
+                    RelativeSizeAxes = Axes.Both
+                },
+
+                _leftFloatingOverlayContent = new Container
+                {
+                    RelativeSizeAxes = Axes.Both
+                },
+
+                _topMostOverlayContent = new Container
+                {
+                    RelativeSizeAxes = Axes.Both
+                }
+            });
+
+            _screenStack.ScreenPushed += ScreenPushed;
+            _screenStack.ScreenExited += ScreenExited;
+
+            _dependencies.CacheAs(_settings = new SettingsOverlay());
+            LoadComponentAsync(_settings, _leftFloatingOverlayContent.Add, CancellationToken.None);
+
+            OverlayContainer[] singleDisplaySideOverlays =
+            {
+                _settings
+            };
+
+            foreach (OverlayContainer overlay in singleDisplaySideOverlays)
+            {
+                overlay.State.ValueChanged += x =>
+                {
+                    if (x.NewValue == Visibility.Hidden)
+                        return;
+
+                    singleDisplaySideOverlays.Where(y => y != x).ForEach(y => y.Hide());
+                };
+            }
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -114,13 +198,57 @@ namespace Funkin.NET
             LocalConfig = new FunkinConfigManager(Storage);
         }
 
-        protected virtual Container CreateScalingContainer() => new DrawSizePreservingFillContainer();
+        protected virtual Container CreateScalingContainer() => new ScalingContainer(FunkinConfigManager.ScalingMode.Everything);
 
         protected override void Dispose(bool isDisposing)
         {
             base.Dispose(isDisposing);
 
             LocalConfig?.Dispose();
+        }
+
+        protected override IDictionary<FrameworkSetting, object> GetFrameworkConfigDefaults() =>
+            new Dictionary<FrameworkSetting, object>
+            {
+                {FrameworkSetting.WindowMode, WindowMode.Fullscreen}
+            };
+
+        protected override void UpdateAfterChildren()
+        {
+            base.UpdateAfterChildren();
+
+            FunkinCursorContainer.CanShowCursor = (_screenStack.CurrentScreen as IFunkinScreen)?.CursorVisible ?? false;
+        }
+
+        protected virtual void ScreenChanged(IScreen current, IScreen newScreen)
+        {
+            switch (newScreen)
+            {
+                case FunnyTextScreen funny:
+                    if (funny.DisplayType == FunnyTextScreen.TextDisplayType.Intro)
+                        IntroScreen = funny;
+                    break;
+
+                case MenuScreen menu:
+                    MenuScreen = menu;
+                    break;
+            }
+        }
+
+        private void ScreenPushed(IScreen lastScreen, IScreen newScreen)
+        {
+            ScreenChanged(lastScreen, newScreen);
+            Logger.Log($"Screen changed → {newScreen}");
+        }
+
+        private void ScreenExited(IScreen lastScreen, IScreen newScreen)
+        {
+            ScreenChanged(lastScreen, newScreen);
+            Logger.Log($"Screen changed ← {newScreen}");
+
+            // todo: set to FunnyTextScreen exit edition
+            if (newScreen == null)
+                Exit();
         }
 
         [BackgroundDependencyLoader]
