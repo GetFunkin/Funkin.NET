@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\**\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\**\*.bmfc" />
+    <EmbeddedResource Include="Fonts\**\*.fnt" />
+    <EmbeddedResource Include="Fonts\**\*.png" />
+    <EmbeddedResource Include="Fonts\**\*.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Tracks\**\*.ogg" />
+    <EmbeddedResource Include="Tracks\**\*.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Json\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Textures\Cursor\osu-cursor-additive.png" />
+    <None Remove="Textures\Cursor\osu-cursor.png" />
+    <None Remove="Textures\Icon.ico" />
+    <None Remove="Textures\Title\gfDance0.png" />
+    <None Remove="Textures\Title\gfDance1.png" />
+    <None Remove="Textures\Title\gfDance10.png" />
+    <None Remove="Textures\Title\gfDance11.png" />
+    <None Remove="Textures\Title\gfDance12.png" />
+    <None Remove="Textures\Title\gfDance13.png" />
+    <None Remove="Textures\Title\gfDance14.png" />
+    <None Remove="Textures\Title\gfDance15.png" />
+    <None Remove="Textures\Title\gfDance16.png" />
+    <None Remove="Textures\Title\gfDance17.png" />
+    <None Remove="Textures\Title\gfDance18.png" />
+    <None Remove="Textures\Title\gfDance19.png" />
+    <None Remove="Textures\Title\gfDance2.png" />
+    <None Remove="Textures\Title\gfDance20.png" />
+    <None Remove="Textures\Title\gfDance21.png" />
+    <None Remove="Textures\Title\gfDance22.png" />
+    <None Remove="Textures\Title\gfDance23.png" />
+    <None Remove="Textures\Title\gfDance24.png" />
+    <None Remove="Textures\Title\gfDance25.png" />
+    <None Remove="Textures\Title\gfDance26.png" />
+    <None Remove="Textures\Title\gfDance27.png" />
+    <None Remove="Textures\Title\gfDance28.png" />
+    <None Remove="Textures\Title\gfDance29.png" />
+    <None Remove="Textures\Title\gfDance3.png" />
+    <None Remove="Textures\Title\gfDance4.png" />
+    <None Remove="Textures\Title\gfDance5.png" />
+    <None Remove="Textures\Title\gfDance6.png" />
+    <None Remove="Textures\Title\gfDance7.png" />
+    <None Remove="Textures\Title\gfDance8.png" />
+    <None Remove="Textures\Title\gfDance9.png" />
+    <None Remove="Textures\Title\logo bumpin0.png" />
+    <None Remove="Textures\Title\logo bumpin1.png" />
+    <None Remove="Textures\Title\logo bumpin10.png" />
+    <None Remove="Textures\Title\logo bumpin11.png" />
+    <None Remove="Textures\Title\logo bumpin12.png" />
+    <None Remove="Textures\Title\logo bumpin13.png" />
+    <None Remove="Textures\Title\logo bumpin14.png" />
+    <None Remove="Textures\Title\logo bumpin2.png" />
+    <None Remove="Textures\Title\logo bumpin3.png" />
+    <None Remove="Textures\Title\logo bumpin4.png" />
+    <None Remove="Textures\Title\logo bumpin5.png" />
+    <None Remove="Textures\Title\logo bumpin6.png" />
+    <None Remove="Textures\Title\logo bumpin7.png" />
+    <None Remove="Textures\Title\logo bumpin8.png" />
+    <None Remove="Textures\Title\logo bumpin9.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Textures\Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tracks\Songs\" />
+  </ItemGroup>
+
+</Project>

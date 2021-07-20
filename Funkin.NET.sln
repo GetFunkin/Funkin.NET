@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Funkin.NET.sln.DotSettings = Funkin.NET.sln.DotSettings
 		README.md = README.md
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET.Resources", "Funkin.NET.Resources\Funkin.NET.Resources.csproj", "{56C68E90-0E74-4719-AF6A-190834F277F1}"
