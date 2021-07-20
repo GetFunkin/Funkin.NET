@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Funkin.NET.Content.Elements.Composites;
+using Funkin.NET.Graphics;
+using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings.SelectionKey;
 using Funkin.NET.Songs;
 using JetBrains.Annotations;
@@ -39,6 +41,7 @@ namespace Funkin.NET.Screens
         public bool IsEntering;
         public double TimeOnEntering = TimeSpan.Zero.Milliseconds;
         public bool WasIntroFinishedThisCycle;
+        public FunkinSpriteText[] Text = new FunkinSpriteText[3];
 
         public FunnyTextScreen(TextDisplayType displayType)
         {
@@ -105,33 +108,16 @@ namespace Funkin.NET.Screens
             Music.Volume.Value += 0.0025D;
         }
 
-        protected void AddText(string text, float positionOffset)
+        protected void SetText(string text, int index)
         {
-            if (AddedText.Contains(text))
-                return;
-
-            AddedText.Add(text);
-
-            FontUsage fontUsage = new("Funkin", 40f);
-
-            SpriteText spriteText = new()
-            {
-                Anchor = Anchor.Centre,
-                RelativeAnchorPosition = Size / 2f,
-                Text = text,
-                Font = fontUsage,
-                Position = new Vector2(0f, positionOffset),
-                Origin = Anchor.Centre
-            };
-
-            AddInternal(spriteText);
+            Text[index].Text = text;
+            Text[index].Position = new Vector2(0f, -80f + index * 40f);
         }
 
         protected void Clear()
         {
-            AddedText.Clear();
-            ClearInternal();
-            InitializeInternals();
+            foreach (FunkinSpriteText text in Text)
+                text.Text = "";
         }
 
         protected void UpdateTextDisplay()
@@ -142,11 +128,11 @@ namespace Funkin.NET.Screens
                     switch (CurrentBeat)
                     {
                         case 1D:
-                            AddText("TOMAT", -80f);
+                            SetText("TOMAT", 0);
                             break;
 
                         case 3D:
-                            AddText("PRESENTS", -40f);
+                            SetText("PRESENTS", 1);
                             break;
 
                         case 4D:
@@ -154,11 +140,11 @@ namespace Funkin.NET.Screens
                             break;
 
                         case 5D:
-                            AddText("UNASSOCIATED WITH", -80f);
+                            SetText("UNASSOCIATED WITH", 0);
                             break;
 
                         case 7D:
-                            AddText("NEWGROUNDS", -40f);
+                            SetText("NEWGROUNDS", 1);
                             break;
 
                         case 8D:
@@ -166,11 +152,11 @@ namespace Funkin.NET.Screens
                             break;
 
                         case 9D:
-                            AddText(FunkinGame.FunnyText[0].ToUpper(), -80f);
+                            SetText(FunkinGame.FunnyText[0].ToUpper(), 0);
                             break;
 
                         case 11D:
-                            AddText(FunkinGame.FunnyText[1].ToUpper(), -40f);
+                            SetText(FunkinGame.FunnyText[1].ToUpper(), 1);
                             break;
 
                         case 12D:
@@ -178,15 +164,15 @@ namespace Funkin.NET.Screens
                             break;
 
                         case 13D:
-                            AddText("FRIDAY", -80f);
+                            SetText("FRIDAY", 0);
                             break;
 
                         case 14D:
-                            AddText("NIGHT", -40f);
+                            SetText("NIGHT", 1);
                             break;
 
                         case 15D:
-                            AddText("FUNKIN'", 0f);
+                            SetText("FUNKIN'", 2);
                             break;
 
                         case 16D:
@@ -202,11 +188,11 @@ namespace Funkin.NET.Screens
                     switch (CurrentBeat)
                     {
                         case 1D:
-                            AddText("THANKS FOR", -80f);
+                            SetText("THANKS FOR", 0);
                             break;
 
                         case 3D:
-                            AddText("PLAYING", -40f);
+                            SetText("PLAYING", 1);
                             break;
 
                         case 4D:
@@ -214,11 +200,11 @@ namespace Funkin.NET.Screens
                             break;
 
                         case 5D:
-                            AddText("SEE YOU", -80f);
+                            SetText("SEE YOU", 0);
                             break;
 
                         case 7D:
-                            AddText("LATER", -40f);
+                            SetText("LATER", 1);
                             break;
 
                         case 8D:
@@ -226,11 +212,11 @@ namespace Funkin.NET.Screens
                             break;
 
                         case 9D:
-                            AddText(FunkinGame.FunnyText[0].ToUpper(), -80f);
+                            SetText(FunkinGame.FunnyText[0].ToUpper(), 0);
                             break;
 
                         case 11D:
-                            AddText(FunkinGame.FunnyText[1].ToUpper(), -40f);
+                            SetText(FunkinGame.FunnyText[1].ToUpper(), 1);
                             break;
 
                         case 12D:
@@ -391,7 +377,7 @@ namespace Funkin.NET.Screens
                     switch (IsQuirkyIntroFinished)
                     {
                         case false:
-                            ClearInternal();
+                            Clear();
                             IsEntering = false;
                             IsQuirkyIntroFinished = true;
                             WasIntroFinishedThisCycle = true;
@@ -455,6 +441,30 @@ namespace Funkin.NET.Screens
                 AlwaysPresent = true,
                 Alpha = 0f
             };
+
+            AddInternal(Text[0] = new FunkinSpriteText
+            {
+                Anchor = Anchor.Centre,
+                RelativeAnchorPosition = Size / 2f,
+                Font = FunkinFont.Funkin.With(size: 40f),
+                Origin = Anchor.Centre
+            });
+
+            AddInternal(Text[1] = new FunkinSpriteText
+            {
+                Anchor = Anchor.Centre,
+                RelativeAnchorPosition = Size / 2f,
+                Font = FunkinFont.Funkin.With(size: 40f),
+                Origin = Anchor.Centre
+            });
+
+            AddInternal(Text[2] = new FunkinSpriteText
+            {
+                Anchor = Anchor.Centre,
+                RelativeAnchorPosition = Size / 2f,
+                Font = FunkinFont.Funkin.With(size: 40f),
+                Origin = Anchor.Centre
+            });
         }
     }
 }
