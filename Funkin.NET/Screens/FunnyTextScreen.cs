@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Funkin.NET.Content.Elements.Composites;
-using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings.SelectionKey;
 using JetBrains.Annotations;
 using osu.Framework.Allocation;
@@ -11,6 +10,7 @@ using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
+using osu.Framework.Screens;
 using osuTK;
 
 namespace Funkin.NET.Screens
@@ -84,8 +84,13 @@ namespace Funkin.NET.Screens
             if (IsEntering && TimeOnEntering == TimeSpan.Zero.Milliseconds)
                 TimeOnEntering = Clock.CurrentTime;
 
-            //if (IsEntering && ScreenFlashBang?.Alpha >= 1f)
-            //   ; // todo: move to next screen
+            if (IsEntering && ScreenFlashBang?.Alpha >= 1f)
+            {
+                // TODO: fade-out music
+                this.Push(new SimpleKeyScreen());
+
+                Music.Stop();
+            }
         }
 
         protected void UpdateMenuSongVolume()

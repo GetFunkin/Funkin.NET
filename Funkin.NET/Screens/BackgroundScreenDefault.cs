@@ -34,15 +34,8 @@ namespace Funkin.NET.Screens
             game.OnScreenPushed += (_, _) => Next();
         }
 
-        public override void OnEntering(IScreen last)
-        {
-            base.OnEntering(last);
-
-            Show();
-        }
-
         /// <summary>
-        /// Request loading the next background.
+        ///     Request loading the next background.
         /// </summary>
         /// <returns>Whether a new background was queued for load. May return false if the current background is still valid.</returns>
         public bool Next()

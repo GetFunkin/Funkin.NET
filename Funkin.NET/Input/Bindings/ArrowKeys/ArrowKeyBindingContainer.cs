@@ -19,11 +19,11 @@ namespace Funkin.NET.Input.Bindings.ArrowKeys
             new KeyBinding(new[] {InputKey.Left}, ArrowKeyAction.Left),
             new KeyBinding(new[] {InputKey.Down}, ArrowKeyAction.Down),
             new KeyBinding(new[] {InputKey.Up}, ArrowKeyAction.Up),
-            new KeyBinding(new[] {InputKey.Down}, ArrowKeyAction.Down),
+            new KeyBinding(new[] {InputKey.Right}, ArrowKeyAction.Right),
             new KeyBinding(new[] {InputKey.D}, ArrowKeyAction.Left),
             new KeyBinding(new[] {InputKey.F}, ArrowKeyAction.Down),
             new KeyBinding(new[] {InputKey.J}, ArrowKeyAction.Up),
-            new KeyBinding(new[] {InputKey.K}, ArrowKeyAction.Down)
+            new KeyBinding(new[] {InputKey.K}, ArrowKeyAction.Right)
         };
     }
 }

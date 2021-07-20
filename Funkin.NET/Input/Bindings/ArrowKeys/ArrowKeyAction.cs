@@ -7,18 +7,18 @@
     {
         /// <summary>
         /// </summary>
-        Up,
+        Up = 2,
 
         /// <summary>
         /// </summary>
-        Down,
+        Down = 1,
 
         /// <summary>
         /// </summary>
-        Left,
+        Left = 0,
 
         /// <summary>
         /// </summary>
-        Right
+        Right = 3
     }
 }
