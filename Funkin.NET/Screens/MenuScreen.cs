@@ -1,9 +1,7 @@
-﻿using osu.Framework.Screens;
-
-namespace Funkin.NET.Screens
+﻿namespace Funkin.NET.Screens
 {
-    public class MenuScreen : Screen
+    public class MenuScreen : MusicScreen
     {
-        
+        public override double ExpectedBpm => 1D;
     }
 }

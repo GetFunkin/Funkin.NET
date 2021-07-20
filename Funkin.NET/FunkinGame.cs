@@ -59,8 +59,10 @@ namespace Funkin.NET
         private Container _topMostOverlayContent;
         private ScalingContainer _screenContainer;
         private Container _screenOffsetContainer;
+
         private FunkinScreenStack _screenStack;
-        private SettingsOverlay _settings;
+
+        // TODO: private SettingsOverlay _settings;
         private readonly List<OverlayContainer> _overlays = new();
         private readonly List<OverlayContainer> _visibleBlockingOverlays = new();
 
@@ -167,7 +169,7 @@ namespace Funkin.NET
             _screenStack.ScreenPushed += ScreenPushed;
             _screenStack.ScreenExited += ScreenExited;
 
-            _dependencies.CacheAs(_settings = new SettingsOverlay());
+            /*_dependencies.CacheAs(_settings = new SettingsOverlay());
             LoadComponentAsync(_settings, _leftFloatingOverlayContent.Add, CancellationToken.None);
 
             OverlayContainer[] singleDisplaySideOverlays =
@@ -184,7 +186,7 @@ namespace Funkin.NET
 
                     singleDisplaySideOverlays.Where(y => y != x).ForEach(y => y.Hide());
                 };
-            }
+            }*/
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>

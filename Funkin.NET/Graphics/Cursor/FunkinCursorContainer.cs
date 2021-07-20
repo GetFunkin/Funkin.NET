@@ -20,7 +20,7 @@ namespace Funkin.NET.Graphics.Cursor
         /// <summary>
         ///     Whether any cursors can be displayed.
         /// </summary>
-        public virtual bool CanShowCursor => true;
+        public virtual bool CanShowCursor { get; set; } = true;
 
         public CursorContainer Cursor { get; }
 

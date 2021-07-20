@@ -9,7 +9,7 @@ namespace Funkin.NET.Screens
     /// <summary>
     ///     Music-playing screen.
     /// </summary>
-    public abstract class MusicScreen : Screen
+    public abstract class MusicScreen : FunkinScreen
     {
         public abstract double ExpectedBpm { get; }
 
