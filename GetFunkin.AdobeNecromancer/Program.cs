@@ -80,50 +80,46 @@ namespace GetFunkin.AdobeNecromancer
 
             Console.WriteLine($"Opening associated image file ({imageName})...");
 
-            using (Image png = Image.FromFile(Path.Combine(directory ?? "", imageName ?? "")))
+            using Image png = Image.FromFile(Path.Combine(directory ?? "", imageName ?? ""));
+            Console.WriteLine("Generating output directory...");
+            DirectoryInfo outputDir = Directory.CreateDirectory(Path.Combine(directory ?? "", "Output"));
+            Console.WriteLine($"Output directory generated at: {outputDir.FullName}");
+
+            Console.WriteLine("Cutting up textures based on texture data...");
+
+            // partial implementation of
+            // https://github.com/HaxeFlixel/flixel/blob/dev/flixel/graphics/frames/FlxAtlasFrames.hx#L252
+            // in c#
+            foreach (SubTexture texture in textures)
             {
-                Console.WriteLine("Generating output directory...");
-                DirectoryInfo outputDir = Directory.CreateDirectory(Path.Combine(directory ?? "", "Output"));
-                Console.WriteLine($"Output directory generated at: {outputDir.FullName}");
+                // TODO: implement rotated, flipX, and flipY
+                bool trimmed = texture.FrameX != 0;
+                Rectangle frame = new(texture.X, texture.Y, texture.Width, texture.Height);
+                Rectangle size = trimmed
+                    ? new Rectangle(texture.FrameX, texture.FrameY, texture.FrameWidth, texture.FrameHeight)
+                    : new Rectangle(0, 0, frame.Width, frame.Height);
+                Point offset = new(-size.Left, -size.Top);
 
-                Console.WriteLine("Cutting up textures based on texture data...");
+                using Bitmap bitmap = new(png);
+                Rectangle crop = new(frame.X, frame.Y, frame.Width, frame.Height);
 
-                // partial implementation of
-                // https://github.com/HaxeFlixel/flixel/blob/dev/flixel/graphics/frames/FlxAtlasFrames.hx#L252
-                // in c#
-                foreach (SubTexture texture in textures)
+                if (crop.X < 0)
+                    crop.X = 0;
+
+                if (crop.Y < 0)
+                    crop.Y = 0;
+
+                Console.WriteLine($"Cropping frame: {texture.Name}, cropX: {crop.X}, cropY: {crop.Y}, " +
+                                  $"width: {crop.Width}, height: {crop.Height}, " +
+                                  $"originalX: {frame.X}, originalY: {frame.Y}");
+
+                try
                 {
-                    // TODO: implement rotated, flipX, and flipY
-                    bool trimmed = texture.FrameX != 0;
-                    Rectangle frame = new(texture.X, texture.Y, texture.Width, texture.Height);
-                    Rectangle size = trimmed
-                        ? new Rectangle(texture.FrameX, texture.FrameY, texture.FrameWidth, texture.FrameHeight)
-                        : new Rectangle(0, 0, frame.Width, frame.Height);
-                    Point offset = new(-size.Left, -size.Top);
-
-                    using (Bitmap bitmap = new(png))
-                    {
-                        Rectangle crop = new(frame.X, frame.Y, frame.Width, frame.Height);
-
-                        if (crop.X < 0)
-                            crop.X = 0;
-
-                        if (crop.Y < 0)
-                            crop.Y = 0;
-
-                        Console.WriteLine($"Cropping frame: {texture.Name}, cropX: {crop.X}, cropY: {crop.Y}, " +
-                                          $"width: {crop.Width}, height: {crop.Height}, " +
-                                          $"originalX: {frame.X}, originalY: {frame.Y}");
-
-                        try
-                        {
-                            bitmap.Clone(crop, bitmap.PixelFormat).Save(Path.Combine(outputDir.FullName, $"{texture.Name}.png"));
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Exception thrown while cropping and saving \"{texture.Name}\": {e}");
-                        }
-                    }
+                    bitmap.Clone(crop, bitmap.PixelFormat).Save(Path.Combine(outputDir.FullName, $"{texture.Name}.png"));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Exception thrown while cropping and saving \"{texture.Name}\": {e}");
                 }
             }
         }

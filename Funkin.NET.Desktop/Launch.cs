@@ -1,4 +1,7 @@
-﻿namespace Funkin.NET.Desktop
+﻿using osu.Framework;
+using osu.Framework.Platform;
+
+namespace Funkin.NET.Desktop
 {
     /// <summary>
     ///     Entry-point class.
@@ -6,21 +9,22 @@
     public static class Launch
     {
         /// <summary>
-        ///     Host name used to get a suitable host (<see cref="osu.Framework.Host.GetSuitableHost"/>
+        ///     Host name used to get a suitable host (<see cref="Host.GetSuitableHost"/>
         /// </summary>
         public const string SuitableHostName = "funkin.net";
 
         /// <summary>
-        ///     Entry-point method, runs the game with a <see cref="osu.Framework.Host"/> instance.
+        ///     Entry-point method, runs the game with a <see cref="Host"/> instance.
         /// </summary>
         public static void Main()
         {
-            using osu.Framework.Platform.GameHost host = osu.Framework.Host.GetSuitableHost(SuitableHostName);
-            FunkinGame.RunningHost = host;
+             // TESTING :)
+             //LegacySong song = LegacySong.FromJson("Json/Songs/test.json");
+             //_ = song;
 
-            using FunkinGame game = new();
-            FunkinGame.RunningGame = game;
-            FunkinGame.RunningHost.Run(FunkinGame.RunningGame);
+            using GameHost host = Host.GetSuitableHost(SuitableHostName);
+            using FunkinDesktop game = new();
+            host.Run(game);
         }
     }
 }
