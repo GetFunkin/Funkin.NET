@@ -48,18 +48,6 @@ namespace Funkin.NET.Screens
             DisplayType = displayType;
         }
 
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-
-            InitializeInternals();
-        }
-
-        public void InitializeInternals()
-        {
-            AddInternal(new SelectionKeyBindingContainer(Game));
-        }
-
         protected override void Update()
         {
             base.Update();
@@ -465,6 +453,8 @@ namespace Funkin.NET.Screens
                 Font = FunkinFont.Funkin.With(size: 40f),
                 Origin = Anchor.Centre
             });
+
+            AddInternal(new SelectionKeyBindingContainer(Game));
         }
     }
 }
