@@ -434,8 +434,8 @@ namespace Funkin.NET.Screens
 
             LogoAnimation = new LogoTitle
             {
-                Anchor = Anchor.Centre,
-                Position = new Vector2(-680f, 190f),
+                Anchor = Anchor.CentreLeft,
+                Position = new Vector2(80f, 190f),
                 Origin = Anchor.Centre,
                 Scale = new Vector2(1.5f),
                 AlwaysPresent = true,
