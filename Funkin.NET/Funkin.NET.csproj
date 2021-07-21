@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Content\Screens\**" />
+    <EmbeddedResource Remove="Content\Screens\**" />
+    <None Remove="Content\Screens\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MonoMod.RuntimeDetour" Version="21.7.8.3" />
     <PackageReference Include="ppy.osu.Framework" Version="2021.714.0" />
   </ItemGroup>
@@ -22,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Conductor\" />
     <Folder Include="Content\Elements\Composites\" />
-    <Folder Include="Content\Screens\" />
     <Folder Include="Graphics\Containers\" />
     <Folder Include="Graphics\Backgrounds\" />
     <Folder Include="Graphics\Sprites\" />

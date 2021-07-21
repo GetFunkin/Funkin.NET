@@ -2,6 +2,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.Transforms;
@@ -18,14 +19,14 @@ namespace Funkin.NET.Graphics.Backgrounds
     {
         private const float BlurScale = 0.5f;
 
-        public readonly Sprite Sprite;
+        public Sprite Sprite;
+        public readonly string SpriteName;
 
-        private readonly string _textureName;
         private BufferedContainer _bufferedContainer;
 
         public Background(string textureName = @"")
         {
-            _textureName = textureName;
+            SpriteName = textureName;
             RelativeSizeAxes = Axes.Both;
 
             AddInternal(Sprite = new Sprite
@@ -33,15 +34,14 @@ namespace Funkin.NET.Graphics.Backgrounds
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                FillMode = FillMode.Fill,
+                FillMode = FillMode.Fill
             });
         }
 
         [BackgroundDependencyLoader]
         private void Load(TextureStore textures)
         {
-            if (!string.IsNullOrEmpty(_textureName))
-                Sprite.Texture = textures.Get(_textureName);
+            Sprite.Texture = textures.Get(SpriteName);
         }
 
         public Vector2 BlurSigma => _bufferedContainer?.BlurSigma / BlurScale ?? Vector2.Zero;
@@ -78,7 +78,7 @@ namespace Funkin.NET.Graphics.Backgrounds
             if (ReferenceEquals(this, other)) return true;
 
             return other.GetType() == GetType()
-                   && other._textureName == _textureName;
+                   && other.SpriteName == SpriteName;
         }
     }
 }

@@ -134,8 +134,8 @@ namespace Funkin.NET.Graphics.Containers
             if (requiresMasking)
                 _sizableContainer.Masking = true;
 
-            _sizableContainer.MoveTo(targetPosition, 500, Easing.OutQuart);
-            _sizableContainer.ResizeTo(targetSize, 500, Easing.OutQuart).OnComplete(_ =>
+            _sizableContainer.MoveTo(targetPosition, 500D, Easing.OutQuart);
+            _sizableContainer.ResizeTo(targetSize, 500D, Easing.OutQuart).OnComplete(_ =>
             {
                 _sizableContainer.Masking = requiresMasking;
             });
@@ -165,8 +165,8 @@ namespace Funkin.NET.Graphics.Containers
 
             private void ScaleChanged(ValueChangedEvent<float> args)
             {
-                this.ScaleTo(new Vector2(args.NewValue), 500, Easing.Out);
-                this.ResizeTo(new Vector2(1f / args.NewValue), 500, Easing.Out);
+                this.ScaleTo(new Vector2(args.NewValue), 500D, Easing.Out);
+                this.ResizeTo(new Vector2(1f / args.NewValue), 500D, Easing.Out);
             }
         }
 
