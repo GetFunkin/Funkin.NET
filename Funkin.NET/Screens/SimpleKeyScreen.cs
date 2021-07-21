@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Input.Bindings.ArrowKeys;
 using Funkin.NET.Songs;
@@ -17,6 +18,16 @@ namespace Funkin.NET.Screens
         // TODO: draw characters
         // TODO: draw enemy keys
         // TODO: draw all song keys
+        // TODO: single sprite for all arrows, recolor/rotate with code
+
+        /* Notes:
+         * Start music some time later
+         * Music.CurrentTime can be used to get current time in ms
+         * spawn arrows some time before, like 2 sec maybe
+         * when Music.CurrentTime matches arrow offset time, it should be at the arrow sprite position
+         */
+
+        private const int NumberOfSectionsToGenerateAhead = 4;
 
         public override double ExpectedBpm { get; }
 
@@ -24,11 +35,15 @@ namespace Funkin.NET.Screens
 
         private ArrowKeyDrawable[] _arrows;
         private bool _initialized;
+        private LinkedList<ScrollingArrowDrawable[]> _notesAhead;
+        private IEnumerator<Section> _sectionEnumerator;
 
         public SimpleKeyScreen(Song song)
         {
             Song = song;
             ExpectedBpm = Song.Bpm;
+            _notesAhead = new LinkedList<ScrollingArrowDrawable[]>();
+            _sectionEnumerator = Song.Sections.GetEnumerator();
         }
 
         protected override void LoadComplete()
@@ -38,12 +53,9 @@ namespace Funkin.NET.Screens
 
         protected override void Update()
         {
-            if (_initialized) return;
+            base.Update();
 
-            _initialized = true;
-
-            foreach (ArrowKeyDrawable drawable in _arrows)
-                AddInternal(drawable);
+            if (!_initialized) Initialize();
         }
 
         [BackgroundDependencyLoader]
@@ -51,9 +63,13 @@ namespace Funkin.NET.Screens
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Songs/Bopeebo/Bopeebo_Inst.ogg"));
             Music.Stop();
-            Music.Looping = true;
-            Music.Start();
-            Music.VolumeTo(1D);
+            Music.Looping = false;
+
+            Scheduler.AddDelayed(() =>
+            {
+                Music.Start();
+                Music.VolumeTo(1D);
+            }, 5 * 1000); // Start music in 5 seconds
 
             ArrowKeyAction[] arrowValues = Enum.GetValues<ArrowKeyAction>();
             _arrows = new ArrowKeyDrawable[arrowValues.Length];
@@ -93,6 +109,37 @@ namespace Funkin.NET.Screens
             if (value >= _arrows.Length) return;
 
             _arrows[value].ArrowPressAnim.Hide();
+        }
+        
+        private void Initialize()
+        {
+            _initialized = true;
+
+            foreach (ArrowKeyDrawable drawable in _arrows)
+                AddInternal(drawable);
+            
+            FillNotes();
+        }
+
+        private void FillNotes()
+        {
+            while (_notesAhead.Count != NumberOfSectionsToGenerateAhead)
+            {
+                if (!_sectionEnumerator.MoveNext()) break;
+                
+                Section section = _sectionEnumerator.Current;
+                if (section is null) continue;
+
+                ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[section.SectionNotes.Count];
+                for (int i = 0; i < section.SectionNotes.Count; i++)
+                {
+                    Note note = section.SectionNotes[i];
+                    arrows[i] = new ScrollingArrowDrawable(note, !section.MustHitSection);
+                    AddInternal(arrows[i]);
+                }
+
+                _notesAhead.AddLast(arrows);
+            }
         }
     }
 }
