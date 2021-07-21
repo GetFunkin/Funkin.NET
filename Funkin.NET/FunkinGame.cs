@@ -168,7 +168,7 @@ namespace Funkin.NET
             _screenStack.ScreenPushed += ScreenPushed;
             _screenStack.ScreenExited += ScreenExited;
 
-            _screenStack.Push(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro));
+            _screenStack.Push(new StartupIntroductionScreen(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro)));
 
             /*_dependencies.CacheAs(_settings = new SettingsOverlay());
             LoadComponentAsync(_settings, _leftFloatingOverlayContent.Add, CancellationToken.None);

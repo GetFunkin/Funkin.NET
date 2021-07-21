@@ -69,6 +69,7 @@ namespace Funkin.NET.Graphics.Cursor
             private Bindable<float> _cursorScale;
             private Sprite _cursorDown;
             private TextureAnimation _cursorAnimation;
+            private bool _mouseState;
 
             public const float BaseScale = 0.85f;
 
@@ -86,7 +87,6 @@ namespace Funkin.NET.Graphics.Cursor
                     Texture = textures.Get("Cursor/arrow click"),
                     AlwaysPresent = true
                 };
-                _cursorDown.Hide();
 
                 _cursorAnimation = new TextureAnimation
                 {
@@ -119,23 +119,21 @@ namespace Funkin.NET.Graphics.Cursor
             {
                 base.Update();
 
-                _cursorAnimation.Alpha = _cursorDown.Alpha = Alpha;
-            }
-
-            public void SetState(bool heldDown)
-            {
-                if (heldDown)
+                if (_mouseState)
                 {
-                    _cursorDown.Show();
-                    _cursorAnimation.Hide();
+                    _cursorDown.Alpha = Alpha;
+                    _cursorAnimation.Alpha = 0;
                 }
                 else
                 {
-                    _cursorDown.Hide();
-                    _cursorAnimation.Show();
-                    _cursorAnimation.GotoAndPlay(0);
-                    _cursorAnimation.Loop = true;
+                    _cursorDown.Alpha = 0;
+                    _cursorAnimation.Alpha = Alpha;
                 }
+            }
+
+            public virtual void SetState(bool heldDown)
+            {
+                _mouseState = heldDown;
             }
         }
     }

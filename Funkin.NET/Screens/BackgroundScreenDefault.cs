@@ -15,7 +15,7 @@ namespace Funkin.NET.Screens
     {
         private Background _background;
         private int _currentDisplay;
-        private const int BackgroundCount = 4;
+        private const int BackgroundCount = 3;
         private ScheduledDelegate _nextTask;
         private CancellationTokenSource _cancellationTokenSource;
 

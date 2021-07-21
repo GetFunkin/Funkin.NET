@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
@@ -12,6 +11,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Screens;
 using osuTK;
@@ -31,7 +32,6 @@ namespace Funkin.NET.Screens
         public virtual TextDisplayType DisplayType { get; }
 
         public double LastUpdatedTime;
-        public readonly List<string> AddedText = new();
         public bool IsQuirkyIntroFinished;
         public bool IsEnterPromptInitialized;
         public GirlfriendDanceTitle GirlfriendAnimation;
@@ -42,6 +42,7 @@ namespace Funkin.NET.Screens
         public double TimeOnEntering = TimeSpan.Zero.Milliseconds;
         public bool WasIntroFinishedThisCycle;
         public FunkinSpriteText[] Text = new FunkinSpriteText[3];
+        public DrawableSample ConfirmSample;
 
         public FunnyTextScreen(TextDisplayType displayType)
         {
@@ -89,11 +90,12 @@ namespace Funkin.NET.Screens
         {
             TimeSpan time = TimeSpan.FromMilliseconds(Clock.CurrentTime - LastUpdatedTime);
 
-            if (!(Music.Volume.Value < 1D) || time.Milliseconds < 100D)
+            if (!(DisplayType == TextDisplayType.Intro && Music.Volume.Value < 1D ||
+                  DisplayType == TextDisplayType.Exit && Music.Volume.Value < 0D) || time.Milliseconds < 100D)
                 return;
 
             LastUpdatedTime = Clock.CurrentTime;
-            Music.Volume.Value += 0.0025D;
+            Music.Volume.Value += DisplayType == TextDisplayType.Intro ? 0.0025D : -0.0025D;
         }
 
         protected void SetText(string text, int index)
@@ -373,6 +375,7 @@ namespace Funkin.NET.Screens
 
                         case true when !WasIntroFinishedThisCycle:
                             IsEntering = true;
+                            ConfirmSample.Play();
                             break;
                     }
 
@@ -405,7 +408,10 @@ namespace Funkin.NET.Screens
             Music.Stop();
             Music.Looping = true;
             Music.Start();
-            Music.VolumeTo(0D);
+
+            Music.VolumeTo(DisplayType == TextDisplayType.Exit ? 1D : 0D);
+
+            ConfirmSample = new DrawableSample(audio.Samples.Get("Main/ConfirmEnter.ogg"));
 
             if (DisplayType == TextDisplayType.Exit)
                 return;
@@ -453,6 +459,28 @@ namespace Funkin.NET.Screens
                 Font = FunkinFont.Funkin.With(size: 40f),
                 Origin = Anchor.Centre
             });
+
+            /*AddInternal(new BasicButton
+            {
+                Action = () =>
+                {
+                    Music.VolumeTo(0D, 2000D, Easing.OutQuint);
+
+                    while (Music.Volume.Value > 0D)
+                    {
+                    }
+
+                    FunnyTextScreen screen = new(TextDisplayType.Exit);
+                    LoadComponentAsync(screen);
+                    this.Push(screen);
+                },
+
+                Alpha = 1f,
+                AlwaysPresent = true,
+                Anchor = Anchor.Centre,
+                AutoSizeAxes = Axes.Both,
+                Text = "Click to exit." // todo: finish this lol!
+            });*/
 
             AddInternal(new SelectionKeyBindingContainer(Game));
         }

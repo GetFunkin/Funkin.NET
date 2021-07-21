@@ -16,6 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Samples\**\*.ogg" />
+    <EmbeddedResource Include="Samples\**\*.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Tracks\**\*.ogg" />
     <EmbeddedResource Include="Tracks\**\*.mp3" />
   </ItemGroup>

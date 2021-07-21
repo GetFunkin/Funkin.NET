@@ -72,7 +72,7 @@ namespace Funkin.NET.Screens
                     Alpha = 1f
                 };
 
-                offset += 170;
+                offset += 80;
             }
         }
 
