@@ -69,7 +69,7 @@ namespace Funkin.NET.Screens
 
         public override void OnEntering(IScreen last)
         {
-            // BackgroundStack?.Push(_ownedBackground = CreateBackground());
+            BackgroundStack?.Push(_ownedBackground = CreateBackground());
 
             _background = BackgroundStack?.CurrentScreen as BackgroundScreen;
 
