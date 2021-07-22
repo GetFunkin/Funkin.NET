@@ -15,6 +15,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Configuration;
 using osu.Framework.Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
 using osu.Framework.IO.Stores;
@@ -46,6 +47,8 @@ namespace Funkin.NET
         protected Storage Storage { get; set; }
 
         protected override Container<Drawable> Content => _content;
+
+        protected DrawableTrack GlobalMusic { get; set; }
 
         private Container _content;
         private DependencyContainer _dependencies;
