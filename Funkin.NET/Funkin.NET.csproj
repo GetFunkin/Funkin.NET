@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Conductor\" />
-    <Folder Include="Graphics\Containers\" />
     <Folder Include="Graphics\Backgrounds\" />
   </ItemGroup>
 

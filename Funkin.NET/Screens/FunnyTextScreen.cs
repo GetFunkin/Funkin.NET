@@ -469,7 +469,7 @@ namespace Funkin.NET.Screens
         }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio, TextureStore textures)
+        private void Load(AudioManager audio, TextureStore textures, FunkinGame game)
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg"));
             Music.Stop();
@@ -537,6 +537,12 @@ namespace Funkin.NET.Screens
                     _ => ""
                 };
 
+                Action action = i switch
+                {
+                    2 => game.Settings.Show,
+                    _ => null
+                };
+
                 Sprite button = new()
                 {
                     Texture = textures.Get(request),
@@ -552,7 +558,8 @@ namespace Funkin.NET.Screens
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    RelativeAnchorPosition = Size / 2f
+                    RelativeAnchorPosition = Size / 2f,
+                    Action = action
                 };
 
                 AddInternal(Buttons[i]);
