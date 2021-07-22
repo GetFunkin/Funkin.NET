@@ -285,10 +285,12 @@ namespace Funkin.NET.Screens
                 if (PressedEnter && !ScheduledEnterText)
                 {
                     ScheduledEnterText = true;
+
+                    // I am aware that this is a crime again humanity
+                    // unfortunately, I live in a world where god is dead
                     drawable.FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D)
-                        .FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut()
-                        .Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut()
-                        .Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut();
+                        .FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D)
+                        .FadeOut();
                 }
 
                 if (PressedEnter)
@@ -321,7 +323,7 @@ namespace Funkin.NET.Screens
 
                 double rotOffset = 0D;
                 if (PressedEnter)
-                    rotOffset = (Clock.CurrentTime - TimeOnEntering) / 100D * 25D;
+                    rotOffset = (Clock.CurrentTime - TimeOnEntering) / 100D * 55D;
 
                 int offset = 999;
 
@@ -403,7 +405,7 @@ namespace Funkin.NET.Screens
                 switch (drawable.Alpha)
                 {
                     case >= 1f /*when !PressedEnter*/:
-                        drawable.FadeOutFromOne(4000D);
+                        drawable.FadeOutFromOne(1500D);
                         HasBangCycled = true;
                         break;
 
@@ -412,7 +414,7 @@ namespace Funkin.NET.Screens
                         break;*/
 
                     case <= 0f:
-                        drawable.FadeInFromZero(2000D);
+                        drawable.FadeInFromZero(1000D);
                         break;
                 }
             };
