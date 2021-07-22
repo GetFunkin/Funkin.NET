@@ -15,7 +15,7 @@ namespace Funkin.NET.Graphics.Sprites
         public bool IsDancingLeft;
 
         [Resolved] private TextureStore Textures { get; set; }
-
+        
         protected override void LoadComplete()
         {
             base.LoadComplete();

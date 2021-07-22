@@ -2,16 +2,14 @@
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings.SelectionKey;
-using Funkin.NET.Songs;
-using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
-using osu.Framework.Screens;
 using osuTK;
 
 namespace Funkin.NET.Screens
@@ -35,11 +33,17 @@ namespace Funkin.NET.Screens
         public LogoTitle LogoAnimation;
         public Box ScreenFlashBang;
         public bool HasBangCycled;
-        public bool IsEntering;
+        public bool PressedEnter;
         public double TimeOnEntering = TimeSpan.Zero.Milliseconds;
         public bool WasIntroFinishedThisCycle;
         public FunkinSpriteText[] Text = new FunkinSpriteText[3];
         public DrawableSample ConfirmSample;
+        public bool DoNotPlayTheSoundAgainAaa;
+        public bool HaveWeActuallyEnteredTheCoolMenu;
+        public bool SwagInitialized;
+        public bool ScheduledEnterText;
+        public MenuButton[] Buttons = new MenuButton[3];
+        public bool RevealedButtons;
 
         public FunnyTextScreen(TextDisplayType displayType)
         {
@@ -59,6 +63,12 @@ namespace Funkin.NET.Screens
             if (DisplayType == TextDisplayType.Exit)
                 return;
 
+            if (HaveWeActuallyEnteredTheCoolMenu)
+            {
+                DoCoolMenuStuff();
+                return;
+            }
+
             if (!IsEnterPromptInitialized && IsQuirkyIntroFinished)
                 InitializeEnterState();
         }
@@ -71,16 +81,60 @@ namespace Funkin.NET.Screens
             WasIntroFinishedThisCycle = false;
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (IsEntering && TimeOnEntering == TimeSpan.Zero.Milliseconds)
+            if (PressedEnter && TimeOnEntering == TimeSpan.Zero.Milliseconds)
                 TimeOnEntering = Clock.CurrentTime;
 
-            if (IsEntering && ScreenFlashBang?.Alpha >= 1f)
+            if (PressedEnter /*&& ScreenFlashBang?.Alpha >= 1f*/)
             {
-                // TODO: fade-out music
-                this.Push(new SimpleKeyScreen(RootTrack.GetTrackFromFile("Json/Songs/bopeebo/bopeebo.json").Song));
+                // this.Push(new SimpleKeyScreen(RootTrack.GetTrackFromFile("Json/Songs/bopeebo/bopeebo.json").Song));
 
-                Music.Stop();
+                // Music.Stop();
+                HaveWeActuallyEnteredTheCoolMenu = true;
             }
+        }
+
+        protected void DoCoolMenuStuff()
+        {
+            if (SwagInitialized)
+                return;
+
+            SwagInitialized = true;
+
+            const float scale = 0.8f;
+
+            Vector2 offset = new(-(GirlfriendAnimation.LeftAnim.CurrentFrame.DisplayHeight * scale / 2f), GirlfriendAnimation.LeftAnim.CurrentFrame.DisplayWidth * scale / 2f);
+            GirlfriendAnimation.MoveTo(offset, 1500D, Easing.OutBounce);
+            GirlfriendAnimation.ScaleTo(scale, 1500D, Easing.OutBounce);
+            LogoAnimation.FadeOut(1500D, Easing.OutCirc);
+
+            foreach (MenuButton button in Buttons)
+                button.Position = new Vector2();
+
+            GirlfriendAnimation.OnUpdate += gf =>
+            {
+                if (RevealedButtons)
+                    return;
+
+                if (gf.Scale != new Vector2(scale))
+                    return;
+
+                RevealedButtons = true;
+
+                for (int i = 0; i < Buttons.Length; i++)
+                {
+                    Vector2 gotoPosition = i switch
+                    {
+                        0 => new Vector2(400f, -150f),
+                        1 => new Vector2(400f, 150f),
+                        2 => new Vector2(-400f, 0f),
+                        _ => new Vector2()
+                    };
+
+                    Buttons[i].ButtonGraphic.Show();
+                    Buttons[i].ButtonGraphic.ScaleTo(1f, 500D);
+                    Buttons[i].MoveTo(gotoPosition, 500D, Easing.OutBounce);
+                }
+            };
         }
 
         protected void UpdateMenuSongVolume()
@@ -228,6 +282,18 @@ namespace Funkin.NET.Screens
 
             void Fade(Drawable drawable)
             {
+                if (PressedEnter && !ScheduledEnterText)
+                {
+                    ScheduledEnterText = true;
+                    drawable.FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D)
+                        .FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut()
+                        .Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut()
+                        .Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut();
+                }
+
+                if (PressedEnter)
+                    return;
+
                 if (!HasBangCycled)
                 {
                     drawable.Alpha = 0f;
@@ -254,7 +320,7 @@ namespace Funkin.NET.Screens
                     drawable.Alpha = 1f / 3f;
 
                 double rotOffset = 0D;
-                if (IsEntering)
+                if (PressedEnter)
                     rotOffset = (Clock.CurrentTime - TimeOnEntering) / 100D * 25D;
 
                 int offset = 999;
@@ -331,19 +397,19 @@ namespace Funkin.NET.Screens
 
             ScreenFlashBang.OnUpdate += drawable =>
             {
-                if (HasBangCycled && !IsEntering)
+                if (HasBangCycled)
                     return;
 
                 switch (drawable.Alpha)
                 {
-                    case >= 1f when !IsEntering:
+                    case >= 1f /*when !PressedEnter*/:
                         drawable.FadeOutFromOne(4000D);
                         HasBangCycled = true;
                         break;
 
-                    case >= 1f when IsEntering:
+                    /*case >= 1f when PressedEnter:
                         drawable.FadeOutFromOne(8000D);
-                        break;
+                        break;*/
 
                     case <= 0f:
                         drawable.FadeInFromZero(2000D);
@@ -365,13 +431,16 @@ namespace Funkin.NET.Screens
                     {
                         case false:
                             Clear();
-                            IsEntering = false;
+                            PressedEnter = false;
                             IsQuirkyIntroFinished = true;
                             WasIntroFinishedThisCycle = true;
                             return;
 
-                        case true when !WasIntroFinishedThisCycle:
-                            IsEntering = true;
+                        case true when !WasIntroFinishedThisCycle && !DoNotPlayTheSoundAgainAaa:
+                            if (ScreenFlashBang != null && ScreenFlashBang.Alpha != 0f)
+                                return;
+
+                            DoNotPlayTheSoundAgainAaa = PressedEnter = true;
                             ConfirmSample.Play();
                             break;
                     }
@@ -398,8 +467,7 @@ namespace Funkin.NET.Screens
         }
 
         [BackgroundDependencyLoader]
-        [UsedImplicitly]
-        private void Load(AudioManager audio)
+        private void Load(AudioManager audio, TextureStore textures)
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg"));
             Music.Stop();
@@ -456,6 +524,37 @@ namespace Funkin.NET.Screens
                 Font = FunkinFont.Funkin.With(size: 40f),
                 Origin = Anchor.Centre
             });
+
+            for (int i = 0; i < Buttons.Length; i++)
+            {
+                string request = i switch
+                {
+                    0 => "Title/story mode white",
+                    1 => "Title/freeplay white",
+                    2 => "Title/options white",
+                    _ => ""
+                };
+
+                Sprite button = new()
+                {
+                    Texture = textures.Get(request),
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeAnchorPosition = Size / 2f,
+                    AlwaysPresent = true,
+                    Scale = new Vector2(),
+                    Alpha = 0f
+                };
+
+                Buttons[i] = new MenuButton(button)
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeAnchorPosition = Size / 2f
+                };
+
+                AddInternal(Buttons[i]);
+            }
 
             /*AddInternal(new BasicButton
             {
