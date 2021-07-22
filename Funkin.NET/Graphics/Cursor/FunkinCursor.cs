@@ -1,5 +1,4 @@
 ﻿using Funkin.NET.Configuration;
-using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -18,19 +17,16 @@ namespace Funkin.NET.Graphics.Cursor
     /// </summary>
     public class FunkinCursor : CursorContainer
     {
-        private readonly IBindable<bool> _screenShotCursorVisibility = new Bindable<bool>(true);
-        private Cursor _activeCursor;
+        public Cursor ActiveFunkinCursor { get; protected set; }
 
-        public override bool IsPresent => _screenShotCursorVisibility.Value && base.IsPresent;
-
-        protected override Drawable CreateCursor() => _activeCursor = new Cursor();
+        protected override Drawable CreateCursor() => ActiveFunkinCursor = new Cursor();
 
         protected override bool OnMouseDown(MouseDownEvent e)
         {
-            _activeCursor.Scale = new Vector2(1f);
-            _activeCursor.ScaleTo(0.90f, 800D, Easing.OutQuint);
-            _activeCursor.FadeTo(0.8f, 800D, Easing.OutQuint);
-            _activeCursor.SetState(true);
+            ActiveFunkinCursor.Scale = new Vector2(1f);
+            ActiveFunkinCursor.ScaleTo(0.90f, 800D, Easing.OutQuint);
+            ActiveFunkinCursor.FadeTo(0.8f, 800D, Easing.OutQuint);
+            ActiveFunkinCursor.SetState(true);
 
             return base.OnMouseDown(e);
         }
@@ -39,9 +35,9 @@ namespace Funkin.NET.Graphics.Cursor
         {
             if (!e.HasAnyButtonPressed)
             {
-                _activeCursor.FadeTo(1f, 500D, Easing.OutQuint);
-                _activeCursor.ScaleTo(1f, 500D, Easing.OutElastic);
-                _activeCursor.SetState(false);
+                ActiveFunkinCursor.FadeTo(1f, 500D, Easing.OutQuint);
+                ActiveFunkinCursor.ScaleTo(1f, 500D, Easing.OutElastic);
+                ActiveFunkinCursor.SetState(false);
             }
 
             base.OnMouseUp(e);
@@ -51,27 +47,31 @@ namespace Funkin.NET.Graphics.Cursor
         {
             base.PopIn();
 
-            _activeCursor.FadeTo(1f, 250D, Easing.OutQuint);
-            _activeCursor.ScaleTo(1f, 400D, Easing.OutQuint);
+            ActiveFunkinCursor.FadeTo(1f, 250D, Easing.OutQuint);
+            ActiveFunkinCursor.ScaleTo(1f, 400D, Easing.OutQuint);
         }
 
         protected override void PopOut()
         {
             base.PopOut();
 
-            _activeCursor.FadeTo(0f, 250D, Easing.OutQuint);
-            _activeCursor.ScaleTo(0.6f, 250D, Easing.In);
+            ActiveFunkinCursor.FadeTo(0f, 250D, Easing.OutQuint);
+            ActiveFunkinCursor.ScaleTo(0.6f, 250D, Easing.In);
         }
 
         public class Cursor : Container
         {
-            private Container _cursorContainer;
-            private Bindable<float> _cursorScale;
-            private Sprite _cursorDown;
-            private TextureAnimation _cursorAnimation;
-            private bool _mouseState;
-
             public const float BaseScale = 0.85f;
+
+            public Container CursorContainer { get; protected set; }
+
+            public Bindable<float> CursorScale { get; protected set; }
+
+            public Sprite CursorDown { get; protected set; }
+
+            public TextureAnimation CursorAnimation { get; protected set; }
+
+            public bool MouseState { get; protected set; }
 
             public Cursor()
             {
@@ -79,16 +79,15 @@ namespace Funkin.NET.Graphics.Cursor
             }
 
             [BackgroundDependencyLoader]
-            [UsedImplicitly]
             private void Load(FunkinConfigManager config, TextureStore textures)
             {
-                _cursorDown = new Sprite
+                CursorDown = new Sprite
                 {
                     Texture = textures.Get("Cursor/arrow click"),
                     AlwaysPresent = true
                 };
 
-                _cursorAnimation = new TextureAnimation
+                CursorAnimation = new TextureAnimation
                 {
                     AlwaysPresent = true,
                     IsPlaying = true,
@@ -96,44 +95,44 @@ namespace Funkin.NET.Graphics.Cursor
                 };
 
                 for (int i = 0; i < 6; i++)
-                    _cursorAnimation.AddFrame(textures.Get($"Cursor/arrow jiggle{i}"), 1D / 24D * 1000D);
+                    CursorAnimation.AddFrame(textures.Get($"Cursor/arrow jiggle{i}"), 1D / 24D * 1000D);
 
                 Children = new Drawable[]
                 {
-                    _cursorContainer = new Container
+                    CursorContainer = new Container
                     {
                         AutoSizeAxes = Axes.Both,
                         Children = new Drawable[]
                         {
-                            _cursorDown,
-                            _cursorAnimation
+                            CursorDown,
+                            CursorAnimation
                         }
                     }
                 };
 
-                _cursorScale = config.GetBindable<float>(FunkinConfigManager.FunkinSetting.CursorSize);
-                _cursorScale.BindValueChanged(x => _cursorContainer.Scale = new Vector2(x.NewValue * BaseScale), true);
+                CursorScale = config.GetBindable<float>(FunkinConfigManager.FunkinSetting.CursorSize);
+                CursorScale.BindValueChanged(x => CursorContainer.Scale = new Vector2(x.NewValue * BaseScale), true);
             }
 
             protected override void Update()
             {
                 base.Update();
 
-                if (_mouseState)
+                if (MouseState)
                 {
-                    _cursorDown.Alpha = Alpha;
-                    _cursorAnimation.Alpha = 0;
+                    CursorDown.Alpha = Alpha;
+                    CursorAnimation.Alpha = 0;
                 }
                 else
                 {
-                    _cursorDown.Alpha = 0;
-                    _cursorAnimation.Alpha = Alpha;
+                    CursorDown.Alpha = 0;
+                    CursorAnimation.Alpha = Alpha;
                 }
             }
 
             public virtual void SetState(bool heldDown)
             {
-                _mouseState = heldDown;
+                MouseState = heldDown;
             }
         }
     }

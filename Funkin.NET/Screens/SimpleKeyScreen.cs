@@ -1,5 +1,5 @@
 ﻿using System;
-using Funkin.NET.Content.Elements.Composites;
+using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings.ArrowKeys;
 using Funkin.NET.Songs;
 using osu.Framework.Allocation;

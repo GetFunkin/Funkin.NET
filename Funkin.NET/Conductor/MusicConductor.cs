@@ -5,6 +5,9 @@ using osu.Framework.Logging;
 
 namespace Funkin.NET.Conductor
 {
+    /// <summary>
+    ///     Class responsible for handling song BPM calculations, tracking <see cref="IBpmChange"/><c>s</c>, and some other stuff.
+    /// </summary>
     public static class MusicConductor
     {
         public const double DefaultBpm = 100D;

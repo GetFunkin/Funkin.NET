@@ -1,5 +1,4 @@
 ﻿using Funkin.NET.Graphics.Sprites;
-using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -101,7 +100,6 @@ namespace Funkin.NET.Graphics.Cursor
             }
 
             [BackgroundDependencyLoader]
-            [UsedImplicitly]
             private void Load()
             {
                 _background.Colour = Color4Extensions.FromHex("333");

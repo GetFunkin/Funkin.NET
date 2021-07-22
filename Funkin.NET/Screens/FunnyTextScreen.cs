@@ -1,5 +1,4 @@
 ﻿using System;
-using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings.SelectionKey;
@@ -11,8 +10,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.UserInterface;
-using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Screens;
 using osuTK;
@@ -419,7 +416,7 @@ namespace Funkin.NET.Screens
             GirlfriendAnimation = new GirlfriendDanceTitle
             {
                 Anchor = Anchor.Centre,
-                Position = new Vector2(80f, 220f),
+                Position = new Vector2(0f, 220f),
                 Origin = Anchor.Centre,
                 Scale = new Vector2(1.5f),
                 AlwaysPresent = true,
@@ -428,8 +425,8 @@ namespace Funkin.NET.Screens
 
             LogoAnimation = new LogoTitle
             {
-                Anchor = Anchor.CentreLeft,
-                Position = new Vector2(80f, 190f),
+                Anchor = Anchor.Centre,
+                Position = new Vector2(-630f, 190f),
                 Origin = Anchor.Centre,
                 Scale = new Vector2(1.5f),
                 AlwaysPresent = true,

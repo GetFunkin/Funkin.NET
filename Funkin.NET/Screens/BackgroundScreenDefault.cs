@@ -2,7 +2,6 @@
 using Funkin.NET.Graphics.Backgrounds;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Screens;
 using osu.Framework.Threading;
 using osu.Framework.Utils;
 

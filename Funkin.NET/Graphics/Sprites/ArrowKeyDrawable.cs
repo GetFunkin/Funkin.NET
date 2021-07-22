@@ -7,7 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 
-namespace Funkin.NET.Content.Elements.Composites
+namespace Funkin.NET.Graphics.Sprites
 {
     public class ArrowKeyDrawable : CompositeDrawable
     {
