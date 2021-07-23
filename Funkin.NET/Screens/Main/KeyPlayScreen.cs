@@ -67,7 +67,7 @@ namespace Funkin.NET.Screens.Main
             PlayerArrows = new ArrowKeyDrawable[ArrowValues.Length];
             OpponentArrows = new ArrowKeyDrawable[ArrowValues.Length];
 
-            int offset = 120;
+            float offset = 140f;
             for (int i = 0; i < ArrowValues.Length; i++)
             {
                 UniversalAction arrowKey = ArrowValues[i];
@@ -80,10 +80,10 @@ namespace Funkin.NET.Screens.Main
                     Alpha = 1f
                 };
 
-                offset += 75;
+                offset += 75f;
             }
 
-            offset = 195;
+            offset = 140f;
             for (int i = ArrowValues.Length - 1; i >= 0; i--)
             {
                 UniversalAction arrowKey = ArrowValues[i];
@@ -93,10 +93,11 @@ namespace Funkin.NET.Screens.Main
                     Position = new Vector2(-offset, -200),
                     Origin = Anchor.Centre,
                     AlwaysPresent = true,
-                    Alpha = 1f
+                    Alpha = 1f,
+
                 };
 
-                offset += 75;
+                offset += 75f;
             }
 
             foreach (ArrowKeyDrawable drawable in PlayerArrows)
