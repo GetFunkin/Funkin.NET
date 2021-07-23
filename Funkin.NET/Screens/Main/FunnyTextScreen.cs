@@ -15,7 +15,7 @@ using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 
-namespace Funkin.NET.Screens
+namespace Funkin.NET.Screens.Main
 {
     public class FunnyTextScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
@@ -547,7 +547,8 @@ namespace Funkin.NET.Screens
                 {
                     0 => () =>
                     {
-                        this.Push(new SimpleKeyScreen(Song.GetSongFromFile("Json/Songs/bopeebo/bopeebo.json")));
+                        this.Push(KeyPlayScreen.GetPlayScreen("Json/Songs/Bopeebo/bopeebo-normal.json",
+                            "Songs/Bopeebo/Inst.ogg", "Songs/Bopeebo/Voices.ogg"));
                     },
                     2 => game.Settings.Show,
                     _ => null

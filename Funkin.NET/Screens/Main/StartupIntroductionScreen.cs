@@ -7,7 +7,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Screens;
 using osuTK;
 
-namespace Funkin.NET.Screens
+namespace Funkin.NET.Screens.Main
 {
     public class StartupIntroductionScreen : FunkinScreen
     {

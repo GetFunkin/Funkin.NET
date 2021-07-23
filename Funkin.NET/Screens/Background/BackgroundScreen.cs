@@ -3,9 +3,10 @@ using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Screens
+namespace Funkin.NET.Screens.Background
 {
     /// <summary>
     ///     See: osu!'s BackgroundScreen.

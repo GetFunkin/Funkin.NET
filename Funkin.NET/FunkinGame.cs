@@ -13,6 +13,7 @@ using Funkin.NET.Input.Bindings;
 using Funkin.NET.Overlays;
 using Funkin.NET.Resources;
 using Funkin.NET.Screens;
+using Funkin.NET.Screens.Main;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;

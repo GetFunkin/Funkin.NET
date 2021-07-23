@@ -1,4 +1,5 @@
 ﻿using System;
+using Funkin.NET.Screens.Background;
 using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;

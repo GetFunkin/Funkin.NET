@@ -1,4 +1,5 @@
 ﻿using Funkin.NET.Graphics.Containers;
+using Funkin.NET.Screens.Background;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;

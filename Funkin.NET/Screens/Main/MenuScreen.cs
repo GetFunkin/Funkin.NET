@@ -1,4 +1,4 @@
-﻿namespace Funkin.NET.Screens
+﻿namespace Funkin.NET.Screens.Main
 {
     public class MenuScreen : MusicScreen
     {

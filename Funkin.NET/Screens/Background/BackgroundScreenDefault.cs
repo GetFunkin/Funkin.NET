@@ -1,18 +1,17 @@
 ﻿using System.Threading;
-using Funkin.NET.Graphics.Backgrounds;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Threading;
 using osu.Framework.Utils;
 
-namespace Funkin.NET.Screens
+namespace Funkin.NET.Screens.Background
 {
     /// <summary>
     ///     See: osu!'s BackgroundScreenDefault.
     /// </summary>
     public class BackgroundScreenDefault : BackgroundScreen
     {
-        private Background _background;
+        private Graphics.Backgrounds.Background _background;
         private int _currentDisplay;
         private const int BackgroundCount = 3;
         private ScheduledDelegate _nextTask;
@@ -39,7 +38,7 @@ namespace Funkin.NET.Screens
         /// <returns>Whether a new background was queued for load. May return false if the current background is still valid.</returns>
         public bool Next()
         {
-            Background nextBackground = CreateBackground();
+            Graphics.Backgrounds.Background nextBackground = CreateBackground();
 
             // in the case that the background hasn't changed, we want to avoid cancelling any tasks that could still be loading.
             if (nextBackground == _background)
@@ -55,7 +54,7 @@ namespace Funkin.NET.Screens
             return true;
         }
 
-        private void DisplayNext(Background newBackground)
+        private void DisplayNext(Graphics.Backgrounds.Background newBackground)
         {
             _background?.FadeOut(8000D, Easing.InOutSine);
             _background?.Expire();
@@ -65,9 +64,9 @@ namespace Funkin.NET.Screens
             _currentDisplay++;
         }
 
-        private Background CreateBackground()
+        private Graphics.Backgrounds.Background CreateBackground()
         {
-            Background newBackground = new(GetBackgroundTextureName()) {Depth = _currentDisplay};
+            Graphics.Backgrounds.Background newBackground = new(GetBackgroundTextureName()) {Depth = _currentDisplay};
 
             return newBackground;
         }
