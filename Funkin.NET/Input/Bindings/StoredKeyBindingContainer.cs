@@ -55,6 +55,8 @@ namespace Funkin.NET.Input.Bindings
 
             Directory.CreateDirectory(Path.GetDirectoryName(Location) ?? "");
             File.WriteAllText(Location, JsonSerializer.Serialize(bindings, options));
+
+            ReloadMappings();
         }
 
         protected override void LoadComplete()

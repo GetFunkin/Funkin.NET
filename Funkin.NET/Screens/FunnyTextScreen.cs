@@ -2,6 +2,7 @@
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings;
+using Funkin.NET.Songs;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
@@ -11,6 +12,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Platform;
+using osu.Framework.Screens;
 using osuTK;
 
 namespace Funkin.NET.Screens
@@ -543,6 +545,10 @@ namespace Funkin.NET.Screens
 
                 Action action = i switch
                 {
+                    0 => () =>
+                    {
+                        this.Push(new SimpleKeyScreen(Song.GetSongFromFile("Json/Songs/bopeebo/bopeebo.json")));
+                    },
                     2 => game.Settings.Show,
                     _ => null
                 };

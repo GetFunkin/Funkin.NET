@@ -28,10 +28,10 @@ namespace Funkin.NET.Screens
 
         public readonly UniversalAction[] ArrowValues =
         {
-            UniversalAction.Down, 
             UniversalAction.Left, 
-            UniversalAction.Right, 
-            UniversalAction.Up
+            UniversalAction.Down, 
+            UniversalAction.Up, 
+            UniversalAction.Right
         };
 
         public SimpleKeyScreen(Song song)
@@ -75,7 +75,7 @@ namespace Funkin.NET.Screens
                     Alpha = 1f
                 };
 
-                offset += 80;
+                offset += 75;
             }
         }
 
@@ -89,6 +89,7 @@ namespace Funkin.NET.Screens
 
             _arrows[value].ArrowPressAnim.PlaybackPosition = 0;
             _arrows[value].ArrowPressAnim.Show();
+            _arrows[value].ArrowIdleSprite.Hide();
 
             return true;
         }
@@ -102,6 +103,7 @@ namespace Funkin.NET.Screens
             if (value >= _arrows.Length) return;
 
             _arrows[value].ArrowPressAnim.Hide();
+            _arrows[value].ArrowIdleSprite.Show();
         }
     }
 }

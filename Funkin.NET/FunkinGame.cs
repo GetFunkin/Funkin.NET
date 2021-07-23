@@ -64,6 +64,7 @@ namespace Funkin.NET
         private Container _topMostOverlayContent;
         private ScalingContainer _screenContainer;
         private Container _screenOffsetContainer;
+        private UniversalActionContainer _actionContainer;
 
         private FunkinScreenStack _screenStack;
 
@@ -268,6 +269,7 @@ namespace Funkin.NET
                 Exit();
         }
 
+
         [BackgroundDependencyLoader]
         private void Load()
         {
@@ -289,8 +291,6 @@ namespace Funkin.NET
             AddFont(Resources, @"Fonts/Torus/Torus-SemiBold");
             AddFont(Resources, @"Fonts/Torus/Torus-Bold");
 
-            UniversalActionContainer bindings;
-
             Drawable[] mainContent =
             {
                 FunkinCursorContainer = new FunkinCursorContainer
@@ -298,7 +298,7 @@ namespace Funkin.NET
                     RelativeSizeAxes = Axes.Both
                 },
 
-                bindings = new UniversalActionContainer(Storage, this) 
+                _actionContainer = new UniversalActionContainer(Storage, this)
             };
 
             FunkinCursorContainer.Child = _content = new FunkinTooltipContainer(FunkinCursorContainer.Cursor)
@@ -306,7 +306,7 @@ namespace Funkin.NET
                 RelativeSizeAxes = Axes.Both
             };
 
-            _dependencies.Cache(bindings);
+            _dependencies.Cache(_actionContainer);
 
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }

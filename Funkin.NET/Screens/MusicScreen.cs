@@ -69,5 +69,12 @@ namespace Funkin.NET.Screens
         protected virtual void BeatHit()
         {
         }
+
+        public override void OnSuspending(IScreen next)
+        {
+            base.OnSuspending(next);
+
+            Music.Stop();
+        }
     }
 }
