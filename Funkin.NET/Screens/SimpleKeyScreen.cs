@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings;
 using Funkin.NET.Songs;

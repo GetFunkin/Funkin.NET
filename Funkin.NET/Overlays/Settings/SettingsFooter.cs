@@ -1,5 +1,4 @@
-﻿using Funkin.NET.Graphics;
-using Funkin.NET.Graphics.Sprites;
+﻿using Funkin.NET.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;

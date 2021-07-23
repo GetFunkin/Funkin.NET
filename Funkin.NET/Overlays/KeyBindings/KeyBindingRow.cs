@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
@@ -25,7 +25,7 @@ namespace Funkin.NET.Overlays.KeyBindings
     public class KeyBindingRow : Container, IFilterable
     {
         private readonly object _action;
-        private readonly IEnumerable<IKeyBinding> _bindings;
+        private IEnumerable<IKeyBinding> _bindings;
 
         public const float TransitionTime = 150;
         public const float ConstantHeight = 20;
@@ -127,7 +127,7 @@ namespace Funkin.NET.Overlays.KeyBindings
                             Children = new Drawable[]
                             {
                                 new CancelButton {Action = DoFinalize},
-                                new ClearButton {Action = DoClear},
+                                new ClearButton {Action = DoClear}
                             },
                         }
                     }
@@ -181,7 +181,7 @@ namespace Funkin.NET.Overlays.KeyBindings
                 }
             }
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState));
+            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
             return true;
         }
 
@@ -206,7 +206,8 @@ namespace Funkin.NET.Overlays.KeyBindings
             if (!HasFocus || !_bindTarget.IsHovered)
                 return base.OnScroll(e);
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState, e.ScrollDelta));
+            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState, e.ScrollDelta),
+                ActionContainer);
             DoFinalize();
             return true;
 
@@ -217,7 +218,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             if (!HasFocus)
                 return false;
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState));
+            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
 
             if (!IsModifier(e.Key))
                 DoFinalize();
@@ -241,7 +242,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             if (!HasFocus)
                 return false;
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState));
+            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
             DoFinalize();
 
             return true;
@@ -263,7 +264,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             if (!HasFocus)
                 return false;
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState));
+            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
             DoFinalize();
 
             return true;
@@ -285,7 +286,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             if (_bindTarget == null)
                 return;
 
-            _bindTarget.UpdateKeyCombination(InputKey.None);
+            _bindTarget.UpdateKeyCombination(InputKey.None, ActionContainer);
             DoFinalize();
         }
 
@@ -293,8 +294,6 @@ namespace Funkin.NET.Overlays.KeyBindings
         {
             if (_bindTarget != null)
             {
-                UpdateFromButton(_bindTarget);
-
                 UpdateIsDefaultValue();
 
                 _bindTarget.IsBinding = false;
@@ -344,16 +343,6 @@ namespace Funkin.NET.Overlays.KeyBindings
                 _bindTarget.IsBinding = true;
         }
 
-        private void UpdateFromButton(KeyButton button)
-        {
-            List<IKeyBinding> current = ActionContainer.DefaultKeyBindings.ToList();
-
-            if (!current.Contains(button.KeyBinding))
-                current.Add(button.KeyBinding);
-
-            ActionContainer.UpdateKeyBindings(current);
-        }
-
         private void UpdateIsDefaultValue()
         {
             IsDefault.Value = _bindings.Select(b => b.KeyCombination).SequenceEqual(Defaults);
@@ -379,7 +368,7 @@ namespace Funkin.NET.Overlays.KeyBindings
 
         public class KeyButton : Container
         {
-            public readonly IKeyBinding KeyBinding;
+            public readonly IKeyBinding WrappedBinding;
 
             private readonly Box _box;
             public readonly FunkinSpriteText Text;
@@ -401,9 +390,9 @@ namespace Funkin.NET.Overlays.KeyBindings
                 }
             }
 
-            public KeyButton(IKeyBinding keyBinding)
+            public KeyButton(IKeyBinding wrappedBinding)
             {
-                KeyBinding = keyBinding;
+                WrappedBinding = wrappedBinding;
 
                 Margin = new MarginPadding(ConstantPadding);
 
@@ -432,7 +421,7 @@ namespace Funkin.NET.Overlays.KeyBindings
                         Margin = new MarginPadding(5),
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
-                        Text = keyBinding.KeyCombination.ReadableString(),
+                        Text = wrappedBinding.KeyCombination.ReadableString(),
                     },
                 };
             }
@@ -469,10 +458,41 @@ namespace Funkin.NET.Overlays.KeyBindings
                 }
             }
 
-            public void UpdateKeyCombination(KeyCombination newCombination)
+            public void UpdateKeyCombination(KeyCombination newCombination, UniversalActionContainer actionContainer)
             {
-                KeyBinding.KeyCombination = newCombination;
-                Text.Text = KeyBinding.KeyCombination.ReadableString();
+                static bool DoTheseTwoFuckingCollectionsMatch(ImmutableArray<InputKey> key1, ImmutableArray<InputKey> key2)
+                {
+                    List<InputKey> list1 = key1.ToList();
+                    List<InputKey> list2 = key2.ToList();
+
+                    if (list1.Count != list2.Count)
+                        return false;
+
+                    bool youFailedIHateYouSoMuch = false;
+                    foreach (InputKey key in list1.TakeWhile(_ => !youFailedIHateYouSoMuch))
+                    {
+                        if (list2.Contains(key))
+                            list2.Remove(key);
+                        else
+                            youFailedIHateYouSoMuch = true;
+                    }
+
+                    return !youFailedIHateYouSoMuch;
+                }
+
+                List<IKeyBinding> current = actionContainer.DefaultKeyBindings.ToList();
+                current.RemoveAll(x => x.Action.ToString() == WrappedBinding.Action.ToString()
+                                       && DoTheseTwoFuckingCollectionsMatch(x.KeyCombination.Keys,
+                                           WrappedBinding.KeyCombination.Keys));
+
+                WrappedBinding.KeyCombination = newCombination;
+                Text.Text = WrappedBinding.KeyCombination.ReadableString();
+
+                if (!current.Any(x => x.Action.ToString() == WrappedBinding.Action.ToString()
+                                      && DoTheseTwoFuckingCollectionsMatch(x.KeyCombination.Keys, newCombination.Keys)))
+                    current.Add(WrappedBinding);
+
+                actionContainer.UpdateKeyBindings(current);
             }
         }
     }

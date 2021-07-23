@@ -1,5 +1,4 @@
 ﻿using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 
 namespace Funkin.NET.Graphics.Containers
 {

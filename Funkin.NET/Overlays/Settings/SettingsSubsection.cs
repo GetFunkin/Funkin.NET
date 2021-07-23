@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;

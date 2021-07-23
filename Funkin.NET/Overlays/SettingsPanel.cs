@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.UserInterface;
