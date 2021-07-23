@@ -1,5 +1,5 @@
 ﻿using System;
-using Funkin.NET.Input.Bindings.ArrowKeys;
+using Funkin.NET.Input.Bindings;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
@@ -15,7 +15,7 @@ namespace Funkin.NET.Graphics.Sprites
         // "x press" is for when you incorrectly press a key, or continue holding a key after key ends
         // "x confirm" is for when you correctly press a key, and continue holding while the key hasn't ended
 
-        public ArrowKeyDrawable(ArrowKeyAction arrowKey)
+        public ArrowKeyDrawable(UniversalAction arrowKey)
         {
             ArrowKey = arrowKey;
 
@@ -42,7 +42,7 @@ namespace Funkin.NET.Graphics.Sprites
             };
         }
 
-        public ArrowKeyAction ArrowKey { get; }
+        public UniversalAction ArrowKey { get; }
 
         public Sprite ArrowIdleSprite { get; }
 

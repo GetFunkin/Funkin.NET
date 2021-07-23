@@ -8,6 +8,7 @@ using System.Threading;
 using Funkin.NET.Configuration;
 using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.Cursor;
+using Funkin.NET.Input;
 using Funkin.NET.Overlays;
 using Funkin.NET.Resources;
 using Funkin.NET.Screens;
@@ -20,6 +21,7 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
+using osu.Framework.Input;
 using osu.Framework.IO.Stores;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -222,6 +224,8 @@ namespace Funkin.NET
             {
                 {FrameworkSetting.WindowMode, WindowMode.Fullscreen}
             };
+
+        protected override UserInputManager CreateUserInputManager() => new FunkinUserInputManager();
 
         protected override void UpdateAfterChildren()
         {

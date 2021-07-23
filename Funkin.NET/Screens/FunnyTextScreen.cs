@@ -1,7 +1,7 @@
 ﻿using System;
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
-using Funkin.NET.Input.Bindings.SelectionKey;
+using Funkin.NET.Input.Bindings;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
@@ -10,11 +10,12 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
+using osu.Framework.Platform;
 using osuTK;
 
 namespace Funkin.NET.Screens
 {
-    public class FunnyTextScreen : MusicScreen, IKeyBindingHandler<SelectionKeyAction>
+    public class FunnyTextScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
         public enum TextDisplayType
         {
@@ -422,10 +423,13 @@ namespace Funkin.NET.Screens
             AddInternal(ScreenFlashBang);
         }
 
-        public bool OnPressed(SelectionKeyAction action) => false;
+        public bool OnPressed(UniversalAction action) => false;
 
-        public void OnReleased(SelectionKeyAction action)
+        public void OnReleased(UniversalAction action)
         {
+            if (action != UniversalAction.Select)
+                return;
+
             switch (DisplayType)
             {
                 case TextDisplayType.Intro:
@@ -469,7 +473,7 @@ namespace Funkin.NET.Screens
         }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio, TextureStore textures, FunkinGame game)
+        private void Load(AudioManager audio, TextureStore textures, FunkinGame game, Storage storage)
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg"));
             Music.Stop();
@@ -587,7 +591,7 @@ namespace Funkin.NET.Screens
                 Text = "Click to exit." // todo: finish this lol!
             });*/
 
-            AddInternal(new SelectionKeyBindingContainer(Game));
+            AddInternal(new UniversalActionContainer(storage, Game));
         }
     }
 }

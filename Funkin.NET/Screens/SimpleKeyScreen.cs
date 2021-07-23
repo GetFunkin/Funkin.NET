@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Linq;
 using Funkin.NET.Graphics.Sprites;
-using Funkin.NET.Input.Bindings.ArrowKeys;
+using Funkin.NET.Input.Bindings;
 using Funkin.NET.Songs;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Input.Bindings;
+using osu.Framework.Platform;
 using osuTK;
 
 namespace Funkin.NET.Screens
 {
-    public class SimpleKeyScreen : MusicScreen, IKeyBindingHandler<ArrowKeyAction>
+    public class SimpleKeyScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
         // TODO: handle input
         // TODO: draw characters
@@ -25,17 +27,20 @@ namespace Funkin.NET.Screens
         private ArrowKeyDrawable[] _arrows;
         private bool _initialized;
 
+        public readonly UniversalAction[] ArrowValues =
+        {
+            UniversalAction.Down, 
+            UniversalAction.Left, 
+            UniversalAction.Right, 
+            UniversalAction.Up
+        };
+
         public SimpleKeyScreen(Song song)
         {
             Song = song;
             ExpectedBpm = Song.Bpm;
         }
-
-        protected override void LoadComplete()
-        {
-            AddInternal(new ArrowKeyBindingContainer(Game));
-        }
-
+        
         protected override void Update()
         {
             if (_initialized) return;
@@ -47,7 +52,7 @@ namespace Funkin.NET.Screens
         }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio)
+        private void Load(AudioManager audio, Storage storage)
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Songs/Bopeebo/Bopeebo_Inst.ogg"));
             Music.Stop();
@@ -55,14 +60,13 @@ namespace Funkin.NET.Screens
             Music.Start();
             Music.VolumeTo(1D);
 
-            ArrowKeyAction[] arrowValues = Enum.GetValues<ArrowKeyAction>();
-            _arrows = new ArrowKeyDrawable[arrowValues.Length];
+            _arrows = new ArrowKeyDrawable[ArrowValues.Length];
 
             int offset = 20;
 
-            for (int i = 0; i < arrowValues.Length; i++)
+            for (int i = 0; i < ArrowValues.Length; i++)
             {
-                ArrowKeyAction arrowKey = arrowValues[i];
+                UniversalAction arrowKey = ArrowValues[i];
                 _arrows[i] = new ArrowKeyDrawable(arrowKey)
                 {
                     Anchor = Anchor.Centre,
@@ -74,10 +78,15 @@ namespace Funkin.NET.Screens
 
                 offset += 80;
             }
+
+            AddInternal(new UniversalActionContainer(storage, Game));
         }
 
-        public bool OnPressed(ArrowKeyAction action)
+        public bool OnPressed(UniversalAction action)
         {
+            if (!ArrowValues.Contains(action))
+                return false;
+
             int value = (int) action;
             if (value >= _arrows.Length) return false;
 
@@ -87,8 +96,11 @@ namespace Funkin.NET.Screens
             return true;
         }
 
-        public void OnReleased(ArrowKeyAction action)
+        public void OnReleased(UniversalAction action)
         {
+            if (!ArrowValues.Contains(action))
+                return;
+
             int value = (int) action;
             if (value >= _arrows.Length) return;
 
