@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Funkin.NET.Graphics.UserInterface;
 using Funkin.NET.Input.Bindings;
@@ -14,8 +15,12 @@ namespace Funkin.NET.Overlays.KeyBindings
     {
         protected IEnumerable<IKeyBinding> Defaults;
 
-        protected KeyBindingsSubsection()
+        protected Action<Drawable> CancelAction;
+
+        protected KeyBindingsSubsection(Action<Drawable> cancelAction = null)
         {
+            CancelAction = cancelAction;
+
             FlowContent.Spacing = new Vector2(0, 1);
             FlowContent.Padding = new MarginPadding
                 {Left = SettingsPanel.ContentMargins, Right = SettingsPanel.ContentMargins};
@@ -39,7 +44,11 @@ namespace Funkin.NET.Overlays.KeyBindings
 
             Add(new ResetButton
             {
-                Action = () => bindings.UpdateKeyBindings(bindings.FallbackKeyBindings)
+                Action = () =>
+                {
+                    bindings.UpdateKeyBindings(bindings.FallbackKeyBindings);
+                    CancelAction?.Invoke(this);
+                }
             });
         }
     }

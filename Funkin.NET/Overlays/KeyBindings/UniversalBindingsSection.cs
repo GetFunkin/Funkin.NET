@@ -1,4 +1,5 @@
-﻿using Funkin.NET.Input.Bindings;
+﻿using System;
+using Funkin.NET.Input.Bindings;
 using Funkin.NET.Overlays.Settings;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
@@ -16,17 +17,26 @@ namespace Funkin.NET.Overlays.KeyBindings
 
         public override string Header => "Universal Bindings";
 
+        protected UniversalBindingsSubsection _universalBindingsSubsection;
+
         // todo: split sections up
         public UniversalBindingsSection(UniversalActionContainer bindings)
-        { 
-            Add(new UniversalBindingsSubsection(bindings));
+        {
+            void The(Drawable drawable)
+            {
+                Remove(_universalBindingsSubsection);
+                Add(_universalBindingsSubsection = new UniversalBindingsSubsection(bindings, The));
+            }
+
+            Add(_universalBindingsSubsection = new UniversalBindingsSubsection(bindings, The));
         }
 
         public class UniversalBindingsSubsection : KeyBindingsSubsection
         {
             protected override LocalisableString Header => string.Empty;
 
-            public UniversalBindingsSubsection(UniversalActionContainer bindings)
+            public UniversalBindingsSubsection(UniversalActionContainer bindings, Action<Drawable> cancelAction) : base(
+                cancelAction)
             {
                 Defaults = bindings.FallbackKeyBindings;
             }
