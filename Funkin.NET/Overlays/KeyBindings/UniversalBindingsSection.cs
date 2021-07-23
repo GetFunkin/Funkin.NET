@@ -14,7 +14,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             Icon = FontAwesome.Solid.UniversalAccess
         };
 
-        public override string Header => "Universal KeyBinds";
+        public override string Header => "Universal Bindings";
 
         // todo: split sections up
         public UniversalBindingsSection(UniversalActionContainer bindings)

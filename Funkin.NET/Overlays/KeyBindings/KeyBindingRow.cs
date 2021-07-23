@@ -105,6 +105,7 @@ namespace Funkin.NET.Overlays.KeyBindings
                         _text = new FunkinSpriteText
                         {
                             Text = _action.GetDescription(),
+                            Font = FunkinFont.GetFont(size: 15f),
                             Margin = new MarginPadding(ConstantPadding),
                         },
 

@@ -49,7 +49,7 @@ namespace Funkin.NET.Overlays.KeyBindings
         [BackgroundDependencyLoader]
         private void Load()
         {
-            Text = "Reset all bindings in section.";
+            Text = "Reset all binds.";
             RelativeSizeAxes = Axes.X;
             Width = 0.5f;
             Anchor = Anchor.TopCentre;

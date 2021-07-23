@@ -60,15 +60,14 @@ namespace Funkin.NET.Input.Bindings
 
     public enum UniversalAction
     {
-        [Description("Left arrow key.")] Left = 0,
+        [Description("Left")] Left = 0,
 
-        [Description("Down arrow key.")] Down = 1,
+        [Description("Down")] Down = 1,
 
-        [Description("Up arrow key.")] Up = 2,
+        [Description("Up")] Up = 2,
 
-        [Description("Right arrow key.")] Right = 3,
+        [Description("Right")] Right = 3,
 
-        [Description("Menu confirmation button.")]
-        Select
+        [Description("Select")] Select
     }
 }
