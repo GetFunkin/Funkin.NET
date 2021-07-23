@@ -45,21 +45,33 @@ namespace Funkin.NET.Input.Bindings
 
         public abstract IEnumerable<IKeyBinding> FallbackKeyBindings { get; }
 
+        public virtual void UpdateKeyBindings(IEnumerable<IKeyBinding> bindings)
+        {
+            JsonSerializerOptions options = new()
+            {
+                WriteIndented = true,
+                Converters = { new KeyBindingConverter<T>() }
+            };
+
+            Directory.CreateDirectory(Path.GetDirectoryName(Location) ?? "");
+            File.WriteAllText(Location, JsonSerializer.Serialize(bindings, options));
+        }
+
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            if (_expectedFileToBeCreated)
-            {
-                JsonSerializerOptions options = new()
-                {
-                    WriteIndented = true,
-                    Converters = { new KeyBindingConverter<T>() }
-                };
+            if (!_expectedFileToBeCreated)
+                return;
 
-                Directory.CreateDirectory(Path.GetDirectoryName(Location) ?? "");
-                File.WriteAllText(Location, JsonSerializer.Serialize(DefaultKeyBindings, options));
-            }
+            JsonSerializerOptions options = new()
+            {
+                WriteIndented = true,
+                Converters = { new KeyBindingConverter<T>() }
+            };
+
+            Directory.CreateDirectory(Path.GetDirectoryName(Location) ?? "");
+            File.WriteAllText(Location, JsonSerializer.Serialize(DefaultKeyBindings, options));
         }
     }
 }

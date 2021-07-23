@@ -590,8 +590,6 @@ namespace Funkin.NET.Screens
                 AutoSizeAxes = Axes.Both,
                 Text = "Click to exit." // todo: finish this lol!
             });*/
-
-            AddInternal(new UniversalActionContainer(storage, Game));
         }
     }
 }

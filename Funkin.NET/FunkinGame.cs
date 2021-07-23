@@ -9,6 +9,7 @@ using Funkin.NET.Configuration;
 using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.Cursor;
 using Funkin.NET.Input;
+using Funkin.NET.Input.Bindings;
 using Funkin.NET.Overlays;
 using Funkin.NET.Resources;
 using Funkin.NET.Screens;
@@ -288,18 +289,24 @@ namespace Funkin.NET
             AddFont(Resources, @"Fonts/Torus/Torus-SemiBold");
             AddFont(Resources, @"Fonts/Torus/Torus-Bold");
 
+            UniversalActionContainer bindings;
+
             Drawable[] mainContent =
             {
                 FunkinCursorContainer = new FunkinCursorContainer
                 {
                     RelativeSizeAxes = Axes.Both
-                }
+                },
+
+                bindings = new UniversalActionContainer(Storage, this) 
             };
 
             FunkinCursorContainer.Child = _content = new FunkinTooltipContainer(FunkinCursorContainer.Cursor)
             {
                 RelativeSizeAxes = Axes.Both
             };
+
+            _dependencies.Cache(bindings);
 
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }

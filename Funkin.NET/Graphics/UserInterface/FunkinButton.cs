@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Funkin.NET.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -41,6 +42,15 @@ namespace Funkin.NET.Graphics.UserInterface
                 Background.FadeColour(value);
             }
         }
+
+        public virtual IEnumerable<string> FilterTerms => new[] { Text.ToString() };
+
+        public bool MatchingFilter
+        {
+            set => this.FadeTo(value ? 1 : 0);
+        }
+
+        public bool FilteringActive { get; set; }
 
         protected override Container<Drawable> Content { get; }
 

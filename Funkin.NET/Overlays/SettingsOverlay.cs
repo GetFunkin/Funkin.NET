@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Funkin.NET.Overlays.Settings;
+using Funkin.NET.Overlays.Settings.Sections;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -16,21 +17,12 @@ namespace Funkin.NET.Overlays
     {
         protected override IEnumerable<SettingsSection> CreateSections() => new SettingsSection[]
         {
-            /*new GeneralSection(),
-            new GraphicsSection(),
-            new AudioSection(),
-            new InputSection(createSubPanel(new KeyBindingPanel())),
-            new UserInterfaceSection(),
-            new GameplaySection(),
-            new SkinSection(),
-            new OnlineSection(),
-            new MaintenanceSection(),
-            new DebugSection()*/
+            new InputSection(CreateSubPanel(new KeyBindingPanel()))
         };
 
         private readonly List<SettingsSubPanel> _subPanels = new();
 
-        protected override Drawable CreateHeader() => new SettingsHeader("uhh title", "uhh description");
+        protected override Drawable CreateHeader() => new SettingsHeader("Settings", "lmao stole this menu from osu!");
 
         protected override Drawable CreateFooter() => new SettingsFooter();
 
@@ -79,7 +71,7 @@ namespace Funkin.NET.Overlays
         [BackgroundDependencyLoader]
         private void Load()
         {
-            foreach (var s in _subPanels)
+            foreach (SettingsSubPanel s in _subPanels)
                 ContentContainer.Add(s);
         }
     }

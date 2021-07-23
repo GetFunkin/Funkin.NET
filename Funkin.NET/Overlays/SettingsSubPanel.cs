@@ -16,6 +16,9 @@ namespace Funkin.NET.Overlays
         protected SettingsSubPanel()
             : base(true)
         {
+            MarginPadding padding = Margin;
+            padding.Left += SidebarWidth;
+            Margin = padding;
         }
 
         [BackgroundDependencyLoader]

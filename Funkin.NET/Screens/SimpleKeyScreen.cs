@@ -78,8 +78,6 @@ namespace Funkin.NET.Screens
 
                 offset += 80;
             }
-
-            AddInternal(new UniversalActionContainer(storage, Game));
         }
 
         public bool OnPressed(UniversalAction action)

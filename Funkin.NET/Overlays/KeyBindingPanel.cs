@@ -1,4 +1,7 @@
-﻿using Funkin.NET.Overlays.Settings;
+﻿using Funkin.NET.Input.Bindings;
+using Funkin.NET.Overlays.KeyBindings;
+using Funkin.NET.Overlays.Settings;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 
 namespace Funkin.NET.Overlays
@@ -7,9 +10,10 @@ namespace Funkin.NET.Overlays
     {
         protected override Drawable CreateHeader() => new SettingsHeader("Key Configuration", "Customize your keys!");
 
-        private void Load()
+        [BackgroundDependencyLoader]
+        private void Load(UniversalActionContainer actions)
         {
-            // AddSection(new SelectionKeyBindingsSection());
+            AddSection(new UniversalBindingsSection(actions));
         }
     }
 }
