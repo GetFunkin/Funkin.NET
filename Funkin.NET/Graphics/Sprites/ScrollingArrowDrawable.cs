@@ -39,9 +39,7 @@ namespace Funkin.NET.Content.Elements.Composites
             };
 
             LifetimeStart = TargetTime - 5 * 1000; // Lifetime starts 5 seconds before target
-            LifetimeEnd = TargetTime + 4 * 1000; // Lifetime ends 4 seconds after target
-            
-            
+            LifetimeEnd = TargetTime + 2 * 1000; // Lifetime ends 4 seconds after target
         }
 
         public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
@@ -54,7 +52,6 @@ namespace Funkin.NET.Content.Elements.Composites
             string textureName = $"Arrow/{Enum.GetName(Key)!.ToLowerInvariant()}_scroll";
             ArrowSprite.Texture = Textures.Get(textureName);
             AddInternal(ArrowSprite);
-            Console.WriteLine("scroll arrow texture null: " + ArrowSprite.Texture.Filename);
         }
 
         protected override void Update()
@@ -62,13 +59,13 @@ namespace Funkin.NET.Content.Elements.Composites
             if (!_startPos.HasValue)
                 _startPos = Position;
             
+            // TODO: fix big numbers making stuff slower
             float by = (float) (MusicConductor.SongPosition / TargetTime);
-            // Console.WriteLine($"Key: {Key} - Position: {MusicConductor.SongPosition} / {TargetTime} = {by}");
+            //Console.WriteLine($"Key: {Key} - Position: {MusicConductor.SongPosition} / {TargetTime} = {by}");
             // Console.WriteLine($"Key: {Key} - {Lerp(_startPos.Value.Y, TargetPosition.Y, by)}");
 
             Position = new Vector2(TargetPosition.X, Lerp(_startPos.Value.Y, TargetPosition.Y, by));
             // Y = (float) (TargetPosition.Y - (MusicConductor.SongPosition - TargetTime) * 0.45 * SongSpeed);
-            // TODO: speed multiplier
         }
 
         private static float Lerp(float start, float end, float by) => (start * (1.0f - by)) + (end * by);

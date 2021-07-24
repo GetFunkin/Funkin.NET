@@ -18,11 +18,11 @@ namespace Funkin.NET.Screens.Main
     public class KeyPlayScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
         // TODO: draw characters
-        // TODO: draw keys (player & opponent)
         // TODO: register when keys are hit
         // TODO: score
         // TODO: everything else
         // TODO: single sprite for all arrows, recolor/rotate with code
+        // TODO: why is there a sixth arrow "[62100,6,0]"???????
 
         /* Notes:
          * Start music some time later
@@ -31,8 +31,9 @@ namespace Funkin.NET.Screens.Main
          * when Music.CurrentTime matches arrow offset time, it should be at the arrow sprite position
          */
         
-        private const int NumberOfSectionsToGenerateAhead = 4;
+        private const int NumberOfSectionsToGenerateAhead = 8;
         private const int MusicStartOffset = 5 * 1000;
+        private const int ScrollingArrowStartPos = 1000 * 15;
 
         public static readonly UniversalAction[] ArrowValues =
         {
@@ -79,7 +80,14 @@ namespace Funkin.NET.Screens.Main
             if (!_initialized)
                 Initialize();
             
-            // TODO: if arrow drawables are ded, spawn new ones
+            // If all of the notes in the first section are dead, remove them and refill notes
+            if (_notesAhead.First!.Value.All(x => Time.Current >= x.LifetimeEnd))
+            {
+                Console.WriteLine($"remove first!!!!! {_notesAhead.First}");
+                foreach (ScrollingArrowDrawable arrowDrawable in _notesAhead.First.Value) RemoveInternal(arrowDrawable);
+                _notesAhead.RemoveFirst();
+                FillNotes();
+            }
         }
 
         [BackgroundDependencyLoader]
@@ -160,6 +168,8 @@ namespace Funkin.NET.Screens.Main
         private void Initialize()
         {
             _initialized = true;
+
+            MusicConductor.Offset = Time.Current;
             
             Scheduler.AddDelayed(() => // Start music in 5 seconds
             {
@@ -175,24 +185,31 @@ namespace Funkin.NET.Screens.Main
         
         private void FillNotes()
         {
-            while (_notesAhead.Count != NumberOfSectionsToGenerateAhead)
+            while (_notesAhead.Count <= NumberOfSectionsToGenerateAhead)
             {
                 if (!_sectionEnumerator.MoveNext()) break;
                 
                 Section section = _sectionEnumerator.Current;
                 if (section is null) continue;
+                Console.WriteLine($"Position: {MusicConductor.SongPosition} - Offset: {MusicConductor.Offset}");
 
                 ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[section.SectionNotes.Count];
                 for (int i = 0; i < section.SectionNotes.Count; i++)
                 {
                     Note note = section.SectionNotes[i];
-                    Vector2 notePos = PlayerArrows[(int) note.Key].Position;
+                    Vector2 notePos = section.MustHitSection
+                        ? PlayerArrows[(int) note.Key].Position
+                        : OpponentArrows[(int) note.Key].Position;
                     
-                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection, MusicConductor.SongPosition + MusicStartOffset)
+                    double startOffset = MusicConductor.Offset;
+                    if (!Music.IsRunning) startOffset += MusicStartOffset;
+
+                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection,
+                        startOffset)
                     {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
-                        Position = new Vector2(0, 10000)
+                        Position = new Vector2(0, ScrollingArrowStartPos)
                     };
                     AddInternal(arrows[i]);
                 }
