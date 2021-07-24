@@ -18,6 +18,8 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public string Character;
         public double HoldTimer;
         protected bool DanceCycled;
+        public bool PixelScaling;
+        public bool Flip;
 
         public CharacterDrawable(string character, CharacterType type)
         {
@@ -42,7 +44,6 @@ namespace Funkin.NET.Graphics.Sprites.Characters
             {
                 tAnimation.GotoAndStop(0);
                 tAnimation.Hide();
-                tAnimation.Loop = false; // never loop kthxbai
             }
 
             Animations[animation].Show();
@@ -131,7 +132,41 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         [BackgroundDependencyLoader]
         private void Load(TextureStore textures)
         {
-            Animations = this.LoadTextures(textures);
+            Animations = new Dictionary<string, TextureAnimation>();
+            this.LoadTextures(textures);
+
+            if (Type == CharacterType.Boyfriend)
+            {
+                Flip = !Flip;
+
+                // don't flip bf assets cos alr in right place
+                if (!Character.StartsWith("bf"))
+                {
+                    TextureAnimation oldRight = Animations["singRIGHT"];
+                    Animations["singRIGHT"] = Animations["singLEFT"];
+                    Animations["singLEFT"] = oldRight;
+                    
+                    if (Animations.ContainsKey("singRIGHTmiss"))
+                    {
+                        TextureAnimation oldMiss = Animations["singRIGHTmiss"];
+                        Animations["singRIGHTmiss"] = Animations["singLEFTmiss"];
+                        Animations["singLEFTmiss"] = oldMiss;
+                    }
+                }
+            }
+
+            if (PixelScaling)
+            {
+                // I don't remember if enumerating through
+                // the values collection here is safe
+                // so I'm just taking the risk-less option
+                // and accessing directly through indexes
+                foreach (string key in Animations.Keys)
+                    Animations[key].Scale *= FunkinCharacterAnimator.PixelZoom;
+            }
+
+            foreach (TextureAnimation blah in Animations.Values)
+                AddInternal(blah);
         }
     }
 
