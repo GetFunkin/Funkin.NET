@@ -178,7 +178,7 @@ namespace Funkin.NET.Graphics.Sprites.Characters
 
         // ==============
         // prefix regex -
-        // search: animation\.addByPrefix\('(.*?)', '(.*?)', (.*?), false\);
+        // search: animation\.addByPrefix\('(.*?)', '(.*?)', (.*?), (.*?)\);
         //  $1 = identifier
         //  $2 = prefix
         //  $3 = frame divider
@@ -243,31 +243,31 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterGirlfriendChristmas(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-				animation.addByIndices('hairBlow', 'GF Dancing Beat Hair blowing', [0, 1, 2, 3], "", 24, true);
-				animation.addByIndices('hairFall', 'GF Dancing Beat Hair Landing', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24, true);
+             * 				drawable.AddByPrefix(textures, "cheer", "GF Cheer", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "GF left note", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "GF Right Note", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "GF Up Note", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "GF Down Note", 24, false);
+				drawable.AddByIndices(textures, "sad", "gf sad", 24, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+				drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+				drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat", 24, false, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
+				drawable.AddByIndices(textures, "hairBlow", "GF Dancing Beat Hair blowing", 24, true, 0, 1, 2, 3);
+				drawable.AddByIndices(textures, "hairFall", "GF Dancing Beat Hair Landing", 24, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+				drawable.AddByPrefix(textures, "scared", "GF FEAR", 24, true);
 
 				addOffset('cheer');
-				addOffset('sad', -2, -2);
-				addOffset('danceLeft', 0, -9);
-				addOffset('danceRight', 0, -9);
+				drawable.AssignOffset("sad", new Vector2(-2f, -2f));
+				drawable.AssignOffset("danceLeft", new Vector2(0f, -9f));
+				drawable.AssignOffset("danceRight", new Vector2(0f, -9f));
 
-				addOffset('singUP', 0, 4);
-				addOffset('singRIGHT', 0, -20);
-				addOffset('singLEFT', 0, -19);
-				addOffset('singDOWN', 0, -20);
-				addOffset('hairBlow', 45, -8);
-				addOffset('hairFall', 0, -9);
+				drawable.AssignOffset("singUP", new Vector2(0f, 4f));
+				drawable.AssignOffset("singRIGHT", new Vector2(0f, -20f));
+				drawable.AssignOffset("singLEFT", new Vector2(0f, -19f));
+				drawable.AssignOffset("singDOWN", new Vector2(0f, -20f));
+				drawable.AssignOffset("hairBlow", new Vector2(45f, -8f));
+				drawable.AssignOffset("hairFall", new Vector2(0f, -9f));
 
-				addOffset('scared', -2, -17);
+				drawable.AssignOffset("scared", new Vector2(-2f, -17f));
 
 				playAnim('danceRight');
              */
@@ -276,8 +276,8 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterGirlfriendCar(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing Beat Hair blowing CAR', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+             * drawable.AddByIndices(textures, "singUP", "GF Dancing Beat Hair blowing CAR", 24, false, 0);
+				drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat Hair blowing CAR", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
 				animation.addByIndices('danceRight', 'GF Dancing Beat Hair blowing CAR', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24,
 					false);
 
@@ -291,9 +291,9 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterGirlfriendPixel(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF IDLE', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+             * drawable.AddByIndices(textures, "singUP", "GF IDLE", 24, false, 2);
+				drawable.AddByIndices(textures, "danceLeft", "GF IDLE", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+				drawable.AddByIndices(textures, "danceRight", "GF IDLE", 24, false, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
 
 				addOffset('danceLeft', 0);
 				addOffset('danceRight', 0);
@@ -316,10 +316,10 @@ namespace Funkin.NET.Graphics.Sprites.Characters
 				animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24);
 
 				addOffset('idle');
-				addOffset('singUP', -6, 50);
-				addOffset('singRIGHT', 0, 27);
-				addOffset('singLEFT', -10, 10);
-				addOffset('singDOWN', 0, -30);
+				drawable.AssignOffset("singUP", new Vector2(-6f, 50f));
+				drawable.AssignOffset("singRIGHT", new Vector2(0f, 27f));
+				drawable.AssignOffset("singLEFT", new Vector2(-10f, 10f));
+				drawable.AssignOffset("singDOWN", new Vector2(0f, -30f));
 
 				playAnim('idle');
              */
@@ -328,20 +328,20 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterSpooky(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
-				animation.addByPrefix('singLEFT', 'note sing left', 24, false);
-				animation.addByPrefix('singRIGHT', 'spooky sing right', 24, false);
-				animation.addByIndices('danceLeft', 'spooky dance idle', [0, 2, 6], "", 12, false);
-				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
+             * drawable.AddByPrefix(textures, "singUP", "spooky UP NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "spooky DOWN note", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "note sing left", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "spooky sing right", 24, false);
+				drawable.AddByIndices(textures, "danceLeft", "spooky dance idle", 12, false, 0, 2, 6);
+				drawable.AddByIndices(textures, "danceRight", "spooky dance idle", 12, false, 8, 10, 12, 14);
 
 				addOffset('danceLeft');
 				addOffset('danceRight');
 
-				addOffset('singUP', -20, 26);
-				addOffset('singRIGHT', -130, -14);
-				addOffset('singLEFT', 130, -10);
-				addOffset('singDOWN', -50, -130);
+				drawable.AssignOffset("singUP", new Vector2(-20f, 26f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-130f, -14f));
+				drawable.AssignOffset("singLEFT", new Vector2(130f, -10f));
+				drawable.AssignOffset("singDOWN", new Vector2(-50f, -130f));
 
 				playAnim('danceRight');
              */
@@ -350,19 +350,19 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterMom(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'Mom Idle', 24, false);
-				animation.addByPrefix('singUP', 'Mom Up Pose', 24, false);
-				animation.addByPrefix('singDOWN', 'MOM DOWN POSE', 24, false);
-				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "Mom Idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "Mom Up Pose", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "MOM DOWN POSE", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "Mom Left Pose", 24, false);
 				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
 				// CUZ DAVE IS DUMB!
-				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "Mom Pose Left", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', 14, 71);
-				addOffset('singRIGHT', 10, -60);
-				addOffset('singLEFT', 250, -23);
-				addOffset('singDOWN', 20, -160);
+				drawable.AssignOffset("singUP", new Vector2(14f, 71f));
+				drawable.AssignOffset("singRIGHT", new Vector2(10f, -60f));
+				drawable.AssignOffset("singLEFT", new Vector2(250f, -23f));
+				drawable.AssignOffset("singDOWN", new Vector2(20f, -160f));
 
 				playAnim('idle');
              */
@@ -371,19 +371,19 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterMomCar(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'Mom Idle', 24, false);
-				animation.addByPrefix('singUP', 'Mom Up Pose', 24, false);
-				animation.addByPrefix('singDOWN', 'MOM DOWN POSE', 24, false);
-				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "Mom Idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "Mom Up Pose", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "MOM DOWN POSE", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "Mom Left Pose", 24, false);
 				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
 				// CUZ DAVE IS DUMB!
-				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "Mom Pose Left", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', 14, 71);
-				addOffset('singRIGHT', 10, -60);
-				addOffset('singLEFT', 250, -23);
-				addOffset('singDOWN', 20, -160);
+				drawable.AssignOffset("singUP", new Vector2(14f, 71f));
+				drawable.AssignOffset("singRIGHT", new Vector2(10f, -60f));
+				drawable.AssignOffset("singLEFT", new Vector2(250f, -23f));
+				drawable.AssignOffset("singDOWN", new Vector2(20f, -160f));
 
 				playAnim('idle');
              */
@@ -392,17 +392,17 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterMonster(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'monster idle', 24, false);
-				animation.addByPrefix('singUP', 'monster up note', 24, false);
-				animation.addByPrefix('singDOWN', 'monster down', 24, false);
-				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "monster idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "monster up note", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "monster down", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "Monster left note", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "Monster Right note", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', -20, 50);
+				drawable.AssignOffset("singUP", new Vector2(-20f, 50f));
 				addOffset('singRIGHT', -51);
 				addOffset('singLEFT', -30);
-				addOffset('singDOWN', -30, -40);
+				drawable.AssignOffset("singDOWN", new Vector2(-30f, -40f));
 				playAnim('idle');
              */
         }
@@ -410,17 +410,17 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterMonsterChristmas(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'monster idle', 24, false);
-				animation.addByPrefix('singUP', 'monster up note', 24, false);
-				animation.addByPrefix('singDOWN', 'monster down', 24, false);
-				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "monster idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "monster up note", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "monster down", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "Monster left note", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "Monster Right note", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', -20, 50);
+				drawable.AssignOffset("singUP", new Vector2(-20f, 50f));
 				addOffset('singRIGHT', -51);
 				addOffset('singLEFT', -30);
-				addOffset('singDOWN', -40, -94);
+				drawable.AssignOffset("singDOWN", new Vector2(-40f, -94f));
 				playAnim('idle');
              */
         }
@@ -428,37 +428,37 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterPico(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'Pico Idle Dance', 24, true);
-				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
-				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "Pico Idle Dance", 24, true);
+				drawable.AddByPrefix(textures, "singUP", "pico Up note0", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "Pico Down Note0", 24, false);
 				if (isPlayer)
 				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
+					drawable.AddByPrefix(textures, "singLEFT", "Pico NOTE LEFT0", 24, false);
+					drawable.AddByPrefix(textures, "singRIGHT", "Pico Note Right0", 24, false);
+					drawable.AddByPrefix(textures, "singRIGHTmiss", "Pico Note Right Miss", 24, false);
+					drawable.AddByPrefix(textures, "singLEFTmiss", "Pico NOTE LEFT miss", 24, false);
 				}
 				else
 				{
 					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
+					drawable.AddByPrefix(textures, "singLEFT", "Pico Note Right0", 24, false);
+					drawable.AddByPrefix(textures, "singRIGHT", "Pico NOTE LEFT0", 24, false);
+					drawable.AddByPrefix(textures, "singRIGHTmiss", "Pico NOTE LEFT miss", 24, false);
+					drawable.AddByPrefix(textures, "singLEFTmiss", "Pico Note Right Miss", 24, false);
 				}
 
-				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24, true);
-				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24, true);
+				drawable.AddByPrefix(textures, "singUPmiss", "pico Up note miss", 24, true);
+				drawable.AddByPrefix(textures, "singDOWNmiss", "Pico Down Note MISS", 24, true);
 
 				addOffset('idle');
-				addOffset('singUP', -29, 27);
-				addOffset('singRIGHT', -68, -7);
-				addOffset('singLEFT', 65, 9);
-				addOffset('singDOWN', 200, -70);
-				addOffset('singUPmiss', -19, 67);
-				addOffset('singRIGHTmiss', -60, 41);
-				addOffset('singLEFTmiss', 62, 64);
-				addOffset('singDOWNmiss', 210, -28);
+				drawable.AssignOffset("singUP", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-68f, -7f));
+				drawable.AssignOffset("singLEFT", new Vector2(65f, 9f));
+				drawable.AssignOffset("singDOWN", new Vector2(200f, -70f));
+				drawable.AssignOffset("singUPmiss", new Vector2(-19f, 67f));
+				drawable.AssignOffset("singRIGHTmiss", new Vector2(-60f, 41f));
+				drawable.AssignOffset("singLEFTmiss", new Vector2(62f, 64f));
+				drawable.AssignOffset("singDOWNmiss", new Vector2(210f, -28f));
 
 				playAnim('idle');
 
@@ -469,36 +469,36 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterBoyfriend(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "BF idle dance", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "BF NOTE UP0", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "BF NOTE LEFT0", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "BF NOTE RIGHT0", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "BF NOTE DOWN0", 24, false);
+				drawable.AddByPrefix(textures, "singUPmiss", "BF NOTE UP MISS", 24, false);
+				drawable.AddByPrefix(textures, "singLEFTmiss", "BF NOTE LEFT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHTmiss", "BF NOTE RIGHT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singDOWNmiss", "BF NOTE DOWN MISS", 24, false);
+				drawable.AddByPrefix(textures, "hey", "BF HEY", 24, false);
 
-				animation.addByPrefix('firstDeath', 'BF dies', 24, false);
-				animation.addByPrefix('deathLoop', 'BF Dead Loop', 24, true);
-				animation.addByPrefix('deathConfirm', 'BF Dead confirm', 24, false);
+				drawable.AddByPrefix(textures, "firstDeath", "BF dies", 24, false);
+				drawable.AddByPrefix(textures, "deathLoop", "BF Dead Loop", 24, true);
+				drawable.AddByPrefix(textures, "deathConfirm", "BF Dead confirm", 24, false);
 
-				animation.addByPrefix('scared', 'BF idle shaking', 24, true);
+				drawable.AddByPrefix(textures, "scared", "BF idle shaking", 24, true);
 
 				addOffset('idle', -5);
-				addOffset('singUP', -29, 27);
-				addOffset('singRIGHT', -38, -7);
-				addOffset('singLEFT', 12, -6);
-				addOffset('singDOWN', -10, -50);
-				addOffset('singUPmiss', -29, 27);
-				addOffset('singRIGHTmiss', -30, 21);
-				addOffset('singLEFTmiss', 12, 24);
-				addOffset('singDOWNmiss', -11, -19);
-				addOffset('hey', 7, 4);
-				addOffset('firstDeath', 37, 11);
-				addOffset('deathLoop', 37, 5);
-				addOffset('deathConfirm', 37, 69);
+				drawable.AssignOffset("singUP", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-38f, -7f));
+				drawable.AssignOffset("singLEFT", new Vector2(12f, -6f));
+				drawable.AssignOffset("singDOWN", new Vector2(-10f, -50f));
+				drawable.AssignOffset("singUPmiss", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHTmiss", new Vector2(-30f, 21f));
+				drawable.AssignOffset("singLEFTmiss", new Vector2(12f, 24f));
+				drawable.AssignOffset("singDOWNmiss", new Vector2(-11f, -19f));
+				drawable.AssignOffset("hey", new Vector2(7f, 4f));
+				drawable.AssignOffset("firstDeath", new Vector2(37f, 11f));
+				drawable.AssignOffset("deathLoop", new Vector2(37f, 5f));
+				drawable.AssignOffset("deathConfirm", new Vector2(37f, 69f));
 				addOffset('scared', -4);
 
 				playAnim('idle');
@@ -510,27 +510,27 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterBoyfriendChristmas(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "BF idle dance", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "BF NOTE UP0", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "BF NOTE LEFT0", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "BF NOTE RIGHT0", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "BF NOTE DOWN0", 24, false);
+				drawable.AddByPrefix(textures, "singUPmiss", "BF NOTE UP MISS", 24, false);
+				drawable.AddByPrefix(textures, "singLEFTmiss", "BF NOTE LEFT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHTmiss", "BF NOTE RIGHT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singDOWNmiss", "BF NOTE DOWN MISS", 24, false);
+				drawable.AddByPrefix(textures, "hey", "BF HEY", 24, false);
 
 				addOffset('idle', -5);
-				addOffset('singUP', -29, 27);
-				addOffset('singRIGHT', -38, -7);
-				addOffset('singLEFT', 12, -6);
-				addOffset('singDOWN', -10, -50);
-				addOffset('singUPmiss', -29, 27);
-				addOffset('singRIGHTmiss', -30, 21);
-				addOffset('singLEFTmiss', 12, 24);
-				addOffset('singDOWNmiss', -11, -19);
-				addOffset('hey', 7, 4);
+				drawable.AssignOffset("singUP", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-38f, -7f));
+				drawable.AssignOffset("singLEFT", new Vector2(12f, -6f));
+				drawable.AssignOffset("singDOWN", new Vector2(-10f, -50f));
+				drawable.AssignOffset("singUPmiss", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHTmiss", new Vector2(-30f, 21f));
+				drawable.AssignOffset("singLEFTmiss", new Vector2(12f, 24f));
+				drawable.AssignOffset("singDOWNmiss", new Vector2(-11f, -19f));
+				drawable.AssignOffset("hey", new Vector2(7f, 4f));
 
 				playAnim('idle');
 
@@ -541,25 +541,25 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterBoyfriendCar(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "BF idle dance", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "BF NOTE UP0", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "BF NOTE LEFT0", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "BF NOTE RIGHT0", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "BF NOTE DOWN0", 24, false);
+				drawable.AddByPrefix(textures, "singUPmiss", "BF NOTE UP MISS", 24, false);
+				drawable.AddByPrefix(textures, "singLEFTmiss", "BF NOTE LEFT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHTmiss", "BF NOTE RIGHT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singDOWNmiss", "BF NOTE DOWN MISS", 24, false);
 
 				addOffset('idle', -5);
-				addOffset('singUP', -29, 27);
-				addOffset('singRIGHT', -38, -7);
-				addOffset('singLEFT', 12, -6);
-				addOffset('singDOWN', -10, -50);
-				addOffset('singUPmiss', -29, 27);
-				addOffset('singRIGHTmiss', -30, 21);
-				addOffset('singLEFTmiss', 12, 24);
-				addOffset('singDOWNmiss', -11, -19);
+				drawable.AssignOffset("singUP", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-38f, -7f));
+				drawable.AssignOffset("singLEFT", new Vector2(12f, -6f));
+				drawable.AssignOffset("singDOWN", new Vector2(-10f, -50f));
+				drawable.AssignOffset("singUPmiss", new Vector2(-29f, 27f));
+				drawable.AssignOffset("singRIGHTmiss", new Vector2(-30f, 21f));
+				drawable.AssignOffset("singLEFTmiss", new Vector2(12f, 24f));
+				drawable.AssignOffset("singDOWNmiss", new Vector2(-11f, -19f));
 				playAnim('idle');
 
 				flipX = true;
@@ -569,15 +569,15 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterBoyfriendPixel(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'BF IDLE', 24, false);
-				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "BF IDLE", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "BF UP NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "BF LEFT NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "BF RIGHT NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "BF DOWN NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singUPmiss", "BF UP MISS", 24, false);
+				drawable.AddByPrefix(textures, "singLEFTmiss", "BF LEFT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHTmiss", "BF RIGHT MISS", 24, false);
+				drawable.AddByPrefix(textures, "singDOWNmiss", "BF DOWN MISS", 24, false);
 
 				addOffset('idle');
 				addOffset('singUP');
@@ -606,10 +606,10 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterBoyfriendPixelDead(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('singUP', 'BF Dies pixel', 24, false);
-				animation.addByPrefix('firstDeath', 'BF Dies pixel', 24, false);
-				animation.addByPrefix('deathLoop', 'Retry Loop', 24, true);
-				animation.addByPrefix('deathConfirm', 'RETRY CONFIRM', 24, false);
+             * drawable.AddByPrefix(textures, "singUP", "BF Dies pixel", 24, false);
+				drawable.AddByPrefix(textures, "firstDeath", "BF Dies pixel", 24, false);
+				drawable.AddByPrefix(textures, "deathLoop", "Retry Loop", 24, true);
+				drawable.AddByPrefix(textures, "deathConfirm", "RETRY CONFIRM", 24, false);
 				animation.play('firstDeath');
 
 				addOffset('firstDeath');
@@ -627,14 +627,14 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterSenpai(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "Senpai Idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "SENPAI UP NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "SENPAI LEFT NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "SENPAI RIGHT NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "SENPAI DOWN NOTE", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', 5, 37);
+				drawable.AssignOffset("singUP", new Vector2(5f, 37f));
 				addOffset('singRIGHT');
 				addOffset('singLEFT', 40);
 				addOffset('singDOWN', 14);
@@ -651,14 +651,14 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterSenpaiAngry(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "Angry Senpai Idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "Angry Senpai UP NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "Angry Senpai LEFT NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "Angry Senpai RIGHT NOTE", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "Angry Senpai DOWN NOTE", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', 5, 37);
+				drawable.AssignOffset("singUP", new Vector2(5f, 37f));
 				addOffset('singRIGHT');
 				addOffset('singLEFT', 40);
 				addOffset('singDOWN', 14);
@@ -674,17 +674,17 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterSpirit(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'idle spirit_', 24, false);
-				animation.addByPrefix('singUP', 'up_', 24, false);
-				animation.addByPrefix('singRIGHT', 'right_', 24, false);
-				animation.addByPrefix('singLEFT', 'left_', 24, false);
-				animation.addByPrefix('singDOWN', 'spirit down_', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "idle spirit_", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "up_", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "right_", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "left_", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "spirit down_", 24, false);
 
-				addOffset('idle', -220, -280);
-				addOffset('singUP', -220, -240);
-				addOffset('singRIGHT', -220, -280);
-				addOffset('singLEFT', -200, -280);
-				addOffset('singDOWN', 170, 110);
+				drawable.AssignOffset("idle", new Vector2(-220f, -280f));
+				drawable.AssignOffset("singUP", new Vector2(-220f, -240f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-220f, -280f));
+				drawable.AssignOffset("singLEFT", new Vector2(-200f, -280f));
+				drawable.AssignOffset("singDOWN", new Vector2(170f, 110f));
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
@@ -698,27 +698,27 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public static void RegisterParentsChristmas(this CharacterDrawable drawable, TextureStore textures)
         {
             /*
-             * animation.addByPrefix('idle', 'Parent Christmas Idle', 24, false);
-				animation.addByPrefix('singUP', 'Parent Up Note Dad', 24, false);
-				animation.addByPrefix('singDOWN', 'Parent Down Note Dad', 24, false);
-				animation.addByPrefix('singLEFT', 'Parent Left Note Dad', 24, false);
-				animation.addByPrefix('singRIGHT', 'Parent Right Note Dad', 24, false);
+             * drawable.AddByPrefix(textures, "idle", "Parent Christmas Idle", 24, false);
+				drawable.AddByPrefix(textures, "singUP", "Parent Up Note Dad", 24, false);
+				drawable.AddByPrefix(textures, "singDOWN", "Parent Down Note Dad", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT", "Parent Left Note Dad", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT", "Parent Right Note Dad", 24, false);
 
-				animation.addByPrefix('singUP-alt', 'Parent Up Note Mom', 24, false);
+				drawable.AddByPrefix(textures, "singUP-alt", "Parent Up Note Mom", 24, false);
 
-				animation.addByPrefix('singDOWN-alt', 'Parent Down Note Mom', 24, false);
-				animation.addByPrefix('singLEFT-alt', 'Parent Left Note Mom', 24, false);
-				animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
+				drawable.AddByPrefix(textures, "singDOWN-alt", "Parent Down Note Mom", 24, false);
+				drawable.AddByPrefix(textures, "singLEFT-alt", "Parent Left Note Mom", 24, false);
+				drawable.AddByPrefix(textures, "singRIGHT-alt", "Parent Right Note Mom", 24, false);
 
 				addOffset('idle');
-				addOffset('singUP', -47, 24);
-				addOffset('singRIGHT', -1, -23);
-				addOffset('singLEFT', -30, 16);
-				addOffset('singDOWN', -31, -29);
-				addOffset('singUP-alt', -47, 24);
-				addOffset('singRIGHT-alt', -1, -24);
-				addOffset('singLEFT-alt', -30, 15);
-				addOffset('singDOWN-alt', -30, -27);
+				drawable.AssignOffset("singUP", new Vector2(-47f, 24f));
+				drawable.AssignOffset("singRIGHT", new Vector2(-1f, -23f));
+				drawable.AssignOffset("singLEFT", new Vector2(-30f, 16f));
+				drawable.AssignOffset("singDOWN", new Vector2(-31f, -29f));
+				drawable.AssignOffset("singUP-alt", new Vector2(-47f, 24f));
+				drawable.AssignOffset("singRIGHT-alt", new Vector2(-1f, -24f));
+				drawable.AssignOffset("singLEFT-alt", new Vector2(-30f, 15f));
+				drawable.AssignOffset("singDOWN-alt", new Vector2(-30f, -27f));
 
 				playAnim('idle');
              */
