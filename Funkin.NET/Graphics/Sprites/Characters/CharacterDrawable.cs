@@ -18,6 +18,8 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         public string Character;
         public double HoldTimer;
         protected bool DanceCycled;
+        public bool PixelScaling;
+        public bool Flip;
 
         public CharacterDrawable(string character, CharacterType type)
         {
@@ -132,6 +134,16 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         private void Load(TextureStore textures)
         {
             Animations = this.LoadTextures(textures);
+
+            if (!PixelScaling)
+                return;
+
+            // I don't remember if enumerating through
+            // the values collection here is safe
+            // so I'm just taking the risk-less option
+            // and accessing directly through indexes
+            foreach (string key in Animations.Keys)
+                Animations[key].Scale *= FunkinCharacterAnimator.PixelZoom;
         }
     }
 
