@@ -11,11 +11,8 @@ namespace Funkin.NET.Graphics.Sprites.Characters
     {
         public const float PixelZoom = 6f;
 
-        public static Dictionary<string, TextureAnimation> LoadTextures(this CharacterDrawable drawable,
-            TextureStore textures)
+        public static void LoadTextures(this CharacterDrawable drawable, TextureStore textures)
         {
-            Dictionary<string, TextureAnimation> collection = new();
-
             switch (drawable.Character)
             {
                 case "gf":
@@ -98,8 +95,6 @@ namespace Funkin.NET.Graphics.Sprites.Characters
                     drawable.RegisterParentsChristmas(textures);
                     break;
             }
-
-            return collection;
         }
 
         #region Asset Retrieval
@@ -458,7 +453,7 @@ namespace Funkin.NET.Graphics.Sprites.Characters
 
         public static void RegisterBoyfriendChristmas(this CharacterDrawable drawable, TextureStore textures)
         {
-            drawable.AddByPrefix(textures, "idle", "BF idle dance", 24, 14);
+            drawable.AddByPrefix(textures, "idle", "BF idle dance", 24, 14, true);
             drawable.AddByPrefix(textures, "singUP", "BF NOTE UP", 24, 15);
             drawable.AddByPrefix(textures, "singLEFT", "BF NOTE LEFT", 24, 15);
             drawable.AddByPrefix(textures, "singRIGHT", "BF NOTE RIGHT", 24, 62);

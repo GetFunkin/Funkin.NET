@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Funkin.NET.Graphics.Sprites;
+using Funkin.NET.Graphics.Sprites.Characters;
 using Funkin.NET.Input.Bindings;
 using Funkin.NET.Songs;
 using osu.Framework.Allocation;
@@ -105,6 +106,27 @@ namespace Funkin.NET.Screens.Main
 
             foreach (ArrowKeyDrawable drawable in OpponentArrows)
                 AddInternal(drawable);
+
+            AddInternal(new CharacterDrawable("gf", CharacterType.Girlfriend)
+            {
+                Position = new Vector2(0f, 300f),
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre
+            });
+
+            AddInternal(new CharacterDrawable("dad", CharacterType.Opponent)
+            {
+                Position = new Vector2(-300f, 300f),
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre
+            });
+
+            AddInternal(new CharacterDrawable("bf", CharacterType.Boyfriend)
+            {
+                Position = new Vector2(300f, 300f),
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre
+            });
         }
 
         public virtual bool OnPressed(UniversalAction action)

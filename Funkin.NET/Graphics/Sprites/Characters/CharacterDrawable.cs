@@ -132,7 +132,8 @@ namespace Funkin.NET.Graphics.Sprites.Characters
         [BackgroundDependencyLoader]
         private void Load(TextureStore textures)
         {
-            Animations = this.LoadTextures(textures);
+            Animations = new Dictionary<string, TextureAnimation>();
+            this.LoadTextures(textures);
 
             if (Type == CharacterType.Boyfriend)
             {
@@ -154,17 +155,18 @@ namespace Funkin.NET.Graphics.Sprites.Characters
                 }
             }
 
-            if (!PixelScaling)
-                return;
+            if (PixelScaling)
+            {
+                // I don't remember if enumerating through
+                // the values collection here is safe
+                // so I'm just taking the risk-less option
+                // and accessing directly through indexes
+                foreach (string key in Animations.Keys)
+                    Animations[key].Scale *= FunkinCharacterAnimator.PixelZoom;
+            }
 
-            // I don't remember if enumerating through
-            // the values collection here is safe
-            // so I'm just taking the risk-less option
-            // and accessing directly through indexes
-            foreach (string key in Animations.Keys)
-                Animations[key].Scale *= FunkinCharacterAnimator.PixelZoom;
-
-
+            foreach (TextureAnimation blah in Animations.Values)
+                AddInternal(blah);
         }
     }
 
