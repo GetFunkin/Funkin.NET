@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Funkin.NET.Conductor;
 using Funkin.NET.Content.Elements.Composites;
 using Funkin.NET.Input.Bindings.ArrowKeys;
 using Funkin.NET.Songs;
@@ -28,6 +29,7 @@ namespace Funkin.NET.Screens
          */
 
         private const int NumberOfSectionsToGenerateAhead = 4;
+        private const int MusicStartOffset = 5 * 1000;
 
         public override double ExpectedBpm { get; }
 
@@ -55,7 +57,15 @@ namespace Funkin.NET.Screens
         {
             base.Update();
 
+            if (!Music.IsRunning)
+                MusicConductor.Offset = Time.Current;
+
+            MusicConductor.SongPosition = Music.CurrentTime;
+            Console.WriteLine(MusicConductor.SongPosition);
+
             if (!_initialized) Initialize();
+            
+            // TODO: if arrow drawables are ded, spawn new ones
         }
 
         [BackgroundDependencyLoader]
@@ -69,7 +79,7 @@ namespace Funkin.NET.Screens
             {
                 Music.Start();
                 Music.VolumeTo(1D);
-            }, 5 * 1000); // Start music in 5 seconds
+            }, MusicStartOffset); // Start music in 5 seconds
 
             ArrowKeyAction[] arrowValues = Enum.GetValues<ArrowKeyAction>();
             _arrows = new ArrowKeyDrawable[arrowValues.Length];
@@ -134,12 +144,23 @@ namespace Funkin.NET.Screens
                 for (int i = 0; i < section.SectionNotes.Count; i++)
                 {
                     Note note = section.SectionNotes[i];
-                    arrows[i] = new ScrollingArrowDrawable(note, !section.MustHitSection);
+                    arrows[i] = new ScrollingArrowDrawable(note, GetStaticNotePosition(note.Key), Song.Speed, !section.MustHitSection, MusicConductor.SongPosition + MusicStartOffset)
+                    {
+                        Origin = Anchor.Centre,
+                        Anchor = Anchor.Centre,
+                        Position = new Vector2(0, 10000)
+                    };
                     AddInternal(arrows[i]);
                 }
 
                 _notesAhead.AddLast(arrows);
             }
+        }
+
+        private Vector2 GetStaticNotePosition(ArrowKeyAction key)
+        {
+            int v = (int) key;
+            return _arrows[v].Position;
         }
     }
 }

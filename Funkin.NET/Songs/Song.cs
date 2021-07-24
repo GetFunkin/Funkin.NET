@@ -14,7 +14,7 @@ namespace Funkin.NET.Songs
         public string Player1 { get; set; }
 
         [JsonPropertyName("speed")]
-        public int Speed { get; set; }
+        public double Speed { get; set; }
 
         [JsonPropertyName("needsVoices")]
         public bool NeedsVoices { get; set; }
