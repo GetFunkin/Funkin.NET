@@ -28,16 +28,22 @@ namespace Funkin.NET.Graphics.Sprites
 
         protected override bool OnHover(HoverEvent e)
         {
-            ButtonGraphic.ScaleTo(1.15f, 650D, Easing.OutBounce);
+            if (!(Alpha > 0f) || !(ButtonGraphic.Alpha > 0f))
+                return false;
 
+            ButtonGraphic.ScaleTo(1.15f, 650D, Easing.OutBounce);
             return true;
+
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
             base.OnHoverLost(e);
 
-            ButtonGraphic.ScaleTo(1f, 300D, Easing.OutBounce);
+            if (Alpha > 0f && ButtonGraphic.Alpha > 0f) 
+                ButtonGraphic.ScaleTo(1f, 300D, Easing.OutBounce);
         }
+
+        protected override bool OnClick(ClickEvent e) => Alpha > 0f && ButtonGraphic.Alpha > 0f && base.OnClick(e);
     }
 }

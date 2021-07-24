@@ -10,6 +10,7 @@ using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.Transforms;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
@@ -123,6 +124,8 @@ namespace Funkin.NET.Screens.Main
 
                 RevealedButtons = true;
 
+                const double delayIncrease = 250D;
+                double delay = delayIncrease;
                 for (int i = 0; i < Buttons.Length; i++)
                 {
                     Vector2 gotoPosition = i switch
@@ -134,8 +137,18 @@ namespace Funkin.NET.Screens.Main
                     };
 
                     Buttons[i].ButtonGraphic.Show();
-                    Buttons[i].ButtonGraphic.ScaleTo(1f, 500D);
-                    Buttons[i].MoveTo(gotoPosition, 500D, Easing.OutBounce);
+                    Buttons[i].Delay(delay, sprite =>
+                    {
+                        sprite.MoveTo(gotoPosition, 500D, Easing.OutBounce);
+                        return new TransformSequence<MenuButton>(sprite);
+                    });
+                    Buttons[i].ButtonGraphic.Delay(delay, sprite =>
+                    {
+                        sprite.ScaleTo(1f, 500D);
+                        return new TransformSequence<Sprite>(sprite);
+                    });
+
+                    delay += delayIncrease;
                 }
             };
         }
