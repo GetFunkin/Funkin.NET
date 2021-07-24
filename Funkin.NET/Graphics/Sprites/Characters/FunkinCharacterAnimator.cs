@@ -21,57 +21,75 @@ namespace Funkin.NET.Graphics.Sprites.Characters
                     break;
 
                 case "gf-christmas":
+                    drawable.RegisterGirlfriendChristmas(textures);
                     break;
 
                 case "gf-car":
+                    drawable.RegisterGirlfriendCar(textures);
                     break;
 
                 case "gf-pixel":
+                    drawable.RegisterGirlfriendPixel(textures);
                     break;
 
                 case "dad":
+                    drawable.RegisterDad(textures);
                     break;
 
                 case "spooky":
+                    drawable.RegisterSpooky(textures);
                     break;
 
                 case "mom":
+                    drawable.RegisterMom(textures);
                     break;
 
                 case "mom-car":
+                    drawable.RegisterMomCar(textures);
                     break;
 
                 case "monster":
+                    drawable.RegisterMonster(textures);
                     break;
 
                 case "pico":
+                    drawable.RegisterPico(textures);
                     break;
 
                 case "bf":
+                    drawable.RegisterBoyfriend(textures);
                     break;
 
                 case "bf-christmas":
+                    drawable.RegisterBoyfriendChristmas(textures);
                     break;
 
                 case "bf-car":
+                    drawable.RegisterBoyfriendCar(textures);
                     break;
 
                 case "bf-pixel":
+                    drawable.RegisterBoyfriendPixel(textures);
                     break;
 
                 case "bf-pixel-dead":
+                    drawable.RegisterBoyfriendPixelDead(textures);
                     break;
 
                 case "senpai":
+                    drawable.RegisterSenpai(textures);
                     break;
 
                 case "senpai-angry":
+                    drawable.RegisterSenpaiAngry(textures);
                     break;
 
                 case "spirit":
+                    drawable.RegisterSpirit(textures);
                     break;
 
                 case "parents-christmas":
+                    drawable.RegisterParentsChristmas(textures);
                     break;
             }
 
@@ -216,6 +234,78 @@ namespace Funkin.NET.Graphics.Sprites.Characters
             drawable.AssignOffset("hairBlow", new Vector2(45f, -8f));
             drawable.AssignOffset("hairFall", new Vector2(0f, -9f));
             drawable.AssignOffset("scared", new Vector2(-2f, -17f));
+        }
+
+        public static void RegisterGirlfriendChristmas(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterGirlfriendCar(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterGirlfriendPixel(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterDad(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterSpooky(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterMom(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterMomCar(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterMonster(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterPico(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterBoyfriend(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterBoyfriendChristmas(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterBoyfriendCar(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterBoyfriendPixel(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterBoyfriendPixelDead(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterSenpai(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterSenpaiAngry(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterSpirit(this CharacterDrawable drawable, TextureStore textures)
+        {
+        }
+
+        public static void RegisterParentsChristmas(this CharacterDrawable drawable, TextureStore textures)
+        {
         }
 
         #endregion
