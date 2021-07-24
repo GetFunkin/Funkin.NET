@@ -13,9 +13,12 @@ namespace Funkin.NET.Graphics.Cursor
     public class FunkinCursorContainer : Container, IProvidesCursor
     {
         protected override Container<Drawable> Content => _content;
+
         private readonly Container _content;
-        private InputManager _inputManager;
-        private IProvidesCursor _currentTarget;
+
+        public InputManager InputManager { get; protected set; }
+
+        public IProvidesCursor CurrentTarget { get; protected set; }
 
         /// <summary>
         ///     Whether any cursors can be displayed.
@@ -48,26 +51,26 @@ namespace Funkin.NET.Graphics.Cursor
         {
             base.LoadComplete();
 
-            _inputManager = GetContainingInputManager();
+            InputManager = GetContainingInputManager();
         }
 
         protected override void Update()
         {
             base.Update();
 
-            IInput lastSource = _inputManager.CurrentState.Mouse.LastSource;
+            IInput lastSource = InputManager.CurrentState.Mouse.LastSource;
             bool validInput = lastSource is { } and not ISourcedFromTouch;
 
             if (!validInput || !CanShowCursor)
             {
-                _currentTarget?.Cursor?.Hide();
-                _currentTarget = null;
+                CurrentTarget?.Cursor?.Hide();
+                CurrentTarget = null;
                 return;
             }
 
             IProvidesCursor newTarget = this;
 
-            foreach (Drawable drawable in _inputManager.HoveredDrawables)
+            foreach (Drawable drawable in InputManager.HoveredDrawables)
             {
                 if (drawable is not IProvidesCursor {ProvidingUserCursor: true} cursorProvider)
                     continue;
@@ -76,13 +79,13 @@ namespace Funkin.NET.Graphics.Cursor
                 break;
             }
 
-            if (_currentTarget == newTarget)
+            if (CurrentTarget == newTarget)
                 return;
 
-            _currentTarget?.Cursor?.Hide();
+            CurrentTarget?.Cursor?.Hide();
             newTarget.Cursor?.Show();
 
-            _currentTarget = newTarget;
+            CurrentTarget = newTarget;
         }
     }
 }

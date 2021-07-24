@@ -1,4 +1,4 @@
-﻿using Funkin.NET.Input.Bindings.ArrowKeys;
+﻿using Funkin.NET.Input.Bindings;
 
 namespace Funkin.NET.Songs
 {
@@ -13,14 +13,14 @@ namespace Funkin.NET.Songs
         /// <summary>
         /// The key that has to be pressed
         /// </summary>
-        public ArrowKeyAction Key { get; }
+        public UniversalAction Key { get; }
 
         /// <summary>
         /// How long the player has to hold the note (in milliseconds)
         /// </summary>
         public int HoldLength { get; }
 
-        public Note(int offset, ArrowKeyAction key, int holdLength)
+        public Note(int offset, UniversalAction key, int holdLength)
         {
             Offset = offset;
             Key = key;

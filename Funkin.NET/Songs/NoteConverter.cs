@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Funkin.NET.Input.Bindings.ArrowKeys;
+using Funkin.NET.Input.Bindings;
 
 namespace Funkin.NET.Songs
 {
@@ -23,7 +23,7 @@ namespace Funkin.NET.Songs
                 int offset = noteArray[0].GetInt32();
                 int key = noteArray[1].GetInt32();
                 int holdTime = noteArray[2].GetInt32();
-                notes.Add(new Note(offset, (ArrowKeyAction)key, holdTime));
+                notes.Add(new Note(offset, (UniversalAction) key, holdTime));
             }
 
             return notes;

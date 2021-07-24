@@ -4,19 +4,26 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using Funkin.NET.Configuration;
 using Funkin.NET.Graphics.Containers;
 using Funkin.NET.Graphics.Cursor;
+using Funkin.NET.Input;
+using Funkin.NET.Input.Bindings;
+using Funkin.NET.Overlays;
 using Funkin.NET.Resources;
 using Funkin.NET.Screens;
+using Funkin.NET.Screens.Main;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
 using osu.Framework.Extensions;
+using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
+using osu.Framework.Input;
 using osu.Framework.IO.Stores;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -37,6 +44,8 @@ namespace Funkin.NET
 
         public virtual Version AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
 
+        public virtual string Version => AssemblyVersion.ToString();
+
         public string VersionHash { get; set; }
 
         protected FunkinConfigManager LocalConfig { get; set; }
@@ -56,10 +65,11 @@ namespace Funkin.NET
         private Container _topMostOverlayContent;
         private ScalingContainer _screenContainer;
         private Container _screenOffsetContainer;
+        private UniversalActionContainer _actionContainer;
 
         private FunkinScreenStack _screenStack;
 
-        // TODO: private SettingsOverlay _settings;
+        public SettingsOverlay Settings;
         private readonly List<OverlayContainer> _overlays = new();
         private readonly List<OverlayContainer> _visibleBlockingOverlays = new();
 
@@ -168,14 +178,15 @@ namespace Funkin.NET
             _screenStack.ScreenPushed += ScreenPushed;
             _screenStack.ScreenExited += ScreenExited;
 
-            _screenStack.Push(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro));
+            _screenStack.Push(
+                new StartupIntroductionScreen(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro)));
 
-            /*_dependencies.CacheAs(_settings = new SettingsOverlay());
-            LoadComponentAsync(_settings, _leftFloatingOverlayContent.Add, CancellationToken.None);
+            _dependencies.CacheAs(Settings = new SettingsOverlay());
+            LoadComponentAsync(Settings, _leftFloatingOverlayContent.Add, CancellationToken.None);
 
             OverlayContainer[] singleDisplaySideOverlays =
             {
-                _settings
+                Settings
             };
 
             foreach (OverlayContainer overlay in singleDisplaySideOverlays)
@@ -185,9 +196,9 @@ namespace Funkin.NET
                     if (x.NewValue == Visibility.Hidden)
                         return;
 
-                    singleDisplaySideOverlays.Where(y => y != x).ForEach(y => y.Hide());
+                    singleDisplaySideOverlays.Where(y => y != overlay).ForEach(y => y.Hide());
                 };
-            }*/
+            }
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -216,6 +227,8 @@ namespace Funkin.NET
             {
                 {FrameworkSetting.WindowMode, WindowMode.Fullscreen}
             };
+
+        protected override UserInputManager CreateUserInputManager() => new FunkinUserInputManager();
 
         protected override void UpdateAfterChildren()
         {
@@ -257,6 +270,7 @@ namespace Funkin.NET
                 Exit();
         }
 
+
         [BackgroundDependencyLoader]
         private void Load()
         {
@@ -283,13 +297,17 @@ namespace Funkin.NET
                 FunkinCursorContainer = new FunkinCursorContainer
                 {
                     RelativeSizeAxes = Axes.Both
-                }
+                },
+
+                _actionContainer = new UniversalActionContainer(Storage, this)
             };
 
             FunkinCursorContainer.Child = _content = new FunkinTooltipContainer(FunkinCursorContainer.Cursor)
             {
                 RelativeSizeAxes = Axes.Both
             };
+
+            _dependencies.Cache(_actionContainer);
 
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }
