@@ -23,7 +23,7 @@ namespace Funkin.NET.Songs
                 int offset = noteArray[0].GetInt32();
                 int key = noteArray[1].GetInt32();
                 int holdTime = noteArray[2].GetInt32();
-                notes.Add(new Note(offset, (UniversalAction) key, holdTime));
+                notes.Add(new Note(offset, (KeyAssociatedAction) key, holdTime));
             }
 
             return notes;

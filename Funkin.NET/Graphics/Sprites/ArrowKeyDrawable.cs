@@ -15,7 +15,7 @@ namespace Funkin.NET.Graphics.Sprites
         // "x press" is for when you incorrectly press a key, or continue holding a key after key ends
         // "x confirm" is for when you correctly press a key, and continue holding while the key hasn't ended
 
-        public ArrowKeyDrawable(UniversalAction arrowKey)
+        public ArrowKeyDrawable(KeyAssociatedAction arrowKey)
         {
             ArrowKey = arrowKey;
 
@@ -42,7 +42,7 @@ namespace Funkin.NET.Graphics.Sprites
             };
         }
 
-        public UniversalAction ArrowKey { get; }
+        public KeyAssociatedAction ArrowKey { get; }
 
         public Sprite ArrowIdleSprite { get; }
 

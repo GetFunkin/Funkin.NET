@@ -13,14 +13,14 @@ namespace Funkin.NET.Songs
         /// <summary>
         /// The key that has to be pressed
         /// </summary>
-        public UniversalAction Key { get; }
+        public KeyAssociatedAction Key { get; }
 
         /// <summary>
         /// How long the player has to hold the note (in milliseconds)
         /// </summary>
         public int HoldLength { get; }
 
-        public Note(int offset, UniversalAction key, int holdLength)
+        public Note(int offset, KeyAssociatedAction key, int holdLength)
         {
             Offset = offset;
             Key = key;

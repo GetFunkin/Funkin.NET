@@ -13,7 +13,7 @@ namespace Funkin.NET.Content.Elements.Composites
 {
     public class ScrollingArrowDrawable : CompositeDrawable
     {
-        public UniversalAction Key { get; }
+        public KeyAssociatedAction Key { get; }
         public double TargetTime { get; }
         public int HoldTime { get; }
         public Vector2 TargetPosition { get; }
@@ -23,7 +23,7 @@ namespace Funkin.NET.Content.Elements.Composites
         private Sprite ArrowSprite { get; }
         private Vector2? _startPos;
 
-        public ScrollingArrowDrawable(UniversalAction key, double targetTime, int holdTime, Vector2 targetPos, double songSpeed,
+        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos, double songSpeed,
             bool isEnemyArrow)
         {
             Key = key;

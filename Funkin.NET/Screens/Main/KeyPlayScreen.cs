@@ -36,12 +36,12 @@ namespace Funkin.NET.Screens.Main
         private const int MusicStartOffset = 5 * 1000;
         private const int ScrollingArrowStartPos = 1000 * 15;
 
-        public static readonly UniversalAction[] ArrowValues =
+        public static readonly KeyAssociatedAction[] ArrowValues =
         {
-            UniversalAction.Left,
-            UniversalAction.Down,
-            UniversalAction.Up,
-            UniversalAction.Right
+            KeyAssociatedAction.Left,
+            KeyAssociatedAction.Down,
+            KeyAssociatedAction.Up,
+            KeyAssociatedAction.Right
         };
 
         public override double ExpectedBpm { get; }
@@ -80,9 +80,12 @@ namespace Funkin.NET.Screens.Main
 
             if (!_initialized)
                 Initialize();
-            
+
+            if (_notesAhead.First is null)
+                return;
+
             // If all of the notes in the first section are dead, remove them and refill notes
-            if (_notesAhead.First!.Value.All(x => Time.Current >= x.LifetimeEnd))
+            if (_notesAhead.First.Value.All(x => Time.Current >= x.LifetimeEnd))
             {
                 Console.WriteLine($"remove first!!!!! {_notesAhead.First}");
                 foreach (ScrollingArrowDrawable arrowDrawable in _notesAhead.First.Value) RemoveInternal(arrowDrawable);
@@ -102,7 +105,7 @@ namespace Funkin.NET.Screens.Main
             float offset = 140f;
             for (int i = 0; i < ArrowValues.Length; i++)
             {
-                UniversalAction arrowKey = ArrowValues[i];
+                KeyAssociatedAction arrowKey = ArrowValues[i];
                 PlayerArrows[i] = new ArrowKeyDrawable(arrowKey)
                 {
                     Anchor = Anchor.Centre,
@@ -118,7 +121,7 @@ namespace Funkin.NET.Screens.Main
             offset = 140f;
             for (int i = ArrowValues.Length - 1; i >= 0; i--)
             {
-                UniversalAction arrowKey = ArrowValues[i];
+                KeyAssociatedAction arrowKey = ArrowValues[i];
                 OpponentArrows[i] = new ArrowKeyDrawable(arrowKey)
                 {
                     Anchor = Anchor.Centre,
@@ -162,7 +165,7 @@ namespace Funkin.NET.Screens.Main
 
         public virtual bool OnPressed(UniversalAction action)
         {
-            if (!ArrowValues.Contains(action))
+            if (!ArrowValues.Contains((KeyAssociatedAction) (int) action))
                 return false;
 
             int value = (int) action;
@@ -177,7 +180,7 @@ namespace Funkin.NET.Screens.Main
 
         public virtual void OnReleased(UniversalAction action)
         {
-            if (!ArrowValues.Contains(action))
+            if (!ArrowValues.Contains((KeyAssociatedAction)(int)action))
                 return;
 
             int value = (int) action;
@@ -209,22 +212,33 @@ namespace Funkin.NET.Screens.Main
         {
             while (_notesAhead.Count <= NumberOfSectionsToGenerateAhead)
             {
-                if (!_sectionEnumerator.MoveNext()) break;
+                if (!_sectionEnumerator.MoveNext())
+                    break;
                 
                 Section section = _sectionEnumerator.Current;
-                if (section is null) continue;
+
+                if (section is null) 
+                    continue;
+
                 Console.WriteLine($"Position: {MusicConductor.SongPosition} - Offset: {MusicConductor.Offset}");
 
                 ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[section.SectionNotes.Count];
                 for (int i = 0; i < section.SectionNotes.Count; i++)
                 {
                     Note note = section.SectionNotes[i];
+                    KeyAssociatedAction keyToUse = note.Key;
+
+                    if ((int) keyToUse >= 4)
+                        keyToUse = (KeyAssociatedAction) ((int) keyToUse - 4);
+
+
                     Vector2 notePos = section.MustHitSection
-                        ? PlayerArrows[(int) note.Key].Position
-                        : OpponentArrows[(int) note.Key].Position;
+                        ? PlayerArrows[(int) keyToUse].Position
+                        : OpponentArrows[(int) keyToUse].Position;
                     
                     double startOffset = MusicConductor.Offset;
-                    if (!Music.IsRunning) startOffset += MusicStartOffset;
+                    if (!Music.IsRunning) 
+                        startOffset += MusicStartOffset;
 
                     arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection,
                         startOffset)
