@@ -560,7 +560,7 @@ namespace Funkin.NET.Screens.Main
                 {
                     0 => () =>
                     {
-                        this.Push(KeyPlayScreen.GetPlayScreen("Json/Songs/Bopeebo/bopeebo-normal.json",
+                        this.Push(BaseKeyPlayScreen.GetPlayScreen("Json/Songs/Bopeebo/bopeebo-normal.json",
                             "Songs/Bopeebo/Inst.ogg", "Songs/Bopeebo/Voices.ogg"));
                     },
                     2 => game.Settings.Show,

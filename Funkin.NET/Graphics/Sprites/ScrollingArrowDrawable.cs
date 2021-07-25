@@ -1,6 +1,7 @@
 ﻿using System;
 using Funkin.NET.Conductor;
 using Funkin.NET.Input.Bindings;
+using Funkin.NET.Screens.Main;
 using Funkin.NET.Songs;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -9,30 +10,34 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
 
-namespace Funkin.NET.Content.Elements.Composites
+// ReSharper disable VirtualMemberCallInConstructor
+
+namespace Funkin.NET.Graphics.Sprites
 {
     public class ScrollingArrowDrawable : CompositeDrawable
     {
-        public KeyAssociatedAction Key { get; }
+        public virtual KeyAssociatedAction Key { get; }
 
-        public double TargetTime { get; }
+        public virtual double TargetTime { get; }
 
-        public int HoldTime { get; }
+        public virtual int HoldTime { get; }
 
-        public Vector2 TargetPosition { get; }
+        public virtual Vector2 TargetPosition { get; }
 
-        public double SongSpeed { get; }
+        public virtual double SongSpeed { get; }
 
-        public bool IsEnemyArrow { get; }
+        public virtual bool IsEnemyArrow { get; }
 
-        public bool HasBeenHit { get; protected set; }
+        public virtual bool HasBeenHit { get; protected set; }
 
-        [Resolved] private TextureStore Textures { get; set; }
+        public virtual IGameData.HitAccuracyType? AccuracyType { get; protected set; }
 
-        private Sprite ArrowSprite { get; }
-        private Vector2? _startPos;
+        protected Sprite ArrowSprite { get; }
+        protected Vector2? StartPos;
+        protected bool RegisteredAccuracyType;
 
-        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos, double songSpeed,
+        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos,
+            double songSpeed,
             bool isEnemyArrow)
         {
             Key = key;
@@ -53,15 +58,19 @@ namespace Funkin.NET.Content.Elements.Composites
 
         public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
             double startOffset = 0) :
-            this(note.Key, note.Offset + startOffset, note.HoldLength, targetPos, songSpeed, isEnemyArrow) { }
+            this(note.Key, note.Offset + startOffset, note.HoldLength, targetPos, songSpeed, isEnemyArrow)
+        {
+        }
 
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(TextureStore textures)
         {
             string textureName = $"Arrow/{Enum.GetName(Key)!.ToLowerInvariant()}_scroll";
-            ArrowSprite.Texture = Textures.Get(textureName);
+            ArrowSprite.Texture = textures.Get(textureName);
             AddInternal(ArrowSprite);
 
+            // debug stuff lol
+            // just shows some positioning text
             /*SpriteText text = new()
             {
                 Font = new FontUsage("Torus-Regular", 15f),
@@ -81,49 +90,84 @@ namespace Funkin.NET.Content.Elements.Composites
 
         protected override void Update()
         {
-            if (!_startPos.HasValue)
-                _startPos = Position;
-            
+            StartPos ??= Position;
+
             // TODO: fix big numbers making stuff slower
             float by = (float) (MusicConductor.SongPosition / TargetTime);
             //Console.WriteLine($"Key: {Key} - Position: {MusicConductor.SongPosition} / {TargetTime} = {by}");
             // Console.WriteLine($"Key: {Key} - {Lerp(_startPos.Value.Y, TargetPosition.Y, by)}");
             //if (IsHeld) Console.WriteLine(by);
 
-            Position = new Vector2(TargetPosition.X, Lerp(_startPos.Value.Y, TargetPosition.Y, by));
+            Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
             // Y = (float) (TargetPosition.Y - (MusicConductor.SongPosition - TargetTime) * 0.45 * SongSpeed);
 
+            if (Position.Y < -250f && !IsEnemyArrow && AccuracyType is null)
+                AccuracyType = IGameData.HitAccuracyType.Missed;
+
             // TODO: sustain note support
-            if (Position.Y <= -200f && IsEnemyArrow)
-            {
-                // TODO: better removal technique
-                Alpha = 0f;
-                HasBeenHit = true;
-            }
+            if (!(Position.Y <= -200f) || !IsEnemyArrow)
+                return;
+
+            // TODO: better removal technique
+            Alpha = 0f;
+            HasBeenHit = true;
         }
 
-        public void Press(KeyAssociatedAction action, bool held)
+        public virtual void Press(KeyAssociatedAction action, bool held)
         {
             if (HasBeenHit)
                 return;
 
-            if (action == Key && !held)
-            {
-                // TODO: sustain note support
-                if (Position.Y is > -250f and < -150f && !IsEnemyArrow)
-                {
-                    // TODO: better removal technique
-                    Alpha = 0f;
-                    HasBeenHit = true;
-                }
-            }
+            // sustain notes aren't implemented yet
+            // so ignore all held presses for now
+            // figure out sustain notes later?
+            if (action != Key || held)
+                return;
+
+            // TODO: sustain note support
+            if (Position.Y is <= -250f or >= -150f || IsEnemyArrow)
+                return;
+
+            // TODO: better removal technique
+            Alpha = 0f;
+            HasBeenHit = true;
+
+            IGameData.HitAccuracyType? hitType = null;
+
+            if (Position.Y is <= -210f or >= -190f)
+                hitType = IGameData.HitAccuracyType.Sick;
+            else if (Position.Y is <= -220f or >= -180f)
+                hitType = IGameData.HitAccuracyType.Good;
+            else if (Position.Y is <= -245f or >= -165f)
+                hitType = IGameData.HitAccuracyType.Bad;
+            else if (Position.Y is <= -250f or >= -150f)
+                hitType = IGameData.HitAccuracyType.Shit;
+
+            AccuracyType = hitType;
         }
 
-        public void Release(KeyAssociatedAction action)
+        public virtual void Release(KeyAssociatedAction action)
         {
         }
 
-        private static float Lerp(float start, float end, float by) => (start * (1.0f - by)) + (end * by);
-        private static Vector2 Lerp(Vector2 start, Vector2 end, float by) => new(Lerp(start.X, end.X, by), Lerp(start.Y, end.Y, by));
+        public virtual void UpdateGameData(ref IGameData gameData)
+        {
+            if (RegisteredAccuracyType)
+                return;
+
+            if (!AccuracyType.HasValue)
+                return;
+
+            RegisteredAccuracyType = true;
+            gameData.NoteHits.Add(AccuracyType.Value);
+            gameData.AddToScore(AccuracyType.Value);
+            gameData.ModifyHealth(AccuracyType.Value);
+        }
+
+        // TODO: move to own class
+        public static float Lerp(float start, float end, float by) => start * (1.0f - by) + end * by;
+
+        public static Vector2 Lerp(Vector2 start, Vector2 end, float by) =>
+            new(Lerp(start.X, end.X, by), Lerp(start.Y, end.Y, by));
     }
 }

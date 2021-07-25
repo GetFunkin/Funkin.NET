@@ -255,8 +255,8 @@ namespace Funkin.NET.Graphics.Containers
 
             MarginPadding newMargin = _originalSectionsMargin;
 
-            newMargin.Top += (_headerHeight ?? 0);
-            newMargin.Bottom += (_footerHeight ?? 0);
+            newMargin.Top += _headerHeight ?? 0;
+            newMargin.Bottom += _footerHeight ?? 0;
 
             _scrollContentContainer.Margin = newMargin;
         }
