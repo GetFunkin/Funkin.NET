@@ -30,6 +30,16 @@ namespace Funkin.NET.Screens.Main
             {IGameData.HitAccuracyType.Sick, 150}
         };
 
+        public static readonly Dictionary<IGameData.HitAccuracyType, float> HealthMap = new()
+        {
+            { IGameData.HitAccuracyType.Uncounted, 0f },
+            { IGameData.HitAccuracyType.Missed, -0.08f },
+            { IGameData.HitAccuracyType.Shit, -0.02f }, // little bit of tr
+            { IGameData.HitAccuracyType.Bad, 0.01f },
+            { IGameData.HitAccuracyType.Good, 0.02f },
+            { IGameData.HitAccuracyType.Sick, 0.04f }
+        };
+
         public virtual int TotalMisses => NoteHits.Count(x => x == IGameData.HitAccuracyType.Missed);
 
         public virtual int TotalScore { get; set; }
@@ -61,7 +71,9 @@ namespace Funkin.NET.Screens.Main
 
         public virtual void AddToScore(IGameData.HitAccuracyType hit) => TotalScore += ScoreMap[hit];
 
-        public virtual void ModifyHealth(IGameData.HitAccuracyType hit) =>
-            Health += hit == IGameData.HitAccuracyType.Missed ? -0.02f : 0.04f;
+        public virtual void ModifyHealth(IGameData.HitAccuracyType hit)
+        {
+            Health = Math.Clamp(Health + HealthMap[hit], 0f, 1f);
+        }
     }
 }

@@ -269,10 +269,10 @@ namespace Funkin.NET.Screens.Main
 
             DynamicGreenBox.OnUpdate += drawable =>
             {
-                drawable.Width = HealthBarBackground.Texture.Width / 2f - 8f;
+                drawable.Width = HealthBarBackground.Texture.Width / 2f - 4f;
                 drawable.Height = HealthBarBackground.Texture.Height - 8f;
                 drawable.Position = new Vector2(HealthBarBackground.Texture.Width / 2f - 4f, drawable.Position.Y);
-                drawable.Scale = new Vector2(GameData.Health * 2f, 1f);
+                drawable.Scale = new Vector2(ScrollingArrowDrawable.Lerp(drawable.Scale.X, GameData.Health * 2f, 0.01f), 1f);
             };
 
             AddInternal(DynamicGreenBox);
