@@ -33,6 +33,7 @@ namespace Funkin.NET.Screens.Main
          * Music.CurrentTime can be used to get current time in ms
          * spawn arrows some time before, like 2 sec maybe
          * when Music.CurrentTime matches arrow offset time, it should be at the arrow sprite position
+         * arrows with type 4-7 are for the other character
          */
 
         private const int NumberOfSectionsToGenerateAhead = 8;
@@ -308,15 +309,30 @@ namespace Funkin.NET.Screens.Main
                 for (int i = 0; i < section.SectionNotes.Count; i++)
                 {
                     Note note = section.SectionNotes[i];
-                    KeyAssociatedAction keyToUse = note.Key;
+                    int keyToUse = (int) note.Key;
 
-                    if ((int) keyToUse >= 4)
-                        keyToUse = (KeyAssociatedAction) ((int) keyToUse - 4);
+                    if (keyToUse >= 4)
+                        keyToUse = (keyToUse - 4);
 
+                    Vector2 notePos;
+                    if (section.MustHitSection)
+                    {
+                        if ((int) note.Key < 4)
+                            notePos = PlayerArrows[keyToUse].Position;
+                        else
+                            notePos = OpponentArrows[keyToUse].Position;
+                    }
+                    else
+                    {
+                        if ((int) note.Key < 4)
+                            notePos = OpponentArrows[keyToUse].Position;
+                        else
+                            notePos = PlayerArrows[keyToUse].Position;
+                    }
 
-                    Vector2 notePos = section.MustHitSection
-                        ? PlayerArrows[(int) keyToUse].Position
-                        : OpponentArrows[(int) keyToUse].Position;
+                    // Vector2 notePos = section.MustHitSection
+                    //     ? PlayerArrows[keyToUse].Position
+                    //     : OpponentArrows[keyToUse].Position;
 
                     double startOffset = MusicConductor.Offset;
                     if (!Music.IsRunning)
