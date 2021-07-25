@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Funkin.NET.Screens.Main
@@ -33,7 +34,7 @@ namespace Funkin.NET.Screens.Main
 
         public virtual int TotalScore { get; set; }
 
-        public virtual float Accuracy => GetAccuracyFromNoteHits(NoteHits);
+        public virtual float Accuracy => MathF.Round(GetAccuracyFromNoteHits(NoteHits), 2);
 
         // TODO: health should lower on misses and raise on hits
         // by a constant amount. also make that changeable easily?

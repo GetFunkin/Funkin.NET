@@ -190,7 +190,7 @@ namespace Funkin.NET.Screens.Main
                 static void AddFont(SpriteText text) => text.Font = new FontUsage("Torus-Regular", 35f);
 
                 flow.Text = "";
-                flow.AddParagraph($"Accuracy: {GameData.Accuracy}" +
+                flow.AddParagraph($"Accuracy: {GameData.Accuracy}%" +
                                   $"\nHealth: {GameData.Health}" +
                                   $"\nMisses: {GameData.TotalMisses}" +
                                   $"\nTotal Score:{GameData.TotalScore}" +
@@ -203,21 +203,21 @@ namespace Funkin.NET.Screens.Main
             // TESTING:
             AddInternal(new CharacterDrawable("gf", CharacterType.Girlfriend)
             {
-                Position = new Vector2(0f, 300f),
+                Position = new Vector2(0f, 200f),
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre
             });
 
             AddInternal(new CharacterDrawable("dad", CharacterType.Opponent)
             {
-                Position = new Vector2(-300f, 300f),
+                Position = new Vector2(-300f, 200f),
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre
             });
 
             AddInternal(new CharacterDrawable("bf", CharacterType.Boyfriend)
             {
-                Position = new Vector2(300f, 300f),
+                Position = new Vector2(300f, 200f),
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre
             });

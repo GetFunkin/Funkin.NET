@@ -4,6 +4,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.Transforms;
 using osuTK;
 
 namespace Funkin.NET.Graphics.Sprites.Characters
@@ -164,6 +165,13 @@ namespace Funkin.NET.Graphics.Sprites.Characters
                 foreach (string key in Animations.Keys)
                     Animations[key].Scale *= FunkinCharacterAnimator.PixelZoom;
             }
+
+            if (Flip)
+                foreach (string key in Animations.Keys)
+                {
+                    Animations[key].Scale = new Vector2(-Animations[key].Scale.X, Animations[key].Scale.Y);
+                    Animations[key].Rotation = 180f;
+                }
 
             foreach (TextureAnimation blah in Animations.Values)
                 AddInternal(blah);
