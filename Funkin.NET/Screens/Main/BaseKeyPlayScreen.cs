@@ -323,7 +323,10 @@ namespace Funkin.NET.Screens.Main
                     if (!Music.IsRunning)
                         startOffset += MusicStartOffset;
 
-                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !mustHitSection, startOffset)
+                    note.Offset += startOffset;
+                    note.Key = (KeyAssociatedAction) keyToUse;
+
+                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !mustHitSection)
                     {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
