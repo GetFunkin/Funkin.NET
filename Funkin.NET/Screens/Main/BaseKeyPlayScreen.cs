@@ -74,6 +74,8 @@ namespace Funkin.NET.Screens.Main
         protected Sprite HealthBarBackground;
         protected Box StaticRedBox;
         protected Box DynamicGreenBox;
+        protected HealthIconDrawable PlayerIcon;
+        protected HealthIconDrawable OpponentIcon;
 
         public BaseKeyPlayScreen(Song song, string instrumentalPath, string vocalPath)
         {
@@ -276,6 +278,63 @@ namespace Funkin.NET.Screens.Main
             };
 
             AddInternal(DynamicGreenBox);
+
+            PlayerIcon = new HealthIconDrawable("bf", true)
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.CentreRight,
+                Position = new Vector2(0f, -50f)
+            };
+
+            PlayerIcon.OnUpdate += drawable =>
+            {
+                drawable.Position = new Vector2(DynamicGreenBox.Position.X - DynamicGreenBox.DrawWidth * DynamicGreenBox.Scale.X + 25f, drawable.Position.Y);
+
+                ((HealthIconDrawable) drawable).Set(GameData.Health <= 0.2f
+                    ? HealthIconDrawable.Type.Dead
+                    : HealthIconDrawable.Type.Alive);
+            };
+
+            AddInternal(PlayerIcon);
+
+            OpponentIcon = new HealthIconDrawable("dad")
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.CentreRight,
+                Position = new Vector2(0f, -50f)
+            };
+
+            OpponentIcon.OnUpdate += drawable =>
+            {
+                drawable.Position = new Vector2(DynamicGreenBox.Position.X - DynamicGreenBox.DrawWidth * DynamicGreenBox.Scale.X - 25f, drawable.Position.Y);
+
+                ((HealthIconDrawable)drawable).Set(GameData.Health >= 0.8f
+                    ? HealthIconDrawable.Type.Dead
+                    : HealthIconDrawable.Type.Alive);
+            };
+
+            AddInternal(OpponentIcon);
+        }
+
+        protected override void BeatHit()
+        {
+            base.BeatHit();
+
+            Vector2 oldPlayerScale = PlayerIcon.Scale;
+            PlayerIcon.ScaleTo(PlayerIcon.Scale * 1.25f, 100D);
+
+            Scheduler.AddDelayed(() =>
+            {
+                PlayerIcon.ScaleTo(oldPlayerScale, 500D);
+            }, 100D);
+
+            Vector2 oldOpponentScale = OpponentIcon.Scale;
+            OpponentIcon.ScaleTo(OpponentIcon.Scale * 1.25f, 100D);
+
+            Scheduler.AddDelayed(() =>
+            {
+                OpponentIcon.ScaleTo(oldOpponentScale, 500D);
+            }, 100D);
         }
 
         public virtual bool OnPressed(UniversalAction action)
