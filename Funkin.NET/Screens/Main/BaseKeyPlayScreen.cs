@@ -266,7 +266,8 @@ namespace Funkin.NET.Screens.Main
                 Anchor = Anchor.BottomCentre,
                 Origin = Anchor.CentreRight,
                 Position = new Vector2(0f, -50f),
-                Colour = Colour4.Lime
+                Colour = Colour4.Lime,
+                AlwaysPresent = true
             };
 
             DynamicGreenBox.OnUpdate += drawable =>
