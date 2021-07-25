@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Funkin.NET.Graphics.UserInterface;
 using Funkin.NET.Input.Bindings;
 using Funkin.NET.Overlays.Settings;
 using osu.Framework.Allocation;
@@ -50,23 +49,6 @@ namespace Funkin.NET.Overlays.KeyBindings
                     CancelAction?.Invoke(this);
                 }
             });
-        }
-    }
-
-    public class ResetButton : FunkinButton
-    {
-        [BackgroundDependencyLoader]
-        private void Load()
-        {
-            Text = "Reset all binds.";
-            RelativeSizeAxes = Axes.X;
-            Width = 0.5f;
-            Anchor = Anchor.TopCentre;
-            Origin = Anchor.TopCentre;
-            Margin = new MarginPadding {Top = 15};
-            Height = 30;
-
-            Content.CornerRadius = 5;
         }
     }
 }

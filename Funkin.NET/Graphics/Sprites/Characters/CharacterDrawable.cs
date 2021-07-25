@@ -169,11 +169,4 @@ namespace Funkin.NET.Graphics.Sprites.Characters
                 AddInternal(blah);
         }
     }
-
-    public enum CharacterType
-    {
-        Boyfriend,
-        Opponent,
-        Girlfriend
-    }
 }

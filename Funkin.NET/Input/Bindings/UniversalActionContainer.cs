@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using osu.Framework.Graphics;
 using osu.Framework.Input;
@@ -56,30 +55,5 @@ namespace Funkin.NET.Input.Bindings
                 return _handler != null ? queue.Prepend(_handler) : queue;
             }
         }
-    }
-
-    public enum UniversalAction
-    {
-        [Description("Left")] Left = 0,
-
-        [Description("Down")] Down = 1,
-
-        [Description("Up")] Up = 2,
-
-        [Description("Right")] Right = 3,
-
-        [Description("Select")] Select
-    }
-
-    public enum KeyAssociatedAction
-    {
-        Left = 0,
-        Down = 1,
-        Up = 2,
-        Right = 3,
-        SustainLeft = 4,
-        SustainDown = 5,
-        SustainUp = 6,
-        SustainRight = 7
     }
 }

@@ -133,10 +133,4 @@ namespace Funkin.NET.Overlays.Settings
             _lastHoveredButton = HoveredButton;
         }
     }
-
-    public enum ExpandedState
-    {
-        Contracted,
-        Expanded,
-    }
 }
