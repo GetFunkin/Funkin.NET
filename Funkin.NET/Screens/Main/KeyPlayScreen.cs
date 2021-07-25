@@ -193,7 +193,7 @@ namespace Funkin.NET.Screens.Main
 
             Console.WriteLine($"{IsPressed}, {IsHeld}");
 
-            foreach (ScrollingArrowDrawable arrow in _notesAhead.First.Value)
+            foreach (ScrollingArrowDrawable arrow in _notesAhead.SelectMany(arrowArray => arrowArray))
                 arrow.Press((KeyAssociatedAction) (int) action, IsHeld);
 
             return true;
