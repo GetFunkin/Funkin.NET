@@ -1416,6 +1416,7 @@
     <None Remove="Textures\Cursor\osu-cursor-additive.png" />
     <None Remove="Textures\Cursor\osu-cursor.png" />
     <None Remove="Textures\Icon.ico" />
+    <None Remove="Textures\Shared\healthBar.png" />
     <None Remove="Textures\Title\freeplay white.png" />
     <None Remove="Textures\Title\gfDance0.png" />
     <None Remove="Textures\Title\gfDance1.png" />

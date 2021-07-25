@@ -15,7 +15,7 @@ namespace Funkin.NET.Desktop
             if (host.Window is not SDL2DesktopWindow desktopWindow)
                 return;
 
-            desktopWindow.CursorState |= CursorState.Hidden; // hide cursor like in fnf
+            desktopWindow.CursorState |= CursorState.Hidden;
 
             using Stream icon = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetType(), "Icon.ico");
             desktopWindow.SetIconFromStream(icon);

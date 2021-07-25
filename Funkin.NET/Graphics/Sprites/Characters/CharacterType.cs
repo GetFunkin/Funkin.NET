@@ -2,8 +2,8 @@
 {
     public enum CharacterType
     {
-        Boyfriend,
-        Opponent,
-        Girlfriend
+        Girlfriend = 0,
+        Boyfriend = 1,
+        Opponent = 2
     }
 }

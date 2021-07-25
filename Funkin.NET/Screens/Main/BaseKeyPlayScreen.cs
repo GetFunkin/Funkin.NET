@@ -11,7 +11,9 @@ using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
 using osuTK;
 // ReSharper disable VirtualMemberCallInConstructor
@@ -35,9 +37,9 @@ namespace Funkin.NET.Screens.Main
          * when Music.CurrentTime matches arrow offset time, it should be at the arrow sprite position
          */
 
-        private const int NumberOfSectionsToGenerateAhead = 8;
-        private const int MusicStartOffset = 5 * 1000;
-        private const int ScrollingArrowStartPos = 1000 * 15;
+        public const int NumberOfSectionsToGenerateAhead = 8;
+        public const int MusicStartOffset = 5 * 1000;
+        public const int ScrollingArrowStartPos = 1000 * 15;
 
         public static readonly KeyAssociatedAction[] ArrowValues =
         {
@@ -65,9 +67,13 @@ namespace Funkin.NET.Screens.Main
 
         protected ArrowKeyDrawable[] PlayerArrows;
         protected ArrowKeyDrawable[] OpponentArrows;
+        protected CharacterDrawable[] Characters;
         protected bool Initialized;
         protected readonly LinkedList<ScrollingArrowDrawable[]> NotesAhead;
         protected readonly IEnumerator<Section> SectionEnumerators;
+        protected Sprite HealthBarBackground;
+        protected Box StaticRedBox;
+        protected Box DynamicGreenBox;
 
         public BaseKeyPlayScreen(Song song, string instrumentalPath, string vocalPath)
         {
@@ -78,6 +84,7 @@ namespace Funkin.NET.Screens.Main
             NotesAhead = new LinkedList<ScrollingArrowDrawable[]>();
             SectionEnumerators = song.Sections.GetEnumerator();
             GameData = new GameData();
+            //Position = new Vector2(100, 100);
         }
 
         protected override void Update()
@@ -112,13 +119,14 @@ namespace Funkin.NET.Screens.Main
         }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio)
+        private void Load(AudioManager audio, TextureStore textures)
         {
             // property init
             Music = new DrawableTrack(audio.Tracks.Get(InstrumentalPath)) {Looping = true};
             VocalTrack = new DrawableTrack(audio.Tracks.Get(VocalPath)) {Looping = true};
             PlayerArrows = new ArrowKeyDrawable[ArrowValues.Length];
             OpponentArrows = new ArrowKeyDrawable[ArrowValues.Length];
+            Characters = new CharacterDrawable[3];
             IsHeld = new bool[ArrowValues.Length];
             IsPressed = new bool[ArrowValues.Length];
 
@@ -199,29 +207,75 @@ namespace Funkin.NET.Screens.Main
 
             AddInternal(displayText);
 
-#if DEBUG
-            // TESTING:
-            AddInternal(new CharacterDrawable("gf", CharacterType.Girlfriend)
+            /*// TESTING:
+            Characters[0] = new CharacterDrawable("gf", CharacterType.Girlfriend)
             {
                 Position = new Vector2(0f, 200f),
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre
-            });
+            };
 
-            AddInternal(new CharacterDrawable("dad", CharacterType.Opponent)
+            Characters[1] = new CharacterDrawable("dad", CharacterType.Opponent)
             {
                 Position = new Vector2(-300f, 200f),
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre
-            });
+            };
 
-            AddInternal(new CharacterDrawable("bf", CharacterType.Boyfriend)
+            Characters[2] = new CharacterDrawable("bf", CharacterType.Boyfriend)
             {
                 Position = new Vector2(300f, 200f),
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre
-            });
-#endif
+            };
+
+            foreach (CharacterDrawable drawable in Characters)
+                AddInternal(drawable);*/
+
+            HealthBarBackground = new Sprite
+            {
+                Texture = textures.Get("Shared/healthBar"),
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.Centre,
+                Position = new Vector2(-0f, -50f),
+                Scale = new Vector2(2f)
+            };
+
+            AddInternal(HealthBarBackground);
+
+            StaticRedBox = new Box
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.Centre,
+                Position = new Vector2(0f, -50f),
+                Colour = Colour4.Red
+            };
+
+            StaticRedBox.OnUpdate += drawable =>
+            {
+                drawable.Width = HealthBarBackground.Texture.Width - 8f;
+                drawable.Height = HealthBarBackground.Texture.Height - 8f;
+            };
+
+            AddInternal(StaticRedBox);
+
+            DynamicGreenBox = new Box
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.CentreRight,
+                Position = new Vector2(0f, -50f),
+                Colour = Colour4.Lime
+            };
+
+            DynamicGreenBox.OnUpdate += drawable =>
+            {
+                drawable.Width = HealthBarBackground.Texture.Width / 2f - 8f;
+                drawable.Height = HealthBarBackground.Texture.Height - 8f;
+                drawable.Position = new Vector2(HealthBarBackground.Texture.Width / 2f - 4f, drawable.Position.Y);
+                drawable.Scale = new Vector2(GameData.Health * 2f, 1f);
+            };
+
+            AddInternal(DynamicGreenBox);
         }
 
         public virtual bool OnPressed(UniversalAction action)
