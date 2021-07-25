@@ -314,31 +314,16 @@ namespace Funkin.NET.Screens.Main
                     if (keyToUse >= 4)
                         keyToUse = (keyToUse - 4);
 
-                    Vector2 notePos;
-                    if (section.MustHitSection)
-                    {
-                        if ((int) note.Key < 4)
-                            notePos = PlayerArrows[keyToUse].Position;
-                        else
-                            notePos = OpponentArrows[keyToUse].Position;
-                    }
-                    else
-                    {
-                        if ((int) note.Key < 4)
-                            notePos = OpponentArrows[keyToUse].Position;
-                        else
-                            notePos = PlayerArrows[keyToUse].Position;
-                    }
+                    bool mustHitSection = (section.MustHitSection && (int) note.Key < 4) ||
+                                          (!section.MustHitSection && (int) note.Key >= 4);
 
-                    // Vector2 notePos = section.MustHitSection
-                    //     ? PlayerArrows[keyToUse].Position
-                    //     : OpponentArrows[keyToUse].Position;
+                    Vector2 notePos = mustHitSection ? PlayerArrows[keyToUse].Position : OpponentArrows[keyToUse].Position;
 
                     double startOffset = MusicConductor.Offset;
                     if (!Music.IsRunning)
                         startOffset += MusicStartOffset;
 
-                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection, startOffset)
+                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !mustHitSection, startOffset)
                     {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
