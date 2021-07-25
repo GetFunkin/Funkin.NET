@@ -9,6 +9,7 @@ using Funkin.NET.Input.Bindings;
 using Funkin.NET.Songs;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Input.Bindings;
@@ -53,6 +54,10 @@ namespace Funkin.NET.Screens.Main
         public virtual string VocalPath { get; }
 
         public virtual DrawableTrack VocalTrack { get; protected set; }
+
+        public bool IsHeld { get; protected set; }
+
+        public bool IsPressed { get; protected set; }
 
         protected ArrowKeyDrawable[] PlayerArrows;
         protected ArrowKeyDrawable[] OpponentArrows;
@@ -169,11 +174,27 @@ namespace Funkin.NET.Screens.Main
                 return false;
 
             int value = (int) action;
-            if (value >= PlayerArrows.Length) return false;
+            if (value >= PlayerArrows.Length || _notesAhead.First is null)
+                return false;
 
             PlayerArrows[value].ArrowPressAnim.PlaybackPosition = 0;
             PlayerArrows[value].ArrowPressAnim.Show();
             PlayerArrows[value].ArrowIdleSprite.Hide();
+
+            // if pressed on previous update frame the IsHeld should
+            // be true :)
+            if (IsPressed)
+                IsHeld = true;
+
+            // set IsPressed to opposite of IsHeld
+            // if not held, then pressed
+            // else, held
+            IsPressed = !IsHeld;
+
+            Console.WriteLine($"{IsPressed}, {IsHeld}");
+
+            foreach (ScrollingArrowDrawable arrow in _notesAhead.First.Value)
+                arrow.Press((KeyAssociatedAction) (int) action, IsHeld);
 
             return true;
         }
@@ -184,10 +205,16 @@ namespace Funkin.NET.Screens.Main
                 return;
 
             int value = (int) action;
-            if (value >= PlayerArrows.Length) return;
+            if (value >= PlayerArrows.Length || _notesAhead.First is null) 
+                return;
 
             PlayerArrows[value].ArrowPressAnim.Hide();
             PlayerArrows[value].ArrowIdleSprite.Show();
+
+            IsPressed = IsHeld = false;
+
+            foreach (ScrollingArrowDrawable arrow in _notesAhead.First.Value)
+                arrow.Release((KeyAssociatedAction)(int)action);
         }
 
         private void Initialize()
