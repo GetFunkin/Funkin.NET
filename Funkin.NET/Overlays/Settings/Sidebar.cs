@@ -76,7 +76,7 @@ namespace Funkin.NET.Overlays.Settings
             return base.OnMouseMove(e);
         }
 
-        private class SidebarScrollContainer : FunkinScrollContainer
+        public class SidebarScrollContainer : FunkinScrollContainer
         {
             public SidebarScrollContainer()
             {

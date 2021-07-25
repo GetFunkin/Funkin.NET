@@ -31,7 +31,7 @@ namespace Funkin.NET.Overlays
             });
         }
 
-        private class BackButton : FunkinButton
+        public class BackButton : FunkinButton
         {
             [BackgroundDependencyLoader]
             private void Load()

@@ -177,7 +177,7 @@ namespace Funkin.NET.Overlays
             ContentContainer.Margin = new MarginPadding {Left = Sidebar?.DrawWidth ?? 0};
         }
 
-        private class NonMaskedContent : Container<Drawable>
+        public class NonMaskedContent : Container<Drawable>
         {
             // masking breaks the pan-out transform with nested sub-settings panels.
             protected override bool ComputeIsMaskedAway(RectangleF maskingBounds) => false;

@@ -142,7 +142,7 @@ namespace Funkin.NET.Graphics.Containers
             });
         }
 
-        private class ScalingDrawSizePreservingFillContainer : DrawSizePreservingFillContainer
+        public class ScalingDrawSizePreservingFillContainer : DrawSizePreservingFillContainer
         {
             private readonly bool _applyUIScale;
             private Bindable<float> _uiScale;
@@ -171,7 +171,7 @@ namespace Funkin.NET.Graphics.Containers
             }
         }
 
-        private class ScalingBackgroundScreen : BackgroundScreenDefault
+        public class ScalingBackgroundScreen : BackgroundScreenDefault
         {
             public override void OnEntering(IScreen last)
             {
@@ -179,7 +179,7 @@ namespace Funkin.NET.Graphics.Containers
             }
         }
 
-        private class AlwaysInputContainer : Container
+        public class AlwaysInputContainer : Container
         {
             public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) => true;
 

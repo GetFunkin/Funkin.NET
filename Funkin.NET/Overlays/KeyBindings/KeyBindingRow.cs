@@ -348,7 +348,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             IsDefault.Value = _bindings.Select(b => b.KeyCombination).SequenceEqual(Defaults);
         }
 
-        private class CancelButton : FunkinButton
+        public class CancelButton : FunkinButton
         {
             public CancelButton()
             {
