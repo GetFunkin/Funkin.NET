@@ -35,10 +35,8 @@ namespace Funkin.NET.Graphics.Sprites
         protected Sprite ArrowSprite { get; }
         protected Vector2? StartPos;
         protected bool RegisteredAccuracyType;
-
-        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos,
-            double songSpeed,
-            bool isEnemyArrow)
+        
+        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos, double songSpeed, bool isEnemyArrow)
         {
             Key = key;
             TargetTime = targetTime;
@@ -56,8 +54,7 @@ namespace Funkin.NET.Graphics.Sprites
             LifetimeEnd = TargetTime + 2 * 1000; // Lifetime ends 4 seconds after target
         }
 
-        public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
-            double startOffset = 0) :
+        public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false, double startOffset = 0) :
             this(note.Key, note.Offset + startOffset, note.HoldLength, targetPos, songSpeed, isEnemyArrow)
         {
         }
@@ -134,13 +131,13 @@ namespace Funkin.NET.Graphics.Sprites
 
             IGameData.HitAccuracyType? hitType = null;
 
-            if (Position.Y is <= -210f or >= -190f)
+            if (Position.Y is >= -210f and <= -190f)
                 hitType = IGameData.HitAccuracyType.Sick;
-            else if (Position.Y is <= -220f or >= -180f)
+            else if (Position.Y is >= -220f and <= -180f)
                 hitType = IGameData.HitAccuracyType.Good;
-            else if (Position.Y is <= -245f or >= -165f)
+            else if (Position.Y is >= -245f and <= -165f)
                 hitType = IGameData.HitAccuracyType.Bad;
-            else if (Position.Y is <= -250f or >= -150f)
+            else if (Position.Y is >= -250f and <= -150f)
                 hitType = IGameData.HitAccuracyType.Shit;
 
             AccuracyType = hitType;
@@ -152,14 +149,12 @@ namespace Funkin.NET.Graphics.Sprites
 
         public virtual void UpdateGameData(ref IGameData gameData)
         {
-            if (RegisteredAccuracyType)
-                return;
-
-            if (!AccuracyType.HasValue)
+            if (RegisteredAccuracyType || !AccuracyType.HasValue || IsEnemyArrow)
                 return;
 
             RegisteredAccuracyType = true;
             gameData.NoteHits.Add(AccuracyType.Value);
+            Console.WriteLine(AccuracyType);
             gameData.AddToScore(AccuracyType.Value);
             gameData.ModifyHealth(AccuracyType.Value);
         }

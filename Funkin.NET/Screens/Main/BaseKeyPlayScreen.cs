@@ -10,6 +10,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
 using osuTK;
@@ -94,11 +95,11 @@ namespace Funkin.NET.Screens.Main
                 Initialized = true;
             }
 
-            foreach (ScrollingArrowDrawable arrow in NotesAhead.SelectMany(arrowArray => arrowArray))
-                arrow.UpdateGameData(ref GameData);
-
             if (NotesAhead.First is null)
                 return;
+
+            foreach (ScrollingArrowDrawable arrow in NotesAhead.SelectMany(arrowArray => arrowArray))
+                arrow.UpdateGameData(ref GameData);
 
             // If all of the notes in the first section are dead, remove them and refill notes
             if (!NotesAhead.First.Value.All(x => Time.Current >= x.LifetimeEnd))
@@ -168,7 +169,7 @@ namespace Funkin.NET.Screens.Main
             }
 
             // TEMPORARY
-            FunkinSpriteText displayText = new()
+            TextFlowContainer displayText = new()
             {
                 Anchor = Anchor.TopLeft,
                 Padding = new MarginPadding
@@ -178,16 +179,22 @@ namespace Funkin.NET.Screens.Main
                 },
                 Alpha = 1f,
                 AlwaysPresent = true,
-                AllowMultiline = true,
-                Font = new FontUsage("Torus-Regular", 35f)
+                Width = 400f
             };
 
             displayText.OnUpdate += drawable =>
             {
-                ((FunkinSpriteText) drawable).Text = $"Health: {GameData.Health}" +
-                                                     $"\nScore: {GameData.TotalScore}" +
-                                                     $"\nAccuracy: {GameData.Accuracy}" +
-                                                     $"\nMisses: {GameData.TotalMisses}";
+                if (drawable is not TextFlowContainer flow)
+                    return;
+
+                static void AddFont(SpriteText text) => text.Font = new FontUsage("Torus-Regular", 35f);
+
+                flow.Text = "";
+                flow.AddParagraph($"Accuracy: {GameData.Accuracy}" +
+                                  $"\nHealth: {GameData.Health}" +
+                                  $"\nMisses: {GameData.TotalMisses}" +
+                                  $"\nTotal Score:{GameData.TotalScore}" +
+                                  $"\nHit count: {GameData.NoteHits.Count}", AddFont);
             };
 
             AddInternal(displayText);
@@ -315,13 +322,13 @@ namespace Funkin.NET.Screens.Main
                     if (!Music.IsRunning)
                         startOffset += MusicStartOffset;
 
-                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection,
-                        startOffset)
+                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection, startOffset)
                     {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
                         Position = new Vector2(0, ScrollingArrowStartPos)
                     };
+
                     AddInternal(arrows[i]);
                 }
 
@@ -383,13 +390,13 @@ namespace Funkin.NET.Screens.Main
 
         public static readonly Dictionary<IGameData.HitAccuracyType, int> ScoreMap = new()
         {
-            // TODO: are these rewarding in the slightest?
+            // TODO: are these rewarding? fair?
             {IGameData.HitAccuracyType.Uncounted, 0},
-            {IGameData.HitAccuracyType.Missed, -100},
-            {IGameData.HitAccuracyType.Shit, 0},
-            {IGameData.HitAccuracyType.Bad, 10},
-            {IGameData.HitAccuracyType.Good, 50},
-            {IGameData.HitAccuracyType.Sick, 100}
+            {IGameData.HitAccuracyType.Missed, -50},
+            {IGameData.HitAccuracyType.Shit, 10},
+            {IGameData.HitAccuracyType.Bad, 35},
+            {IGameData.HitAccuracyType.Good, 75},
+            {IGameData.HitAccuracyType.Sick, 150}
         };
 
         public virtual int TotalMisses => NoteHits.Count(x => x == IGameData.HitAccuracyType.Missed);
