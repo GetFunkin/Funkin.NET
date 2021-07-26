@@ -70,7 +70,7 @@ namespace Funkin.NET
 
         private readonly List<OverlayContainer> _visibleBlockingOverlays = new();
 
-        public MenuScreen MenuScreen { get; private set; }
+        public StartupIntroductionScreen MenuScreen { get; private set; }
 
         public FunnyTextScreen IntroScreen { get; private set; }
 
@@ -220,7 +220,7 @@ namespace Funkin.NET
                         IntroScreen = funny;
                     break;
 
-                case MenuScreen menu:
+                case StartupIntroductionScreen menu:
                     MenuScreen = menu;
                     break;
             }

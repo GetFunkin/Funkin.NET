@@ -28,7 +28,7 @@ namespace Funkin.NET.Graphics.Sprites
 
         protected override bool OnHover(HoverEvent e)
         {
-            if (Alpha < 1f && ButtonGraphic.Alpha < 1f)
+            if (Alpha < 1f || ButtonGraphic.Alpha < 1f)
                 return false;
 
             ButtonGraphic.ScaleTo(1.15f, 650D, Easing.OutBounce);
