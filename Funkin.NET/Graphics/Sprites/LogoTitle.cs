@@ -9,11 +9,9 @@ namespace Funkin.NET.Graphics.Sprites
     public class LogoTitle : CompositeDrawable
     {
         public TextureAnimation Anim;
-
-        [Resolved] private TextureStore Textures { get; set; }
-
+        
         [BackgroundDependencyLoader]
-        private void Load()
+        private void Load(TextureStore textures)
         {
             Anim = new TextureAnimation
             {
@@ -23,7 +21,7 @@ namespace Funkin.NET.Graphics.Sprites
             };
 
             for (int i = 0; i < 15; i++)
-                Anim.AddFrame(Textures.Get($"Title/logo bumpin{i}"), 1D / 24D * 1000D);
+                Anim.AddFrame(textures.Get($"Title/logo bumpin{i}"), 1D / 24D * 1000D);
 
             AddInternal(Anim);
         }

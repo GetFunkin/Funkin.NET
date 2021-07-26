@@ -74,7 +74,7 @@ namespace Funkin.NET.Overlays.Settings
                     Colour = new Color4(0.6f, 0.6f, 0.6f, 1f),
                     Children = new Drawable[]
                     {
-                        _headerText = new FunkinSpriteText
+                        _headerText = new SpriteText
                         {
                             Position = new Vector2(Sidebar.DefaultWidth + 10, 0),
                             Anchor = Anchor.CentreLeft,

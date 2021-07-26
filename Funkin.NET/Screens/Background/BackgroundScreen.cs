@@ -70,7 +70,7 @@ namespace Funkin.NET.Screens.Background
 
         public override bool OnExiting(IScreen next)
         {
-            if (!IsLoaded) 
+            if (!IsLoaded)
                 return base.OnExiting(next);
 
             this.FadeOut(TransitionLength, Easing.OutExpo);

@@ -51,7 +51,7 @@ namespace Funkin.NET.Overlays.Settings
         {
             AddRangeInternal(new Drawable[]
             {
-                new FunkinSpriteText
+                new SpriteText
                 {
                     Text = Header.ToString().ToUpper(),
                     Margin = new MarginPadding { Vertical = 30, Left = SettingsPanel.ContentMargins, Right = SettingsPanel.ContentMargins },

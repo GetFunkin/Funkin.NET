@@ -7,6 +7,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osuTK.Graphics;
 // ReSharper disable VirtualMemberCallInConstructor
 
@@ -77,7 +78,7 @@ namespace Funkin.NET.Overlays.Settings
                     AutoSizeAxes = Axes.Y,
                     Children = new Drawable[]
                     {
-                        new FunkinSpriteText
+                        new SpriteText
                         {
                             Font = FunkinFont.GetFont(size: HeaderSize),
                             Text = Header,

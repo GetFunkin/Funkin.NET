@@ -5,11 +5,11 @@
     /// </summary>
     public class BpmChange : IBpmChange
     {
-        public int StepTime { get; }
+        public virtual int StepTime { get; }
 
-        public double SongTime { get; }
+        public virtual double SongTime { get; }
 
-        public double Bpm { get; }
+        public virtual double Bpm { get; }
 
         /// <summary>
         /// </summary>

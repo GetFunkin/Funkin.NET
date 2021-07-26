@@ -38,7 +38,7 @@ namespace Funkin.NET.Graphics.UserInterface
 
         protected override float CaretWidth => 3;
 
-        protected override SpriteText CreatePlaceholder() => new FunkinSpriteText
+        protected override SpriteText CreatePlaceholder() => new SpriteText
         {
             Font = new FontUsage("Torus-Regular"),
             Colour = new Color4(180, 180, 180, 255),
@@ -120,7 +120,7 @@ namespace Funkin.NET.Graphics.UserInterface
         protected override Drawable GetDrawableCharacter(char c) => new FallingDownContainer
         {
             AutoSizeAxes = Axes.Both,
-            Child = new FunkinSpriteText {Text = c.ToString(), Font = FunkinFont.GetFont(size: CalculatedTextSize)},
+            Child = new SpriteText {Text = c.ToString(), Font = FunkinFont.GetFont(size: CalculatedTextSize)},
         };
 
         protected override Caret CreateCaret() => new FunkinCaret

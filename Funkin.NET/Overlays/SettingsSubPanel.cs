@@ -56,7 +56,7 @@ namespace Funkin.NET.Overlays
                                 Shadow = true,
                                 Icon = FontAwesome.Solid.ChevronLeft
                             },
-                            new FunkinSpriteText
+                            new SpriteText
                             {
                                 Anchor = Anchor.Centre,
                                 Origin = Anchor.Centre,

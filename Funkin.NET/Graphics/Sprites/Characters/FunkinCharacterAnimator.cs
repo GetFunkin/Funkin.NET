@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Textures;
@@ -221,10 +220,13 @@ namespace Funkin.NET.Graphics.Sprites.Characters
             drawable.AddByPrefix(textures, "singDOWN", "GF Down Note", 24, 20);
             drawable.AddByPrefix(textures, "scared", "GF FEAR", 24, 4, true);
             drawable.AddByIndices(textures, "sad", "gf sad", 24, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-            drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-            drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat", 24, false, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
+            drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat", 24, false, 
+                30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+            drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat", 24, false, 
+                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
             drawable.AddByIndices(textures, "hairBlow", "GF Dancing Beat Hair blowing", 24, true, 0, 1, 2, 3);
-            drawable.AddByIndices(textures, "hairFall", "GF Dancing Beat Hair Landing", 24, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+            drawable.AddByIndices(textures, "hairFall", "GF Dancing Beat Hair Landing", 24, false, 
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
             drawable.AssignOffset("sad", new Vector2(-2f, -2f));
             drawable.AssignOffset("danceLeft", new Vector2(0f, -9f));
             drawable.AssignOffset("danceRight", new Vector2(0f, -9f));
@@ -247,10 +249,13 @@ namespace Funkin.NET.Graphics.Sprites.Characters
             drawable.AddByPrefix(textures, "singUP", "GF Up Note", 24, 7);
             drawable.AddByPrefix(textures, "singDOWN", "GF Down Note", 24, 20);
             drawable.AddByIndices(textures, "sad", "gf sad", 24, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-            drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-            drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat", 24, false, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
+            drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat", 24, false,
+                30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+            drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat", 24, false, 
+                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
             drawable.AddByIndices(textures, "hairBlow", "GF Dancing Beat Hair blowing", 24, true, 0, 1, 2, 3);
-            drawable.AddByIndices(textures, "hairFall", "GF Dancing Beat Hair Landing", 24, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+            drawable.AddByIndices(textures, "hairFall", "GF Dancing Beat Hair Landing", 24, false, 
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
             drawable.AddByPrefix(textures, "scared", "GF FEAR", 24, 4, true);
             drawable.AssignOffset("sad", new Vector2(-2f, -2f));
             drawable.AssignOffset("danceLeft", new Vector2(0f, -9f));
@@ -262,24 +267,28 @@ namespace Funkin.NET.Graphics.Sprites.Characters
             drawable.AssignOffset("hairBlow", new Vector2(45f, -8f));
             drawable.AssignOffset("hairFall", new Vector2(0f, -9f));
             drawable.AssignOffset("scared", new Vector2(-2f, -17f));
-            
+
             drawable.SetAnimation("danceRight");
         }
 
         public static void RegisterGirlfriendCar(this CharacterDrawable drawable, TextureStore textures)
         {
             drawable.AddByIndices(textures, "singUP", "GF Dancing Beat Hair blowing CAR", 24, false, 0);
-            drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat Hair blowing CAR", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-            drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat Hair blowing CAR", 24, false, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
-            
+            drawable.AddByIndices(textures, "danceLeft", "GF Dancing Beat Hair blowing CAR", 24, false, 
+                30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+            drawable.AddByIndices(textures, "danceRight", "GF Dancing Beat Hair blowing CAR", 24, false, 
+                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
+
             drawable.SetAnimation("danceRight");
         }
 
         public static void RegisterGirlfriendPixel(this CharacterDrawable drawable, TextureStore textures)
         {
             drawable.AddByIndices(textures, "singUP", "GF IDLE", 24, false, 2);
-            drawable.AddByIndices(textures, "danceLeft", "GF IDLE", 24, false, 30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
-            drawable.AddByIndices(textures, "danceRight", "GF IDLE", 24, false, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
+            drawable.AddByIndices(textures, "danceLeft", "GF IDLE", 24, false,
+                30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+            drawable.AddByIndices(textures, "danceRight", "GF IDLE", 24, false,
+                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29);
 
             drawable.PixelScaling = true;
             drawable.SetAnimation("danceRight");

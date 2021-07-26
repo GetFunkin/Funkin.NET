@@ -16,17 +16,13 @@ namespace Funkin.NET.Songs
 
             using JsonDocument array = JsonDocument.ParseValue(ref reader);
 
-            List<Note> notes = new();
-            foreach (JsonElement note in array.RootElement.EnumerateArray())
-            {
-                JsonElement[] noteArray = note.EnumerateArray().ToArray();
-                int offset = noteArray[0].GetInt32();
-                int key = noteArray[1].GetInt32();
-                int holdTime = noteArray[2].GetInt32();
-                notes.Add(new Note(offset, (KeyAssociatedAction) key, holdTime));
-            }
-
-            return notes;
+            return (from note in array.RootElement.EnumerateArray()
+                select note.EnumerateArray().ToArray()
+                into noteArray
+                let offset = noteArray[0].GetInt32()
+                let key = noteArray[1].GetInt32()
+                let holdTime = noteArray[2].GetInt32()
+                select new Note(offset, (KeyAssociatedAction) key, holdTime)).ToList();
         }
 
         public override void Write(Utf8JsonWriter writer, List<Note> value, JsonSerializerOptions options)

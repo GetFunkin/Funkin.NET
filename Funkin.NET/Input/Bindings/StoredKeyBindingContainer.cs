@@ -36,7 +36,7 @@ namespace Funkin.NET.Input.Bindings
                 JsonSerializerOptions options = new()
                 {
                     WriteIndented = true,
-                    Converters = { new KeyBindingConverter<T>() }
+                    Converters = {new KeyBindingConverter<T>()}
                 };
 
                 return JsonSerializer.Deserialize<IEnumerable<IKeyBinding>>(File.ReadAllText(Location), options);
@@ -50,7 +50,7 @@ namespace Funkin.NET.Input.Bindings
             JsonSerializerOptions options = new()
             {
                 WriteIndented = true,
-                Converters = { new KeyBindingConverter<T>() }
+                Converters = {new KeyBindingConverter<T>()}
             };
 
             Directory.CreateDirectory(Path.GetDirectoryName(Location) ?? "");
@@ -69,7 +69,7 @@ namespace Funkin.NET.Input.Bindings
             JsonSerializerOptions options = new()
             {
                 WriteIndented = true,
-                Converters = { new KeyBindingConverter<T>() }
+                Converters = {new KeyBindingConverter<T>()}
             };
 
             Directory.CreateDirectory(Path.GetDirectoryName(Location) ?? "");

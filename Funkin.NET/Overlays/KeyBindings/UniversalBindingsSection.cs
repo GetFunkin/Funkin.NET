@@ -17,18 +17,18 @@ namespace Funkin.NET.Overlays.KeyBindings
 
         public override string Header => "Universal Bindings";
 
-        protected UniversalBindingsSubsection _universalBindingsSubsection;
+        protected UniversalBindingsSubsection ProtectedUniversalSubsection;
 
         // todo: split sections up
         public UniversalBindingsSection(UniversalActionContainer bindings)
         {
             void The(Drawable drawable)
             {
-                Remove(_universalBindingsSubsection);
-                Add(_universalBindingsSubsection = new UniversalBindingsSubsection(bindings, The));
+                Remove(ProtectedUniversalSubsection);
+                Add(ProtectedUniversalSubsection = new UniversalBindingsSubsection(bindings, The));
             }
 
-            Add(_universalBindingsSubsection = new UniversalBindingsSubsection(bindings, The));
+            Add(ProtectedUniversalSubsection = new UniversalBindingsSubsection(bindings, The));
         }
 
         public class UniversalBindingsSubsection : KeyBindingsSubsection

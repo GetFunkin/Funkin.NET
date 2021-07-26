@@ -55,7 +55,7 @@ namespace Funkin.NET.Graphics.Cursor
                         Alpha = 0.9f
                     },
 
-                    _text = new FunkinSpriteText
+                    _text = new SpriteText
                     {
                         Padding = new MarginPadding(5f)
                     }

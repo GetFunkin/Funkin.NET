@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Threading;
@@ -23,13 +24,11 @@ namespace Funkin.NET.Screens.Background
         }
 
         [BackgroundDependencyLoader]
-        private void Load(FunkinGame game)
+        private void Load()
         {
             _currentDisplay = RNG.Next(0, BackgroundCount);
 
             Next();
-
-            game.OnScreenPushed += (_, _) => Next();
         }
 
         /// <summary>
@@ -72,6 +71,6 @@ namespace Funkin.NET.Screens.Background
         }
 
         private string GetBackgroundTextureName() =>
-            $"Backgrounds/menu-background-{_currentDisplay % BackgroundCount + 1}";
+            PathHelper.GetTexture($"Backgrounds/menu-background-{_currentDisplay % BackgroundCount + 1}");
     }
 }

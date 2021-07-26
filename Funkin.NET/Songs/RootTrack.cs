@@ -8,17 +8,13 @@ namespace Funkin.NET.Songs
 {
     public class RootTrack
     {
-        [JsonPropertyName("song")]
-        public Song Song { get; set; }
+        [JsonPropertyName("song")] public Song Song { get; set; }
 
-        [JsonPropertyName("bpm")]
-        public int Bpm { get; set; }
+        [JsonPropertyName("bpm")] public int Bpm { get; set; }
 
-        [JsonPropertyName("sections")]
-        public int Sections { get; set; }
+        [JsonPropertyName("sections")] public int Sections { get; set; }
 
-        [JsonPropertyName("notes")]
-        public List<Section> Notes { get; set; }
+        [JsonPropertyName("notes")] public List<Section> Notes { get; set; }
 
         public static RootTrack GetTrack(string json)
         {
@@ -31,8 +27,7 @@ namespace Funkin.NET.Songs
             if (!File.Exists(filePath))
                 throw new ArgumentException("File doesn't exist", nameof(filePath));
 
-            string json = File.ReadAllText(filePath);
-            return GetTrack(json);
+            return GetTrack(File.ReadAllText(filePath));
         }
     }
 }

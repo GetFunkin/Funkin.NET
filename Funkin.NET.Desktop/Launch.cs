@@ -1,6 +1,7 @@
 ﻿using osu.Framework;
 using osu.Framework.Platform;
 
+// TODO: modding layer
 namespace Funkin.NET.Desktop
 {
     /// <summary>
@@ -18,10 +19,6 @@ namespace Funkin.NET.Desktop
         /// </summary>
         public static void Main()
         {
-             // TESTING :)
-             //LegacySong song = LegacySong.FromJson("Json/Songs/test.json");
-             //_ = song;
-
             using GameHost host = Host.GetSuitableHost(SuitableHostName);
             using FunkinDesktop game = new();
             host.Run(game);

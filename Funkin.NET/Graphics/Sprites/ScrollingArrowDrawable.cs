@@ -35,8 +35,9 @@ namespace Funkin.NET.Graphics.Sprites
         protected Sprite ArrowSprite { get; }
         protected Vector2? StartPos;
         protected bool RegisteredAccuracyType;
-        
-        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos, double songSpeed, bool isEnemyArrow)
+
+        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos,
+            double songSpeed, bool isEnemyArrow)
         {
             Key = key;
             TargetTime = targetTime;
@@ -54,7 +55,8 @@ namespace Funkin.NET.Graphics.Sprites
             LifetimeEnd = TargetTime + 2 * 1000; // Lifetime ends 4 seconds after target
         }
 
-        public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false, double startOffset = 0) :
+        public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
+            double startOffset = 0) :
             this(note.Key, note.Offset + startOffset, note.HoldLength, targetPos, songSpeed, isEnemyArrow)
         {
         }
@@ -65,24 +67,6 @@ namespace Funkin.NET.Graphics.Sprites
             string textureName = $"Arrow/{Enum.GetName(Key)!.ToLowerInvariant()}_scroll";
             ArrowSprite.Texture = textures.Get(textureName);
             AddInternal(ArrowSprite);
-
-            // debug stuff lol
-            // just shows some positioning text
-            /*SpriteText text = new()
-            {
-                Font = new FontUsage("Torus-Regular", 15f),
-                Alpha = 1f,
-                AlwaysPresent = true
-            };
-            text.OnUpdate += drawable =>
-            {
-                ((SpriteText) drawable).Text = $"{_startPos?.Y ?? 0f}, {TargetPosition.Y}, {Position}";
-                drawable.Position = ArrowSprite.Position + new Vector2(0, 40f);
-
-                if (Position.Y <= -200f)
-                    Alpha = 0f;
-            };
-            AddInternal(text);*/
         }
 
         protected override void Update()
@@ -93,7 +77,6 @@ namespace Funkin.NET.Graphics.Sprites
             float by = (float) (MusicConductor.SongPosition / TargetTime);
             //Console.WriteLine($"Key: {Key} - Position: {MusicConductor.SongPosition} / {TargetTime} = {by}");
             // Console.WriteLine($"Key: {Key} - {Lerp(_startPos.Value.Y, TargetPosition.Y, by)}");
-            //if (IsHeld) Console.WriteLine(by);
 
             Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
             // Y = (float) (TargetPosition.Y - (MusicConductor.SongPosition - TargetTime) * 0.45 * SongSpeed);
@@ -129,16 +112,14 @@ namespace Funkin.NET.Graphics.Sprites
             Alpha = 0f;
             HasBeenHit = true;
 
-            IGameData.HitAccuracyType? hitType = null;
-
-            if (Position.Y is >= -210f and <= -190f)
-                hitType = IGameData.HitAccuracyType.Sick;
-            else if (Position.Y is >= -220f and <= -180f)
-                hitType = IGameData.HitAccuracyType.Good;
-            else if (Position.Y is >= -245f and <= -165f)
-                hitType = IGameData.HitAccuracyType.Bad;
-            else if (Position.Y is >= -250f and <= -150f)
-                hitType = IGameData.HitAccuracyType.Shit;
+            IGameData.HitAccuracyType? hitType = Position.Y switch
+            {
+                >= -210f and <= -190f => IGameData.HitAccuracyType.Sick,
+                >= -220f and <= -180f => IGameData.HitAccuracyType.Good,
+                >= -245f and <= -165f => IGameData.HitAccuracyType.Bad,
+                >= -250f and <= -150f => IGameData.HitAccuracyType.Shit,
+                _ => null
+            };
 
             AccuracyType = hitType;
         }
@@ -160,7 +141,8 @@ namespace Funkin.NET.Graphics.Sprites
         }
 
         // TODO: move to own class
-        public static float Lerp(float start, float end, float by) => start * (1.0f - by) + end * by;
+        public static float Lerp(float start, float end, float by) =>
+            start * (1.0f - by) + end * by;
 
         public static Vector2 Lerp(Vector2 start, Vector2 end, float by) =>
             new(Lerp(start.X, end.X, by), Lerp(start.Y, end.Y, by));

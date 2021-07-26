@@ -14,12 +14,9 @@ namespace Funkin.NET.Graphics.Sprites
         public TextureAnimation RightAnim;
         public bool IsDancingLeft;
 
-        [Resolved] private TextureStore Textures { get; set; }
-        
-        protected override void LoadComplete()
+        [BackgroundDependencyLoader]
+        private void Load(TextureStore textures)
         {
-            base.LoadComplete();
-
             LeftAnim = new TextureAnimation
             {
                 Origin = Anchor.BottomLeft,
@@ -35,10 +32,10 @@ namespace Funkin.NET.Graphics.Sprites
             };
 
             foreach (int frame in LeftFrames)
-                LeftAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
+                LeftAnim.AddFrame(textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
 
             foreach (int frame in RightFrames)
-                RightAnim.AddFrame(Textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
+                RightAnim.AddFrame(textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
         }
 
         public void SwapAnimation()

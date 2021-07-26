@@ -145,7 +145,7 @@ namespace Funkin.NET.Graphics.UserInterface
             base.OnMouseUp(e);
         }
 
-        protected virtual SpriteText CreateText() => new FunkinSpriteText
+        protected virtual SpriteText CreateText() => new SpriteText
         {
             Depth = -1,
             Origin = Anchor.Centre,

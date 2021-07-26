@@ -41,7 +41,8 @@ namespace Funkin.NET.Screens.Main
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Y = -50f
+                    Y = -50f,
+                    Blending = BlendingParameters.Additive
                 },
 
                 FillContainer = new FillFlowContainer
@@ -71,12 +72,16 @@ namespace Funkin.NET.Screens.Main
             static void Format(SpriteText text) => text.Font = new FontUsage("Torus-Regular", 30f);
             static void Bold(SpriteText text) => text.Font = new FontUsage("Torus-Bold", 30f);
 
-            TextFlow.AddText("Funkin.NET", Format);
-            TextFlow.NewLine();
-            TextFlow.AddText("an unfaithful", Format);
-            TextFlow.NewLine();
-            TextFlow.AddText("C# FNF port", Format);
-            TextFlow.NewLine();
+            static void AddLine(TextFlowContainer container, string text)
+            {
+                container.AddText(text, Format);
+                container.NewLine();
+            }
+
+            AddLine(TextFlow, "Funkin.NET");
+            AddLine(TextFlow, "an unfaithful");
+            AddLine(TextFlow, "C# FNF port");
+
             TextFlow.AddText("made with ", Bold);
             TextFlow.AddText("", x => x.Font = new FontUsage("FontAwesome-Solid", 30f));
             TextFlow.AddText(" by tomat", Bold);

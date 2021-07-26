@@ -4,7 +4,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Graphics.Transforms;
 using osuTK;
 
 namespace Funkin.NET.Graphics.Sprites.Characters

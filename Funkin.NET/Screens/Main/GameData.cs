@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace Funkin.NET.Screens.Main
 {
@@ -32,12 +33,12 @@ namespace Funkin.NET.Screens.Main
 
         public static readonly Dictionary<IGameData.HitAccuracyType, float> HealthMap = new()
         {
-            { IGameData.HitAccuracyType.Uncounted, 0f },
-            { IGameData.HitAccuracyType.Missed, -0.08f },
-            { IGameData.HitAccuracyType.Shit, -0.02f }, // little bit of tr
-            { IGameData.HitAccuracyType.Bad, 0.01f },
-            { IGameData.HitAccuracyType.Good, 0.02f },
-            { IGameData.HitAccuracyType.Sick, 0.04f }
+            {IGameData.HitAccuracyType.Uncounted, 0f},
+            {IGameData.HitAccuracyType.Missed, -0.08f},
+            {IGameData.HitAccuracyType.Shit, -0.02f}, // little bit of tr
+            {IGameData.HitAccuracyType.Bad, 0.01f},
+            {IGameData.HitAccuracyType.Good, 0.02f},
+            {IGameData.HitAccuracyType.Sick, 0.04f}
         };
 
         public virtual int TotalMisses => NoteHits.Count(x => x == IGameData.HitAccuracyType.Missed);

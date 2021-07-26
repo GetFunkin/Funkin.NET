@@ -13,6 +13,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osuTK;
@@ -50,7 +51,7 @@ namespace Funkin.NET.Overlays.KeyBindings
 
         public bool FilteringActive { get; set; }
 
-        private FunkinSpriteText _text;
+        private SpriteText _text;
         private FillFlowContainer _cancelAndClearButtons;
         private FillFlowContainer<KeyButton> _buttons;
 
@@ -102,7 +103,7 @@ namespace Funkin.NET.Overlays.KeyBindings
                             Alpha = 0.6f,
                         },
 
-                        _text = new FunkinSpriteText
+                        _text = new SpriteText
                         {
                             Text = _action.GetDescription(),
                             Font = FunkinFont.GetFont(size: 15f),
@@ -371,7 +372,7 @@ namespace Funkin.NET.Overlays.KeyBindings
             public readonly IKeyBinding WrappedBinding;
 
             private readonly Box _box;
-            public readonly FunkinSpriteText Text;
+            public readonly SpriteText Text;
 
             private Color4 _hoverColor;
 
@@ -415,7 +416,7 @@ namespace Funkin.NET.Overlays.KeyBindings
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4.Black
                     },
-                    Text = new FunkinSpriteText
+                    Text = new SpriteText
                     {
                         Font = FunkinFont.GetFont(size: 10f),
                         Margin = new MarginPadding(5),
@@ -460,7 +461,8 @@ namespace Funkin.NET.Overlays.KeyBindings
 
             public void UpdateKeyCombination(KeyCombination newCombination, UniversalActionContainer actionContainer)
             {
-                static bool DoTheseTwoFuckingCollectionsMatch(ImmutableArray<InputKey> key1, ImmutableArray<InputKey> key2)
+                static bool DoTheseTwoFuckingCollectionsMatch(ImmutableArray<InputKey> key1,
+                    ImmutableArray<InputKey> key2)
                 {
                     List<InputKey> list1 = key1.ToList();
                     List<InputKey> list2 = key2.ToList();

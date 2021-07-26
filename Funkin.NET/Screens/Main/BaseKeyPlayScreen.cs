@@ -275,7 +275,8 @@ namespace Funkin.NET.Screens.Main
                 drawable.Width = HealthBarBackground.Texture.Width / 2f - 4f;
                 drawable.Height = HealthBarBackground.Texture.Height - 8f;
                 drawable.Position = new Vector2(HealthBarBackground.Texture.Width / 2f - 4f, drawable.Position.Y);
-                drawable.Scale = new Vector2(ScrollingArrowDrawable.Lerp(drawable.Scale.X, GameData.Health * 2f, 0.01f), 1f);
+                drawable.Scale = new Vector2(ScrollingArrowDrawable.Lerp(drawable.Scale.X, GameData.Health * 2f, 0.01f),
+                    1f);
             };
 
             AddInternal(DynamicGreenBox);
@@ -289,7 +290,9 @@ namespace Funkin.NET.Screens.Main
 
             PlayerIcon.OnUpdate += drawable =>
             {
-                drawable.Position = new Vector2(DynamicGreenBox.Position.X - DynamicGreenBox.DrawWidth * DynamicGreenBox.Scale.X + 25f, drawable.Position.Y);
+                drawable.Position =
+                    new Vector2(DynamicGreenBox.Position.X - DynamicGreenBox.DrawWidth * DynamicGreenBox.Scale.X + 25f,
+                        drawable.Position.Y);
 
                 ((HealthIconDrawable) drawable).Set(GameData.Health <= 0.2f
                     ? HealthIconDrawable.Type.Dead
@@ -307,9 +310,11 @@ namespace Funkin.NET.Screens.Main
 
             OpponentIcon.OnUpdate += drawable =>
             {
-                drawable.Position = new Vector2(DynamicGreenBox.Position.X - DynamicGreenBox.DrawWidth * DynamicGreenBox.Scale.X - 25f, drawable.Position.Y);
+                drawable.Position =
+                    new Vector2(DynamicGreenBox.Position.X - DynamicGreenBox.DrawWidth * DynamicGreenBox.Scale.X - 25f,
+                        drawable.Position.Y);
 
-                ((HealthIconDrawable)drawable).Set(GameData.Health >= 0.8f
+                ((HealthIconDrawable) drawable).Set(GameData.Health >= 0.8f
                     ? HealthIconDrawable.Type.Dead
                     : HealthIconDrawable.Type.Alive);
             };
@@ -324,18 +329,12 @@ namespace Funkin.NET.Screens.Main
             Vector2 oldPlayerScale = PlayerIcon.Scale;
             PlayerIcon.ScaleTo(PlayerIcon.Scale * 1.25f, 100D);
 
-            Scheduler.AddDelayed(() =>
-            {
-                PlayerIcon.ScaleTo(oldPlayerScale, 500D);
-            }, 100D);
+            Scheduler.AddDelayed(() => { PlayerIcon.ScaleTo(oldPlayerScale, 500D); }, 100D);
 
             Vector2 oldOpponentScale = OpponentIcon.Scale;
             OpponentIcon.ScaleTo(OpponentIcon.Scale * 1.25f, 100D);
 
-            Scheduler.AddDelayed(() =>
-            {
-                OpponentIcon.ScaleTo(oldOpponentScale, 500D);
-            }, 100D);
+            Scheduler.AddDelayed(() => { OpponentIcon.ScaleTo(oldOpponentScale, 500D); }, 100D);
         }
 
         public virtual bool OnPressed(UniversalAction action)
@@ -436,7 +435,8 @@ namespace Funkin.NET.Screens.Main
                     if (!Music.IsRunning)
                         startOffset += MusicStartOffset;
 
-                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection, startOffset)
+                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection,
+                        startOffset)
                     {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,

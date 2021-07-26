@@ -28,7 +28,7 @@ namespace Funkin.NET.Overlays.Settings
                     Spacing = new Vector2(5),
                     Padding = new MarginPadding {Bottom = 10},
                 },
-                new FunkinSpriteText
+                new SpriteText
                 {
                     Anchor = Anchor.TopCentre,
                     Origin = Anchor.TopCentre,

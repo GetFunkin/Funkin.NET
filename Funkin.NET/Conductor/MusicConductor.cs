@@ -15,7 +15,8 @@ namespace Funkin.NET.Conductor
 
         public static double Bpm { get; set; } = DefaultBpm;
 
-        public static double SongPosition {
+        public static double SongPosition
+        {
             get => _songPosition + Offset;
             set => _songPosition = value;
         }
@@ -35,7 +36,7 @@ namespace Funkin.NET.Conductor
         public static ReadOnlyCollection<IBpmChange> ReadonlyChangeCollection => _bpmChangeMap.AsReadOnly();
 
         private static List<IBpmChange> _bpmChangeMap = new();
-        private static double _songPosition = 0D;
+        private static double _songPosition;
 
         public static void MapBpmChanges(Song song)
         {

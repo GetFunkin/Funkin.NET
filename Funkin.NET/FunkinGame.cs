@@ -54,30 +54,27 @@ namespace Funkin.NET
 
         protected Storage Storage { get; set; }
 
-        protected override Container<Drawable> Content => _content;
+        protected override Container<Drawable> Content => ProtectedContent;
 
-        private Container _content;
-        private DependencyContainer _dependencies;
-        private Bindable<bool> _showFpsDisplay;
-        private Container _overlayContent;
-        private Container _rightFloatingOverlayContent;
-        private Container _leftFloatingOverlayContent;
-        private Container _topMostOverlayContent;
-        private ScalingContainer _screenContainer;
-        private Container _screenOffsetContainer;
-        private UniversalActionContainer _actionContainer;
+        protected Container ProtectedContent;
+        protected DependencyContainer ProtectedDependencies;
+        protected Bindable<bool> ShowFpsDisplay;
+        protected Container OverlayContent;
+        protected Container RightFloatingOverlayContainer;
+        protected Container LeftFloatingOverlayContainer;
+        protected Container TopMostOverlayContainer;
+        protected ScalingContainer ScreenContainer;
+        protected Container ScreenOffsetContainer;
+        protected UniversalActionContainer ActionContainer;
+        protected FunkinScreenStack ScreenStack;
 
-        private FunkinScreenStack _screenStack;
-
-        public SettingsOverlay Settings;
-        private readonly List<OverlayContainer> _overlays = new();
         private readonly List<OverlayContainer> _visibleBlockingOverlays = new();
 
         public MenuScreen MenuScreen { get; private set; }
 
         public FunnyTextScreen IntroScreen { get; private set; }
 
-        public ScreenChangedDelegate OnScreenPushed;
+        public SettingsOverlay Settings;
 
         public FunkinGame()
         {
@@ -89,40 +86,17 @@ namespace Funkin.NET
             FunnyText = FunnyTextList?[new Random().Next(0, FunnyTextList.Count)];
         }
 
-        protected void UpdateBlockingOverlayFade() => _screenContainer.FadeColour(
-            _visibleBlockingOverlays.Any() ? new Colour4(0.5f, 0.5f, 0.5f, 1f) : Colour4.White, 500D, Easing.OutQuint);
-
-        public void AddBlockingOverlay(OverlayContainer overlay)
-        {
-            if (!_visibleBlockingOverlays.Contains(overlay))
-                _visibleBlockingOverlays.Add(overlay);
-
-            UpdateBlockingOverlayFade();
-        }
-
-        public void RemoveBlockingOverlay(OverlayContainer overlay) => Schedule(() =>
-        {
-            _visibleBlockingOverlays.Remove(overlay);
-            UpdateBlockingOverlayFade();
-        });
-
-        public void CloseAllOverlays()
-        {
-            foreach (OverlayContainer overlay in _overlays)
-                overlay.Hide();
-        }
-
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            _showFpsDisplay = LocalConfig.GetBindable<bool>(FunkinConfigManager.FunkinSetting.ShowFpsDisplay);
-            _showFpsDisplay.ValueChanged += x => FrameStatistics.Value = x.NewValue
+            ShowFpsDisplay = LocalConfig.GetBindable<bool>(FunkinConfigManager.FunkinSetting.ShowFpsDisplay);
+            ShowFpsDisplay.ValueChanged += x => FrameStatistics.Value = x.NewValue
                 ? FrameStatisticsMode.Full
                 : FrameStatisticsMode.None;
-            _showFpsDisplay.TriggerChange();
+            ShowFpsDisplay.TriggerChange();
 
-            FrameStatistics.ValueChanged += x => _showFpsDisplay.Value = x.NewValue != FrameStatisticsMode.None;
+            FrameStatistics.ValueChanged += x => ShowFpsDisplay.Value = x.NewValue != FrameStatisticsMode.None;
 
             // todo: localization
 
@@ -131,13 +105,13 @@ namespace Funkin.NET
             // todo: implement osu!'s volume control receptor
             AddRange(new Drawable[]
             {
-                _screenOffsetContainer = new Container
+                ScreenOffsetContainer = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
 
                     Children = new Drawable[]
                     {
-                        _screenContainer = new ScalingContainer(FunkinConfigManager.ScalingMode.ExcludeOverlays)
+                        ScreenContainer = new ScalingContainer(FunkinConfigManager.ScalingMode.ExcludeOverlays)
                         {
                             RelativeSizeAxes = Axes.Both,
                             Anchor = Anchor.Centre,
@@ -145,7 +119,7 @@ namespace Funkin.NET
 
                             Children = new Drawable[]
                             {
-                                _screenStack = new FunkinScreenStack
+                                ScreenStack = new FunkinScreenStack
                                 {
                                     RelativeSizeAxes = Axes.Both
                                 }
@@ -154,35 +128,35 @@ namespace Funkin.NET
                     }
                 },
 
-                _overlayContent = new Container
+                OverlayContent = new Container
                 {
                     RelativeSizeAxes = Axes.Both
                 },
 
-                _rightFloatingOverlayContent = new Container
+                RightFloatingOverlayContainer = new Container
                 {
                     RelativeSizeAxes = Axes.Both
                 },
 
-                _leftFloatingOverlayContent = new Container
+                LeftFloatingOverlayContainer = new Container
                 {
                     RelativeSizeAxes = Axes.Both
                 },
 
-                _topMostOverlayContent = new Container
+                TopMostOverlayContainer = new Container
                 {
                     RelativeSizeAxes = Axes.Both
                 }
             });
 
-            _screenStack.ScreenPushed += ScreenPushed;
-            _screenStack.ScreenExited += ScreenExited;
+            ScreenStack.ScreenPushed += ScreenPushed;
+            ScreenStack.ScreenExited += ScreenExited;
 
-            _screenStack.Push(
+            ScreenStack.Push(
                 new StartupIntroductionScreen(new FunnyTextScreen(FunnyTextScreen.TextDisplayType.Intro)));
 
-            _dependencies.CacheAs(Settings = new SettingsOverlay());
-            LoadComponentAsync(Settings, _leftFloatingOverlayContent.Add, CancellationToken.None);
+            ProtectedDependencies.CacheAs(Settings = new SettingsOverlay());
+            LoadComponentAsync(Settings, LeftFloatingOverlayContainer.Add, CancellationToken.None);
 
             OverlayContainer[] singleDisplaySideOverlays =
             {
@@ -202,7 +176,7 @@ namespace Funkin.NET
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
-            _dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+            ProtectedDependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         public override void SetHost(GameHost host)
         {
@@ -225,7 +199,7 @@ namespace Funkin.NET
         protected override IDictionary<FrameworkSetting, object> GetFrameworkConfigDefaults() =>
             new Dictionary<FrameworkSetting, object>
             {
-                {FrameworkSetting.WindowMode, WindowMode.Fullscreen}
+                {FrameworkSetting.WindowMode, WindowMode.Windowed}
             };
 
         protected override UserInputManager CreateUserInputManager() => new FunkinUserInputManager();
@@ -234,13 +208,11 @@ namespace Funkin.NET
         {
             base.UpdateAfterChildren();
 
-            FunkinCursorContainer.CanShowCursor = (_screenStack.CurrentScreen as IFunkinScreen)?.CursorVisible ?? false;
+            FunkinCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IFunkinScreen)?.CursorVisible ?? false;
         }
 
         protected virtual void ScreenChanged(IScreen current, IScreen newScreen)
         {
-            OnScreenPushed?.Invoke(current, newScreen);
-
             switch (newScreen)
             {
                 case FunnyTextScreen funny:
@@ -257,19 +229,18 @@ namespace Funkin.NET
         private void ScreenPushed(IScreen lastScreen, IScreen newScreen)
         {
             ScreenChanged(lastScreen, newScreen);
-            Logger.Log($"Screen changed → {newScreen}");
+            Logger.Log($"Screen ({lastScreen}) pushed to → {newScreen}");
         }
 
         private void ScreenExited(IScreen lastScreen, IScreen newScreen)
         {
             ScreenChanged(lastScreen, newScreen);
-            Logger.Log($"Screen changed ← {newScreen}");
+            Logger.Log($"Screen ({lastScreen}) exited to → {newScreen}");
 
             // todo: set to FunnyTextScreen exit edition
             if (newScreen == null)
                 Exit();
         }
-
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -278,20 +249,29 @@ namespace Funkin.NET
             using (FileStream hash = File.OpenRead(typeof(FunkinGame).Assembly.Location))
                 VersionHash = hash.ComputeMD5Hash();
 
-            Resources.AddStore(new DllResourceStore(ResourcesAssembly.Assembly));
+            Resources.AddStore(new DllResourceStore(PathHelper.Assembly));
 
-            _dependencies.CacheAs(Storage);
+            ProtectedDependencies.CacheAs(Storage);
 
-            _dependencies.CacheAs(this);
-            _dependencies.CacheAs(LocalConfig);
+            ProtectedDependencies.CacheAs(this);
+            ProtectedDependencies.CacheAs(LocalConfig);
 
-            AddFont(Resources, "Fonts/VCR");
-            AddFont(Resources, "Fonts/Funkin");
-            AddFont(Resources, @"Fonts/Torus/Torus-Regular");
-            AddFont(Resources, @"Fonts/Torus/Torus-Light");
-            AddFont(Resources, @"Fonts/Torus/Torus-SemiBold");
-            AddFont(Resources, @"Fonts/Torus/Torus-Bold");
+            RegisterFonts();
+            InitializeContent();
+        }
 
+        protected virtual void RegisterFonts()
+        {
+            AddFont(Resources, PathHelper.GetFont("VCR/VCR"));
+            AddFont(Resources, PathHelper.GetFont("Funkin/Funkin"));
+            AddFont(Resources, PathHelper.GetFont("Torus/Torus-Regular"));
+            AddFont(Resources, PathHelper.GetFont("Torus/Torus-Light"));
+            AddFont(Resources, PathHelper.GetFont("Torus/Torus-SemiBold"));
+            AddFont(Resources, PathHelper.GetFont("Torus/Torus-Bold"));
+        }
+
+        protected virtual void InitializeContent()
+        {
             Drawable[] mainContent =
             {
                 FunkinCursorContainer = new FunkinCursorContainer
@@ -299,17 +279,35 @@ namespace Funkin.NET
                     RelativeSizeAxes = Axes.Both
                 },
 
-                _actionContainer = new UniversalActionContainer(Storage, this)
+                ActionContainer = new UniversalActionContainer(Storage, this)
             };
 
-            FunkinCursorContainer.Child = _content = new FunkinTooltipContainer(FunkinCursorContainer.Cursor)
+            FunkinCursorContainer.Child = ProtectedContent = new FunkinTooltipContainer(FunkinCursorContainer.Cursor)
             {
                 RelativeSizeAxes = Axes.Both
             };
 
-            _dependencies.Cache(_actionContainer);
+            ProtectedDependencies.Cache(ActionContainer);
 
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }
+
+        protected void UpdateBlockingOverlayFade() => ScreenContainer.FadeColour(_visibleBlockingOverlays.Any()
+            ? new Colour4(0.5f, 0.5f, 0.5f, 1f)
+            : Colour4.White, 500D, Easing.OutQuint);
+
+        public void AddBlockingOverlay(OverlayContainer overlay)
+        {
+            if (!_visibleBlockingOverlays.Contains(overlay))
+                _visibleBlockingOverlays.Add(overlay);
+
+            UpdateBlockingOverlayFade();
+        }
+
+        public void RemoveBlockingOverlay(OverlayContainer overlay) => Schedule(() =>
+        {
+            _visibleBlockingOverlays.Remove(overlay);
+            UpdateBlockingOverlayFade();
+        });
     }
 }

@@ -6,9 +6,9 @@
         Down = 1,
         Up = 2,
         Right = 3,
-        SustainLeft = 4,
-        SustainDown = 5,
-        SustainUp = 6,
-        SustainRight = 7
+        SomethingLeft = 4,
+        SomethingDown = 5,
+        SomethingUp = 6,
+        SomethingRight = 7
     }
 }

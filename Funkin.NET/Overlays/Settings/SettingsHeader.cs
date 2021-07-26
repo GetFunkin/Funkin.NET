@@ -34,7 +34,7 @@ namespace Funkin.NET.Overlays.Settings
                     Direction = FillDirection.Vertical,
                     Children = new Drawable[]
                     {
-                        new FunkinSpriteText
+                        new SpriteText
                         {
                             Text = _heading,
                             Font = new FontUsage("Torus-Regular", 40f),
@@ -43,7 +43,7 @@ namespace Funkin.NET.Overlays.Settings
                                 Left = SettingsPanel.ContentMargins
                             },
                         },
-                        new FunkinSpriteText
+                        new SpriteText
                         {
                             Colour = Color4Extensions.FromHex(@"ff66aa"),
                             Text = _subheading,

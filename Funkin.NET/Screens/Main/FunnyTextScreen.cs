@@ -2,7 +2,6 @@
 using Funkin.NET.Graphics;
 using Funkin.NET.Graphics.Sprites;
 using Funkin.NET.Input.Bindings;
-using Funkin.NET.Songs;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
@@ -40,7 +39,7 @@ namespace Funkin.NET.Screens.Main
         public bool PressedEnter;
         public double TimeOnEntering = TimeSpan.Zero.Milliseconds;
         public bool WasIntroFinishedThisCycle;
-        public FunkinSpriteText[] Text = new FunkinSpriteText[3];
+        public SpriteText[] Text = new SpriteText[3];
         public DrawableSample ConfirmSample;
         public bool DoNotPlayTheSoundAgainAaa;
         public bool HaveWeActuallyEnteredTheCoolMenu;
@@ -106,7 +105,9 @@ namespace Funkin.NET.Screens.Main
 
             const float scale = 0.8f;
 
-            Vector2 offset = new(-(GirlfriendAnimation.LeftAnim.CurrentFrame.DisplayHeight * scale / 2f), GirlfriendAnimation.LeftAnim.CurrentFrame.DisplayWidth * scale / 2f);
+            Vector2 offset =
+                new(-(GirlfriendAnimation.LeftAnim.CurrentFrame.DisplayHeight * scale / 2f), GirlfriendAnimation
+                    .LeftAnim.CurrentFrame.DisplayWidth * scale / 2f);
             GirlfriendAnimation.MoveTo(offset, 1500D, Easing.OutBounce);
             GirlfriendAnimation.ScaleTo(scale, 1500D, Easing.OutBounce);
             LogoAnimation.FadeOut(1500D, Easing.OutCirc);
@@ -173,7 +174,7 @@ namespace Funkin.NET.Screens.Main
 
         protected void Clear()
         {
-            foreach (FunkinSpriteText text in Text)
+            foreach (SpriteText text in Text)
                 text.Text = "";
         }
 
@@ -522,7 +523,7 @@ namespace Funkin.NET.Screens.Main
                 Alpha = 0f
             };
 
-            AddInternal(Text[0] = new FunkinSpriteText
+            AddInternal(Text[0] = new SpriteText
             {
                 Anchor = Anchor.Centre,
                 RelativeAnchorPosition = Size / 2f,
@@ -530,7 +531,7 @@ namespace Funkin.NET.Screens.Main
                 Origin = Anchor.Centre
             });
 
-            AddInternal(Text[1] = new FunkinSpriteText
+            AddInternal(Text[1] = new SpriteText
             {
                 Anchor = Anchor.Centre,
                 RelativeAnchorPosition = Size / 2f,
@@ -538,7 +539,7 @@ namespace Funkin.NET.Screens.Main
                 Origin = Anchor.Centre
             });
 
-            AddInternal(Text[2] = new FunkinSpriteText
+            AddInternal(Text[2] = new SpriteText
             {
                 Anchor = Anchor.Centre,
                 RelativeAnchorPosition = Size / 2f,
@@ -588,28 +589,6 @@ namespace Funkin.NET.Screens.Main
 
                 AddInternal(Buttons[i]);
             }
-
-            /*AddInternal(new BasicButton
-            {
-                Action = () =>
-                {
-                    Music.VolumeTo(0D, 2000D, Easing.OutQuint);
-
-                    while (Music.Volume.Value > 0D)
-                    {
-                    }
-
-                    FunnyTextScreen screen = new(TextDisplayType.Exit);
-                    LoadComponentAsync(screen);
-                    this.Push(screen);
-                },
-
-                Alpha = 1f,
-                AlwaysPresent = true,
-                Anchor = Anchor.Centre,
-                AutoSizeAxes = Axes.Both,
-                Text = "Click to exit." // todo: finish this lol!
-            });*/
         }
     }
 }

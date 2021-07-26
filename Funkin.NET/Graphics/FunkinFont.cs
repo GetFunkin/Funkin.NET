@@ -2,7 +2,8 @@
 
 namespace Funkin.NET.Graphics
 {
-    public class FunkinFont
+    // TODO: make this not suck
+    public static class FunkinFont
     {
         public const float DefaultSize = 20;
 
@@ -15,5 +16,5 @@ namespace Funkin.NET.Graphics
         public static FontUsage GetFont(string typeface = "Torus-Regular", float size = DefaultSize,
             string weightString = null, bool italics = false, bool fixedWidth = false) =>
             new(typeface, size, weightString, italics, fixedWidth);
-    };
+    }
 }
