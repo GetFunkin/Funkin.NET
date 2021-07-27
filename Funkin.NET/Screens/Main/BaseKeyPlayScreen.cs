@@ -106,7 +106,6 @@ namespace Funkin.NET.Screens.Main
             if (!NotesAhead.First.Value.All(x => Time.Current >= x.LifetimeEnd))
                 return;
 
-            Console.WriteLine($"remove first!!!!! {NotesAhead.First}");
             foreach (ScrollingArrowDrawable arrowDrawable in NotesAhead.First.Value) RemoveInternal(arrowDrawable);
             NotesAhead.RemoveFirst();
             FillNotes();

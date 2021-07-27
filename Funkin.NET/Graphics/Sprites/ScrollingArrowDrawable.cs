@@ -121,7 +121,8 @@ namespace Funkin.NET.Graphics.Sprites
         private void UpdateArrowPos()
         {
             if (!StartPos.HasValue) return;
-            // TODO: fix big numbers making stuff slower
+            // BUG: fix big numbers making stuff slower
+            // maybe reset clock when changing to BaseKeyPlayScreen ?
 
             double songPos;
             if (IsHeld)
@@ -130,16 +131,10 @@ namespace Funkin.NET.Graphics.Sprites
                 songPos = MusicConductor.SongPosition - (LastHeldTime - StartHoldTime);
             else
                 songPos = MusicConductor.SongPosition;
-            // double songPos = MusicConductor.SongPosition - (LastHeldTime);
-            // if (!IsHeld)
-            //     Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime} - {StartHoldTime})");
 
             if (IsHeld || LastHeldTime != 0)
                 Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
-            
-            // if (LastHeldTime != 0)
-            //     Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime})");
-            
+
             float by = (float) (songPos / TargetTime);
             Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
         }
@@ -176,9 +171,15 @@ namespace Funkin.NET.Graphics.Sprites
             
             if (held)
             {
-                Console.WriteLine($"held arrow: {Key}");
+                if (MusicConductor.SongPosition > HoldTime + TargetTime)
+                {
+                    IsHeld = false;
+                    return;
+                }
+
                 LastHeldTime = MusicConductor.SongPosition;
                 IsHeld = true;
+
                 // TODO: some kind of score for held notes maybe
                 return;
             }
