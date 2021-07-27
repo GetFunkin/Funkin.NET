@@ -5,7 +5,7 @@ using osu.Framework.Platform;
 namespace Funkin.NET.Desktop
 {
     /// <summary>
-    ///     Entry-point class.
+    ///     Desktop entry-point class.
     /// </summary>
     public static class Launch
     {

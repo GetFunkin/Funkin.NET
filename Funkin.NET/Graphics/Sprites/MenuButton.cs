@@ -61,7 +61,7 @@ namespace Funkin.NET.Graphics.Sprites
             if (Alpha < 1f || ButtonGraphic.Alpha < 1f)
                 return;
 
-            TargetScale = 1.1f;
+            TargetScale = 1.25f;
 
             if (!OverrideTargetScale)
                 ButtonGraphic.ScaleTo(TargetScale, 100D);
