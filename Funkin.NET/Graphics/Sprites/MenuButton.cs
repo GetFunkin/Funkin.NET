@@ -44,12 +44,16 @@ namespace Funkin.NET.Graphics.Sprites
         protected override void OnHoverLost(HoverLostEvent e)
         {
             base.OnHoverLost(e);
-            OverrideTargetScale = false;
 
             if (Alpha < 1f || ButtonGraphic.Alpha < 1f)
                 return;
 
-            ButtonGraphic.ScaleTo(TargetScale, 300D, Easing.OutBounce);
+            ButtonGraphic.ScaleTo(1f, 300D, Easing.OutBounce);
+
+            Scheduler.AddDelayed(() =>
+            {
+                OverrideTargetScale = false;
+            }, 300D);
         }
 
         public virtual void BeatHit()
