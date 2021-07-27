@@ -33,7 +33,10 @@ namespace Funkin.NET.Graphics.Sprites
         public virtual IGameData.HitAccuracyType? AccuracyType { get; protected set; }
 
         protected Sprite ArrowSprite { get; }
+        protected Sprite HoldEndSprite { get; }
         protected Vector2? StartPos;
+        protected double LastHeldTime;
+        protected bool IsHeld;
         protected bool RegisteredAccuracyType;
         
         public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos, double songSpeed, bool isEnemyArrow)
@@ -49,6 +52,12 @@ namespace Funkin.NET.Graphics.Sprites
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre
             };
+            HoldEndSprite = new Sprite
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.BottomCentre,
+                Alpha = 0
+            };
 
             LifetimeStart = TargetTime - 5 * 1000; // Lifetime starts 5 seconds before target
             LifetimeEnd = TargetTime + 2 * 1000; // Lifetime ends 4 seconds after target
@@ -62,9 +71,13 @@ namespace Funkin.NET.Graphics.Sprites
         [BackgroundDependencyLoader]
         private void Load(TextureStore textures)
         {
-            string textureName = $"Arrow/{Enum.GetName(Key)!.ToLowerInvariant()}_scroll";
-            ArrowSprite.Texture = textures.Get(textureName);
+            string keyName = Enum.GetName(Key)!.ToLowerInvariant();
+
+            ArrowSprite.Texture = textures.Get($"Arrow/{keyName}_scroll");
             AddInternal(ArrowSprite);
+
+            HoldEndSprite.Texture = textures.Get($"Arrow/{keyName}_hold_end");
+            AddInternal(HoldEndSprite);
 
             // debug stuff lol
             // just shows some positioning text
@@ -89,14 +102,8 @@ namespace Funkin.NET.Graphics.Sprites
         {
             StartPos ??= Position;
 
-            // TODO: fix big numbers making stuff slower
-            float by = (float) (MusicConductor.SongPosition / TargetTime);
-            //Console.WriteLine($"Key: {Key} - Position: {MusicConductor.SongPosition} / {TargetTime} = {by}");
-            // Console.WriteLine($"Key: {Key} - {Lerp(_startPos.Value.Y, TargetPosition.Y, by)}");
-            //if (IsHeld) Console.WriteLine(by);
-
-            Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
-            // Y = (float) (TargetPosition.Y - (MusicConductor.SongPosition - TargetTime) * 0.45 * SongSpeed);
+            UpdateArrowPos();
+            UpdateHoldPos();
 
             if (Position.Y < -250f && !IsEnemyArrow && AccuracyType is null)
                 AccuracyType = IGameData.HitAccuracyType.Missed;
@@ -110,24 +117,66 @@ namespace Funkin.NET.Graphics.Sprites
             HasBeenHit = true;
         }
 
+        private void UpdateArrowPos()
+        {
+            if (!StartPos.HasValue) return;
+            // TODO: fix big numbers making stuff slower
+            double songPos = MusicConductor.SongPosition - (LastHeldTime);
+            if (LastHeldTime != 0)
+                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime})");
+            
+            float by = (float) (songPos / TargetTime);
+            Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
+        }
+
+        private void UpdateHoldPos()
+        {
+            if (!StartPos.HasValue) return;
+            if (HoldTime <= 0) return;
+            
+            HoldEndSprite.Show();
+                
+            float by = (float) (MusicConductor.SongPosition / (TargetTime + HoldTime));
+            float lerpPos = Lerp(StartPos.Value.Y, TargetPosition.Y, by);
+            HoldEndSprite.Position = new Vector2(0, lerpPos - Position.Y);
+        }
+
         public virtual void Press(KeyAssociatedAction action, bool held)
         {
-            if (HasBeenHit)
+            if (HasBeenHit && HoldTime == 0)
                 return;
 
             // sustain notes aren't implemented yet
             // so ignore all held presses for now
             // figure out sustain notes later?
-            if (action != Key || held)
+            if (action != Key)
                 return;
+
+            if (held)
+            {
+                IsHeld = false;
+                if (Position.Y is <= -250f or >= -150f) 
+                    return;
+                
+                Console.WriteLine($"held arrow: {Key}");
+                LastHeldTime = MusicConductor.SongPosition;
+                // IsHeld = true;
+                // TODO: some kind of score for held notes maybe
+                return;
+            } 
 
             // TODO: sustain note support
             if (Position.Y is <= -250f or >= -150f || IsEnemyArrow)
                 return;
 
+            Console.WriteLine("5");
+            HasBeenHit = true;
+            if (HoldTime != 0) 
+                return;
+            
+            Console.WriteLine("6");
             // TODO: better removal technique
             Alpha = 0f;
-            HasBeenHit = true;
 
             IGameData.HitAccuracyType? hitType = null;
 
@@ -154,15 +203,12 @@ namespace Funkin.NET.Graphics.Sprites
 
             RegisteredAccuracyType = true;
             gameData.NoteHits.Add(AccuracyType.Value);
-            Console.WriteLine(AccuracyType);
+            // Console.WriteLine(AccuracyType);
             gameData.AddToScore(AccuracyType.Value);
             gameData.ModifyHealth(AccuracyType.Value);
         }
 
         // TODO: move to own class
         public static float Lerp(float start, float end, float by) => start * (1.0f - by) + end * by;
-
-        public static Vector2 Lerp(Vector2 start, Vector2 end, float by) =>
-            new(Lerp(start.X, end.X, by), Lerp(start.Y, end.Y, by));
     }
 }
