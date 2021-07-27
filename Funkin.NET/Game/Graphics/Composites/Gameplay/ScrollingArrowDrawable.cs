@@ -36,7 +36,11 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
         public virtual IGameData.HitAccuracyType? AccuracyType { get; protected set; }
 
         protected Sprite ArrowSprite { get; }
+        protected Sprite HoldEndSprite { get; }
         protected Vector2? StartPos;
+        protected double StartHoldTime;
+        protected double LastHeldTime;
+        protected bool IsHeld;
         protected bool RegisteredAccuracyType;
 
         public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos,
@@ -53,9 +57,15 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
                 Origin = Anchor.Centre,
                 Anchor = Anchor.Centre
             };
+            HoldEndSprite = new Sprite
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.BottomCentre,
+                Alpha = 0
+            };
 
             LifetimeStart = TargetTime - 5 * 1000; // Lifetime starts 5 seconds before target
-            LifetimeEnd = TargetTime + 2 * 1000; // Lifetime ends 4 seconds after target
+            LifetimeEnd = TargetTime + ((2 + holdTime) * 1000); // Lifetime ends 4 seconds after target
         }
 
         public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
@@ -67,22 +77,21 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
         [BackgroundDependencyLoader]
         private void Load(TextureStore textures)
         {
-            string textureName = $"Arrow/{Enum.GetName(Key)!.ToLowerInvariant()}_scroll";
-            ArrowSprite.Texture = textures.Get(textureName);
+            string keyName = Enum.GetName(Key)!.ToLowerInvariant();
+
+            ArrowSprite.Texture = textures.Get($"Arrow/{keyName}_scroll");
             AddInternal(ArrowSprite);
+
+            HoldEndSprite.Texture = textures.Get($"Arrow/{keyName}_hold_end");
+            AddInternal(HoldEndSprite);
         }
 
         protected override void Update()
         {
             StartPos ??= Position;
 
-            // TODO: fix big numbers making stuff slower
-            float by = (float) (MusicConductor.SongPosition / TargetTime);
-            //Console.WriteLine($"Key: {Key} - Position: {MusicConductor.SongPosition} / {TargetTime} = {by}");
-            // Console.WriteLine($"Key: {Key} - {Lerp(_startPos.Value.Y, TargetPosition.Y, by)}");
-
-            Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
-            // Y = (float) (TargetPosition.Y - (MusicConductor.SongPosition - TargetTime) * 0.45 * SongSpeed);
+            UpdateArrowPos();
+            UpdateHoldPos();
 
             if (Position.Y < -250f && !IsEnemyArrow && AccuracyType is null)
                 AccuracyType = IGameData.HitAccuracyType.Missed;
@@ -96,24 +105,80 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             HasBeenHit = true;
         }
 
+        private void UpdateArrowPos()
+        {
+            if (!StartPos.HasValue) return;
+            // BUG: fix big numbers making stuff slower
+            // maybe reset clock when changing to BaseKeyPlayScreen ?
+
+            double songPos;
+            if (IsHeld)
+                songPos = TargetTime;
+            else if (LastHeldTime != 0 && StartHoldTime != 0)
+                songPos = MusicConductor.SongPosition - (LastHeldTime - StartHoldTime);
+            else
+                songPos = MusicConductor.SongPosition;
+
+            if (IsHeld || LastHeldTime != 0)
+                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
+
+            float by = (float) (songPos / TargetTime);
+            Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
+        }
+
+        private void UpdateHoldPos()
+        {
+            if (!StartPos.HasValue) return;
+            if (HoldTime <= 0) return;
+            
+            HoldEndSprite.Show();
+                
+            float by = (float) (MusicConductor.SongPosition / (TargetTime + HoldTime));
+            float lerpPos = Lerp(StartPos.Value.Y, TargetPosition.Y, by);
+            HoldEndSprite.Position = new Vector2(0, lerpPos - Position.Y);
+        }
+
         public virtual void Press(KeyAssociatedAction action, bool held)
         {
-            if (HasBeenHit)
+            if (HasBeenHit && HoldTime == 0)
                 return;
 
             // sustain notes aren't implemented yet
             // so ignore all held presses for now
             // figure out sustain notes later?
-            if (action != Key || held)
+            if (action != Key)
                 return;
-
+            
             // TODO: sustain note support
             if (Position.Y is <= -250f or >= -150f || IsEnemyArrow)
                 return;
 
+            if (!held && HoldTime > 0)
+                StartHoldTime = MusicConductor.SongPosition;
+            
+            if (held)
+            {
+                if (MusicConductor.SongPosition > HoldTime + TargetTime)
+                {
+                    IsHeld = false;
+                    return;
+                }
+
+                LastHeldTime = MusicConductor.SongPosition;
+                IsHeld = true;
+
+                // TODO: some kind of score for held notes maybe
+                return;
+            }
+
+            Console.WriteLine("5");
+            HasBeenHit = true;
+            if (HoldTime > 0) 
+                return;
+            
+            Console.WriteLine("6");
             // TODO: better removal technique
             Alpha = 0f;
-            HasBeenHit = true;
 
             IGameData.HitAccuracyType? hitType = Position.Y switch
             {
@@ -129,6 +194,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
 
         public virtual void Release(KeyAssociatedAction action)
         {
+            IsHeld = false;
         }
 
         public virtual void UpdateGameData(ref IGameData gameData)
@@ -138,7 +204,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
 
             RegisteredAccuracyType = true;
             gameData.NoteHits.Add(AccuracyType.Value);
-            Console.WriteLine(AccuracyType);
+            // Console.WriteLine(AccuracyType);
             gameData.AddToScore(AccuracyType.Value);
             gameData.ModifyHealth(AccuracyType.Value);
         }

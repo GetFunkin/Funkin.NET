@@ -2,23 +2,23 @@
 
 namespace Funkin.NET.Core.Songs
 {
-    public class Note
+    public struct Note
     {
         /// <summary>
         /// The time when the note has to be pressed (in milliseconds)
         /// </summary>
-        public virtual int Offset { get; }
+        public double Offset { get; set; }
 
         // TODO: one key -> unlimited key-combos
         /// <summary>
         /// The key that has to be pressed
         /// </summary>
-        public virtual KeyAssociatedAction Key { get; }
+        public KeyAssociatedAction Key { get; set; }
 
         /// <summary>
         /// How long the player has to hold the note (in milliseconds)
         /// </summary>
-        public virtual int HoldLength { get; }
+        public int HoldLength { get; }
 
         public Note(int offset, KeyAssociatedAction key, int holdLength)
         {

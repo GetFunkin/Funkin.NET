@@ -36,6 +36,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
          * Music.CurrentTime can be used to get current time in ms
          * spawn arrows some time before, like 2 sec maybe
          * when Music.CurrentTime matches arrow offset time, it should be at the arrow sprite position
+         * arrows with type 4-7 are for the other character
          */
 
         public const int NumberOfSectionsToGenerateAhead = 8;
@@ -115,7 +116,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (!NotesAhead.First.Value.All(x => Time.Current >= x.LifetimeEnd))
                 return;
 
-            Console.WriteLine($"remove first!!!!! {NotesAhead.First}");
             foreach (ScrollingArrowDrawable arrowDrawable in NotesAhead.First.Value) RemoveInternal(arrowDrawable);
             NotesAhead.RemoveFirst();
             FillNotes();
@@ -347,10 +347,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (value >= PlayerArrows.Length || NotesAhead.First is null)
                 return false;
 
-            PlayerArrows[value].ArrowPressAnim.PlaybackPosition = 0;
-            PlayerArrows[value].ArrowPressAnim.Show();
-            PlayerArrows[value].ArrowIdleSprite.Hide();
-
             // if pressed on previous update frame the
             // IsHeld should be true :)
             if (IsPressed[value])
@@ -360,6 +356,13 @@ namespace Funkin.NET.Game.Screens.Gameplay
             // if not held, then pressed
             // else, held
             IsPressed[value] = !IsHeld[value];
+
+            if (!IsHeld[value])
+            {
+                PlayerArrows[value].ArrowPressAnim.PlaybackPosition = 0;
+                PlayerArrows[value].ArrowPressAnim.Show();
+                PlayerArrows[value].ArrowIdleSprite.Hide();
+            }
 
             Console.WriteLine($"{IsPressed[value]}, {IsHeld[value]}");
 
@@ -422,22 +425,24 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 for (int i = 0; i < section.SectionNotes.Count; i++)
                 {
                     Note note = section.SectionNotes[i];
-                    KeyAssociatedAction keyToUse = note.Key;
+                    int keyToUse = (int) note.Key;
 
-                    if ((int) keyToUse >= 4)
-                        keyToUse = (KeyAssociatedAction) ((int) keyToUse - 4);
+                    if (keyToUse >= 4)
+                        keyToUse = (keyToUse - 4);
 
+                    bool mustHitSection = (section.MustHitSection && (int) note.Key < 4) ||
+                                          (!section.MustHitSection && (int) note.Key >= 4);
 
-                    Vector2 notePos = section.MustHitSection
-                        ? PlayerArrows[(int) keyToUse].Position
-                        : OpponentArrows[(int) keyToUse].Position;
+                    Vector2 notePos = mustHitSection ? PlayerArrows[keyToUse].Position : OpponentArrows[keyToUse].Position;
 
                     double startOffset = MusicConductor.Offset;
                     if (!Music.IsRunning)
                         startOffset += MusicStartOffset;
 
-                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !section.MustHitSection,
-                        startOffset)
+                    note.Offset += startOffset;
+                    note.Key = (KeyAssociatedAction)keyToUse;
+
+                    arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !mustHitSection)
                     {
                         Origin = Anchor.Centre,
                         Anchor = Anchor.Centre,
