@@ -35,6 +35,7 @@ namespace Funkin.NET.Graphics.Sprites
         protected Sprite ArrowSprite { get; }
         protected Sprite HoldEndSprite { get; }
         protected Vector2? StartPos;
+        protected double StartHoldTime;
         protected double LastHeldTime;
         protected bool IsHeld;
         protected bool RegisteredAccuracyType;
@@ -121,9 +122,23 @@ namespace Funkin.NET.Graphics.Sprites
         {
             if (!StartPos.HasValue) return;
             // TODO: fix big numbers making stuff slower
-            double songPos = MusicConductor.SongPosition - (LastHeldTime);
-            if (LastHeldTime != 0)
-                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime})");
+
+            double songPos;
+            if (IsHeld)
+                songPos = TargetTime;
+            else if (LastHeldTime != 0 && StartHoldTime != 0)
+                songPos = MusicConductor.SongPosition - (LastHeldTime - StartHoldTime);
+            else
+                songPos = MusicConductor.SongPosition;
+            // double songPos = MusicConductor.SongPosition - (LastHeldTime);
+            // if (!IsHeld)
+            //     Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime} - {StartHoldTime})");
+
+            if (IsHeld || LastHeldTime != 0)
+                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
+            
+            // if (LastHeldTime != 0)
+            //     Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime})");
             
             float by = (float) (songPos / TargetTime);
             Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
@@ -151,27 +166,26 @@ namespace Funkin.NET.Graphics.Sprites
             // figure out sustain notes later?
             if (action != Key)
                 return;
-
-            if (held)
-            {
-                IsHeld = false;
-                if (Position.Y is <= -250f or >= -150f) 
-                    return;
-                
-                Console.WriteLine($"held arrow: {Key}");
-                LastHeldTime = MusicConductor.SongPosition;
-                // IsHeld = true;
-                // TODO: some kind of score for held notes maybe
-                return;
-            } 
-
+            
             // TODO: sustain note support
             if (Position.Y is <= -250f or >= -150f || IsEnemyArrow)
                 return;
 
+            if (!held && HoldTime > 0)
+                StartHoldTime = MusicConductor.SongPosition;
+            
+            if (held)
+            {
+                Console.WriteLine($"held arrow: {Key}");
+                LastHeldTime = MusicConductor.SongPosition;
+                IsHeld = true;
+                // TODO: some kind of score for held notes maybe
+                return;
+            }
+
             Console.WriteLine("5");
             HasBeenHit = true;
-            if (HoldTime != 0) 
+            if (HoldTime > 0) 
                 return;
             
             Console.WriteLine("6");
@@ -194,6 +208,7 @@ namespace Funkin.NET.Graphics.Sprites
 
         public virtual void Release(KeyAssociatedAction action)
         {
+            IsHeld = false;
         }
 
         public virtual void UpdateGameData(ref IGameData gameData)
