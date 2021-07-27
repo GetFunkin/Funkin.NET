@@ -27,9 +27,10 @@ namespace Funkin.NET.Core.Input.Bindings
         }
 
         public override IEnumerable<IKeyBinding> FallbackKeyBindings => ArrowKeyBinds.Concat(SelectionKeyBinds);
+
         protected override bool SendRepeats => true;
 
-        public IEnumerable<KeyBinding> ArrowKeyBinds => new[]
+        public static IEnumerable<KeyBinding> ArrowKeyBinds => new[]
         {
             new KeyBinding(new[] {InputKey.Left}, UniversalAction.Left),
             new KeyBinding(new[] {InputKey.Down}, UniversalAction.Down),
@@ -41,7 +42,7 @@ namespace Funkin.NET.Core.Input.Bindings
             new KeyBinding(new[] {InputKey.K}, UniversalAction.Right)
         };
 
-        public IEnumerable<KeyBinding> SelectionKeyBinds => new[]
+        public static IEnumerable<KeyBinding> SelectionKeyBinds => new[]
         {
             new KeyBinding(new[] {InputKey.Enter}, UniversalAction.Select),
             new KeyBinding(new[] {InputKey.Space}, UniversalAction.Select)
