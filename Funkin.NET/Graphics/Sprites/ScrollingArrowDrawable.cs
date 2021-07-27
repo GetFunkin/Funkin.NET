@@ -61,7 +61,7 @@ namespace Funkin.NET.Graphics.Sprites
             };
 
             LifetimeStart = TargetTime - 5 * 1000; // Lifetime starts 5 seconds before target
-            LifetimeEnd = TargetTime + 2 * 1000; // Lifetime ends 4 seconds after target
+            LifetimeEnd = TargetTime + ((2 + holdTime) * 1000); // Lifetime ends 4 seconds after target
         }
 
         public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false, double startOffset = 0) :
