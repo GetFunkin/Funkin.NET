@@ -9,6 +9,9 @@ namespace Funkin.NET.Graphics.Sprites
     {
         public Sprite ButtonGraphic { get; }
 
+        public float TargetScale = 1f;
+        protected bool OverrideTargetScale;
+
         public MenuButton(Sprite buttonGraphic)
         {
             ButtonGraphic = buttonGraphic;
@@ -24,6 +27,7 @@ namespace Funkin.NET.Graphics.Sprites
 
             Width = ButtonGraphic.Width;
             Height = ButtonGraphic.Height;
+
         }
 
         protected override bool OnHover(HoverEvent e)
@@ -31,7 +35,8 @@ namespace Funkin.NET.Graphics.Sprites
             if (Alpha < 1f || ButtonGraphic.Alpha < 1f)
                 return false;
 
-            ButtonGraphic.ScaleTo(1.15f, 650D, Easing.OutBounce);
+            OverrideTargetScale = true;
+            ButtonGraphic.ScaleTo(TargetScale + 0.15f, 650D, Easing.OutBounce);
             return true;
 
         }
@@ -39,9 +44,29 @@ namespace Funkin.NET.Graphics.Sprites
         protected override void OnHoverLost(HoverLostEvent e)
         {
             base.OnHoverLost(e);
+            OverrideTargetScale = false;
 
-            if (Alpha >= 1f && ButtonGraphic.Alpha >= 1f) 
-                ButtonGraphic.ScaleTo(1f, 300D, Easing.OutBounce);
+            if (Alpha < 1f || ButtonGraphic.Alpha < 1f)
+                return;
+
+            ButtonGraphic.ScaleTo(TargetScale, 300D, Easing.OutBounce);
+        }
+
+        public virtual void BeatHit()
+        {
+            if (Alpha < 1f || ButtonGraphic.Alpha < 1f)
+                return;
+
+            TargetScale = 1.1f;
+
+            if (!OverrideTargetScale)
+                ButtonGraphic.ScaleTo(TargetScale, 100D);
+
+            Scheduler.AddDelayed(() =>
+            {
+                if (!OverrideTargetScale)
+                    ButtonGraphic.ScaleTo(1f, 250D);
+            }, 100D);
         }
 
         protected override bool OnClick(ClickEvent e) => Alpha > 0f && ButtonGraphic.Alpha > 0f && base.OnClick(e);

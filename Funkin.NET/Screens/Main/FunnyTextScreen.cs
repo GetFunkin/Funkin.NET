@@ -103,7 +103,7 @@ namespace Funkin.NET.Screens.Main
 
             SwagInitialized = true;
 
-            const float scale = 0.8f;
+            const float scale = 0.95f;
 
             Vector2 offset =
                 new(-(GirlfriendAnimation.LeftAnim.CurrentFrame.DisplayHeight * scale / 2f), GirlfriendAnimation
@@ -136,8 +136,7 @@ namespace Funkin.NET.Screens.Main
                         2 => new Vector2(-400f, 0f),
                         _ => new Vector2()
                     };
-
-                    Buttons[i].ButtonGraphic.Show();
+                    
                     Buttons[i].Delay(delay, sprite =>
                     {
                         sprite.MoveTo(gotoPosition, 500D, Easing.OutBounce);
@@ -146,6 +145,7 @@ namespace Funkin.NET.Screens.Main
                     Buttons[i].ButtonGraphic.Delay(delay, sprite =>
                     {
                         sprite.ScaleTo(1f, 500D);
+                        sprite.FadeInFromZero(500D);
                         return new TransformSequence<Sprite>(sprite);
                     });
 
@@ -486,6 +486,9 @@ namespace Funkin.NET.Screens.Main
                 return;
 
             GirlfriendAnimation.SwapAnimation();
+
+            foreach (MenuButton button in Buttons)
+                button.BeatHit();
         }
 
         [BackgroundDependencyLoader]
