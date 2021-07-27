@@ -428,7 +428,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                     int keyToUse = (int) note.Key;
 
                     if (keyToUse >= 4)
-                        keyToUse = (keyToUse - 4);
+                        keyToUse -= 4;
 
                     bool mustHitSection = (section.MustHitSection && (int) note.Key < 4) ||
                                           (!section.MustHitSection && (int) note.Key >= 4);
