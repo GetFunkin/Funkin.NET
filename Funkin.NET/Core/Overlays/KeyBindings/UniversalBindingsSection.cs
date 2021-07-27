@@ -1,4 +1,5 @@
 ﻿using System;
+using Funkin.NET.Core.Input.Bindings;
 using Funkin.NET.Core.Overlays.Settings;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;

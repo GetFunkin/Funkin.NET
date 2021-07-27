@@ -1,4 +1,6 @@
 ﻿using System;
+using Funkin.NET.Core.Conductor;
+using Funkin.NET.Core.Input.Bindings;
 using Funkin.NET.Core.Songs;
 using Funkin.NET.Game.Screens.Gameplay;
 using osu.Framework.Allocation;
@@ -12,6 +14,9 @@ using osuTK;
 
 namespace Funkin.NET.Game.Graphics.Composites.Gameplay
 {
+    /// <summary>
+    ///     Scrolling arrows for the key screen.
+    /// </summary>
     public class ScrollingArrowDrawable : CompositeDrawable
     {
         public virtual KeyAssociatedAction Key { get; }

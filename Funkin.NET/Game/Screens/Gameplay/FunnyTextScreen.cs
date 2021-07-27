@@ -1,5 +1,6 @@
 ﻿using System;
 using Funkin.NET.Core.Graphics;
+using Funkin.NET.Core.Input.Bindings;
 using Funkin.NET.Game.Graphics.Composites;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -11,6 +12,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Platform;
+using osu.Framework.Screens;
 using osuTK;
 
 namespace Funkin.NET.Game.Screens.Gameplay

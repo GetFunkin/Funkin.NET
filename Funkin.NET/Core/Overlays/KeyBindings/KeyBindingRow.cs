@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Funkin.NET.Core.Graphics;
 using Funkin.NET.Core.Graphics.UserInterface;
+using Funkin.NET.Core.Input.Bindings;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions;

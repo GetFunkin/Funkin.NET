@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Funkin.NET.Core.Input.Bindings;
 using Funkin.NET.Core.Overlays.Settings;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;

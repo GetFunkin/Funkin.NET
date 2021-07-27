@@ -1,4 +1,6 @@
-﻿namespace Funkin.NET.Core.Songs
+﻿using Funkin.NET.Core.Input.Bindings;
+
+namespace Funkin.NET.Core.Songs
 {
     public class Note
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Funkin.NET.Core.Input.Bindings;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
@@ -8,6 +9,9 @@ using osu.Framework.Graphics.Textures;
 
 namespace Funkin.NET.Game.Graphics.Composites.Gameplay
 {
+    /// <summary>
+    ///     Static, drawn arrow keys for the key screen.
+    /// </summary>
     public class ArrowKeyDrawable : CompositeDrawable
     {
         // Notes:

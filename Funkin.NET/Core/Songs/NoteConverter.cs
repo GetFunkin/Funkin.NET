@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Funkin.NET.Core.Input.Bindings;
 
 namespace Funkin.NET.Core.Songs
 {

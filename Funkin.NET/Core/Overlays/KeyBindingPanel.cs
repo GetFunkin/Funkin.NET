@@ -1,4 +1,5 @@
-﻿using Funkin.NET.Core.Overlays.KeyBindings;
+﻿using Funkin.NET.Core.Input.Bindings;
+using Funkin.NET.Core.Overlays.KeyBindings;
 using Funkin.NET.Core.Overlays.Settings;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;

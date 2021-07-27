@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Linq;
+using Funkin.NET.Core.Conductor;
+using Funkin.NET.Core.Screens;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 
-namespace Funkin.NET.Core.Screens
+namespace Funkin.NET.Game.Screens
 {
     /// <summary>
-    ///     Music-playing screen.
+    ///     Basic Music-playing screen. Allows for conductor integration.
     /// </summary>
     public abstract class MusicScreen : FunkinScreen
     {

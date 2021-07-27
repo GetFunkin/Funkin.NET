@@ -14,7 +14,6 @@ using Funkin.NET.Core.Overlays;
 using Funkin.NET.Core.Screens;
 using Funkin.NET.Game.Screens.Gameplay;
 using Funkin.NET.Resources;
-using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
@@ -34,7 +33,7 @@ namespace Funkin.NET
     /// <summary>
     ///     Base Funkin' game. Contains data game data. Different platforms likely build upon it, if only slightly.
     /// </summary>
-    public class FunkinGame : Game
+    public class FunkinGame : osu.Framework.Game
     {
         public const string ProgramName = "Funkin.NET";
 

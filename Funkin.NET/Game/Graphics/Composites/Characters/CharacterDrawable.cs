@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Funkin.NET.Core.Conductor;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;

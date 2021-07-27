@@ -1,4 +1,5 @@
-﻿using Funkin.NET.Core.Screens.Background;
+﻿using Funkin.NET.Core.Configuration;
+using Funkin.NET.Core.Screens.Background;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;

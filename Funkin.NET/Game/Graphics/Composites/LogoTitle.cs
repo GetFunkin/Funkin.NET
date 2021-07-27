@@ -6,6 +6,9 @@ using osu.Framework.Graphics.Textures;
 
 namespace Funkin.NET.Game.Graphics.Composites
 {
+    /// <summary>
+    ///     Animation for the logo as it appears on the title screen.
+    /// </summary>
     public class LogoTitle : CompositeDrawable
     {
         public TextureAnimation Anim;

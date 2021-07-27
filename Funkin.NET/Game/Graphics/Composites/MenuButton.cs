@@ -5,6 +5,9 @@ using osu.Framework.Input.Events;
 
 namespace Funkin.NET.Game.Graphics.Composites
 {
+    /// <summary>
+    ///     Simple button class that allows for beat hit-pulsing and hovering.
+    /// </summary>
     public class MenuButton : ClickableContainer
     {
         public Sprite ButtonGraphic { get; }
@@ -50,10 +53,7 @@ namespace Funkin.NET.Game.Graphics.Composites
 
             ButtonGraphic.ScaleTo(1f, 300D, Easing.OutBounce);
 
-            Scheduler.AddDelayed(() =>
-            {
-                OverrideTargetScale = false;
-            }, 300D);
+            Scheduler.AddDelayed(() => { OverrideTargetScale = false; }, 300D);
         }
 
         public virtual void BeatHit()
