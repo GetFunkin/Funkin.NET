@@ -234,10 +234,6 @@ namespace Funkin.NET.Screens.Main
             if (value >= PlayerArrows.Length || NotesAhead.First is null)
                 return false;
 
-            PlayerArrows[value].ArrowPressAnim.PlaybackPosition = 0;
-            PlayerArrows[value].ArrowPressAnim.Show();
-            PlayerArrows[value].ArrowIdleSprite.Hide();
-
             // if pressed on previous update frame the
             // IsHeld should be true :)
             if (IsPressed[value])
@@ -247,6 +243,13 @@ namespace Funkin.NET.Screens.Main
             // if not held, then pressed
             // else, held
             IsPressed[value] = !IsHeld[value];
+
+            if (!IsHeld[value])
+            {
+                PlayerArrows[value].ArrowPressAnim.PlaybackPosition = 0;
+                PlayerArrows[value].ArrowPressAnim.Show();
+                PlayerArrows[value].ArrowIdleSprite.Hide();
+            }
 
             Console.WriteLine($"{IsPressed[value]}, {IsHeld[value]}");
 
