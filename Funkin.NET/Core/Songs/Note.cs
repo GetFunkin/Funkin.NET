@@ -2,7 +2,7 @@
 
 namespace Funkin.NET.Core.Songs
 {
-    public struct Note
+    public class Note
     {
         /// <summary>
         /// The time when the note has to be pressed (in milliseconds)
