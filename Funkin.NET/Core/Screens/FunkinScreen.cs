@@ -10,14 +10,11 @@ using osu.Framework.Screens;
 
 namespace Funkin.NET.Core.Screens
 {
+    /// <summary>
+    ///     Base screen used for screens in Funkin.NET. Provides extra features and functionality.
+    /// </summary>
     public abstract class FunkinScreen : Screen, IFunkinScreen, IHasDescription
     {
-        /// <summary>
-        ///     The amount of negative padding that should be applied to game background content which touches both the left and right sides of the screen. <br />
-        ///     This allows for the game content to be pushed by the options/notification overlays without causing black areas to appear.
-        /// </summary>
-        public const float HorizontalOverflowPadding = 50;
-
         /// <summary>
         /// A user-facing title for this screen.
         /// </summary>
