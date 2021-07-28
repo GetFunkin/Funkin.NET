@@ -18,15 +18,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 {
     public class EnterScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
-        public enum TextDisplayType
-        {
-            Intro,
-            Exit
-        }
-
         public override double ExpectedBpm => 102D;
-
-        public virtual TextDisplayType DisplayType { get; }
 
         public double LastUpdatedTime;
         public bool IsQuirkyIntroFinished;
@@ -47,23 +39,12 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public MenuButton[] Buttons = new MenuButton[3];
         public bool RevealedButtons;
 
-        public EnterScreen(TextDisplayType displayType)
-        {
-            DisplayType = displayType;
-        }
-
         protected override void Update()
         {
             base.Update();
 
             UpdateChecks();
             UpdateMenuSongVolume();
-
-            if (!IsQuirkyIntroFinished || DisplayType == TextDisplayType.Exit)
-                UpdateTextDisplay();
-
-            if (DisplayType == TextDisplayType.Exit)
-                return;
 
             if (HaveWeActuallyEnteredTheCoolMenu)
             {
@@ -77,9 +58,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         protected void UpdateChecks()
         {
-            if (DisplayType == TextDisplayType.Exit)
-                return;
-
             WasIntroFinishedThisCycle = false;
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -135,7 +113,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                         2 => new Vector2(-400f, 0f),
                         _ => new Vector2()
                     };
-                    
+
                     Buttons[i].Delay(delay, sprite =>
                     {
                         sprite.MoveTo(gotoPosition, 500D, Easing.OutBounce);
@@ -157,12 +135,11 @@ namespace Funkin.NET.Game.Screens.Gameplay
         {
             TimeSpan time = TimeSpan.FromMilliseconds(Clock.CurrentTime - LastUpdatedTime);
 
-            if (!(DisplayType == TextDisplayType.Intro && Music.Volume.Value < 1D ||
-                  DisplayType == TextDisplayType.Exit && Music.Volume.Value < 0D) || time.Milliseconds < 100D)
+            if (Music.Volume.Value > 1D || time.Milliseconds < 100D)
                 return;
 
             LastUpdatedTime = Clock.CurrentTime;
-            Music.Volume.Value += DisplayType == TextDisplayType.Intro ? 0.0025D : -0.0025D;
+            Music.Volume.Value = 0.0025D;
         }
 
         protected void SetText(string text, int index)
@@ -175,121 +152,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
         {
             foreach (SpriteText text in Text)
                 text.Text = "";
-        }
-
-        protected void UpdateTextDisplay()
-        {
-            switch (DisplayType)
-            {
-                case TextDisplayType.Intro:
-                    switch (CurrentBeat)
-                    {
-                        case 1D:
-                            SetText("TOMAT", 0);
-                            break;
-
-                        case 3D:
-                            SetText("PRESENTS", 1);
-                            break;
-
-                        case 4D:
-                            Clear();
-                            break;
-
-                        case 5D:
-                            SetText("UNASSOCIATED WITH", 0);
-                            break;
-
-                        case 7D:
-                            SetText("NEWGROUNDS", 1);
-                            break;
-
-                        case 8D:
-                            Clear();
-                            break;
-
-                        case 9D:
-                            SetText(FunkinGame.FunnyText[0].ToUpper(), 0);
-                            break;
-
-                        case 11D:
-                            SetText(FunkinGame.FunnyText[1].ToUpper(), 1);
-                            break;
-
-                        case 12D:
-                            Clear();
-                            break;
-
-                        case 13D:
-                            SetText("FRIDAY", 0);
-                            break;
-
-                        case 14D:
-                            SetText("NIGHT", 1);
-                            break;
-
-                        case 15D:
-                            SetText("FUNKIN'", 2);
-                            break;
-
-                        case 16D:
-                            Clear();
-                            IsQuirkyIntroFinished = true;
-                            WasIntroFinishedThisCycle = true;
-                            break;
-                    }
-
-                    break;
-
-                case TextDisplayType.Exit:
-                    switch (CurrentBeat)
-                    {
-                        case 1D:
-                            SetText("THANKS FOR", 0);
-                            break;
-
-                        case 3D:
-                            SetText("PLAYING", 1);
-                            break;
-
-                        case 4D:
-                            Clear();
-                            break;
-
-                        case 5D:
-                            SetText("SEE YOU", 0);
-                            break;
-
-                        case 7D:
-                            SetText("LATER", 1);
-                            break;
-
-                        case 8D:
-                            Clear();
-                            break;
-
-                        case 9D:
-                            SetText(FunkinGame.FunnyText[0].ToUpper(), 0);
-                            break;
-
-                        case 11D:
-                            SetText(FunkinGame.FunnyText[1].ToUpper(), 1);
-                            break;
-
-                        case 12D:
-                            Clear();
-                            break;
-
-                        case 13D:
-                            Game.Exit();
-                            break;
-                    }
-
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(DisplayType));
-            }
         }
 
         public void InitializeEnterState()
@@ -445,35 +307,22 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (action != UniversalAction.Select)
                 return;
 
-            switch (DisplayType)
+            switch (IsQuirkyIntroFinished)
             {
-                case TextDisplayType.Intro:
-                    switch (IsQuirkyIntroFinished)
-                    {
-                        case false:
-                            Clear();
-                            PressedEnter = false;
-                            IsQuirkyIntroFinished = true;
-                            WasIntroFinishedThisCycle = true;
-                            return;
+                case false:
+                    Clear();
+                    PressedEnter = false;
+                    IsQuirkyIntroFinished = true;
+                    WasIntroFinishedThisCycle = true;
+                    return;
 
-                        case true when !WasIntroFinishedThisCycle && !DoNotPlayTheSoundAgainAaa:
-                            if (ScreenFlashBang != null && ScreenFlashBang.Alpha != 0f)
-                                return;
+                case true when !WasIntroFinishedThisCycle && !DoNotPlayTheSoundAgainAaa:
+                    if (ScreenFlashBang != null && ScreenFlashBang.Alpha != 0f)
+                        return;
 
-                            DoNotPlayTheSoundAgainAaa = PressedEnter = true;
-                            ConfirmSample.Play();
-                            break;
-                    }
-
+                    DoNotPlayTheSoundAgainAaa = PressedEnter = true;
+                    ConfirmSample.Play();
                     break;
-
-                case TextDisplayType.Exit:
-                    Game.Exit();
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(action));
             }
         }
 
@@ -481,29 +330,80 @@ namespace Funkin.NET.Game.Screens.Gameplay
         {
             base.BeatHit();
 
-            if (DisplayType == TextDisplayType.Exit)
-                return;
-
             GirlfriendAnimation.SwapAnimation();
 
             foreach (MenuButton button in Buttons)
                 button.BeatHit();
+
+            if (IsQuirkyIntroFinished)
+                return;
+
+            switch (CurrentBeat)
+            {
+                case 1D:
+                    SetText("TOMAT", 0);
+                    break;
+
+                case 3D:
+                    SetText("PRESENTS", 1);
+                    break;
+
+                case 4D:
+                    Clear();
+                    break;
+
+                case 5D:
+                    SetText("UNASSOCIATED WITH", 0);
+                    break;
+
+                case 7D:
+                    SetText("NEWGROUNDS", 1);
+                    break;
+
+                case 8D:
+                    Clear();
+                    break;
+
+                case 9D:
+                    SetText(FunkinGame.FunnyText[0].ToUpper(), 0);
+                    break;
+
+                case 11D:
+                    SetText(FunkinGame.FunnyText[1].ToUpper(), 1);
+                    break;
+
+                case 12D:
+                    Clear();
+                    break;
+
+                case 13D:
+                    SetText("FRIDAY", 0);
+                    break;
+
+                case 14D:
+                    SetText("NIGHT", 1);
+                    break;
+
+                case 15D:
+                    SetText("FUNKIN'", 2);
+                    break;
+
+                case 16D:
+                    Clear();
+                    IsQuirkyIntroFinished = true;
+                    WasIntroFinishedThisCycle = true;
+                    break;
+            }
         }
 
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio, TextureStore textures, FunkinGame game)
         {
-            Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg"));
-            Music.Stop();
-            Music.Looping = true;
+            Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg")) {Looping = true};
+            Music.VolumeTo(0D);
             Music.Start();
 
-            Music.VolumeTo(DisplayType == TextDisplayType.Exit ? 1D : 0D);
-
             ConfirmSample = new DrawableSample(audio.Samples.Get("Main/ConfirmEnter.ogg"));
-
-            if (DisplayType == TextDisplayType.Exit)
-                return;
 
             GirlfriendAnimation = new GirlfriendDanceTitle
             {
