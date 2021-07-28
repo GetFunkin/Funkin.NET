@@ -19,66 +19,64 @@ namespace Funkin.NET.Game.Screens.Gameplay
     public class EnterScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
         public override double ExpectedBpm => 102D;
-
-        public double LastUpdatedTime;
-        public bool IsQuirkyIntroFinished;
-        public bool IsEnterPromptInitialized;
-        public GirlfriendDanceTitle GirlfriendAnimation;
-        public LogoTitle LogoAnimation;
-        public Box ScreenFlashBang;
-        public bool HasBangCycled;
-        public bool PressedEnter;
+        
         public double TimeOnEntering = TimeSpan.Zero.Milliseconds;
-        public bool WasIntroFinishedThisCycle;
-        public SpriteText[] Text = new SpriteText[3];
-        public DrawableSample ConfirmSample;
-        public bool DoNotPlayTheSoundAgainAaa;
-        public bool HaveWeActuallyEnteredTheCoolMenu;
-        public bool SwagInitialized;
+        public bool FinishedTextIntroduction;
+        public bool InitializedEnterVisuals;
+        public bool FlashBangComplete;
+        public bool SelectedEnter;
+        public bool InfoFinishedNow;
+        public bool BlockSelectionSound;
+        public bool EnteredRealMenu;
+        public bool BaseMenuInitialized;
         public bool ScheduledEnterText;
-        public MenuButton[] Buttons = new MenuButton[3];
         public bool RevealedButtons;
 
+        public SpriteText[] Text = new SpriteText[3];
+        public MenuButton[] Buttons = new MenuButton[3];
+        public GirlfriendDanceTitle GirlfriendAnimation;
+        public DrawableSample ConfirmSample;
+        public LogoTitle LogoAnimation;
+        public Box ScreenFlashBang;
         protected override void Update()
         {
             base.Update();
 
             UpdateChecks();
-            UpdateMenuSongVolume();
 
-            if (HaveWeActuallyEnteredTheCoolMenu)
+            if (EnteredRealMenu)
             {
                 DoCoolMenuStuff();
                 return;
             }
 
-            if (!IsEnterPromptInitialized && IsQuirkyIntroFinished)
+            if (!InitializedEnterVisuals && FinishedTextIntroduction)
                 InitializeEnterState();
         }
 
         protected void UpdateChecks()
         {
-            WasIntroFinishedThisCycle = false;
+            InfoFinishedNow = false;
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (PressedEnter && TimeOnEntering == TimeSpan.Zero.Milliseconds)
+            if (SelectedEnter && TimeOnEntering == TimeSpan.Zero.Milliseconds)
                 TimeOnEntering = Clock.CurrentTime;
 
-            if (PressedEnter /*&& ScreenFlashBang?.Alpha >= 1f*/)
+            if (SelectedEnter /*&& ScreenFlashBang?.Alpha >= 1f*/)
             {
                 // this.Push(new SimpleKeyScreen(RootTrack.GetTrackFromFile("Json/Songs/bopeebo/bopeebo.json").Song));
 
                 // Music.Stop();
-                HaveWeActuallyEnteredTheCoolMenu = true;
+                EnteredRealMenu = true;
             }
         }
 
         protected void DoCoolMenuStuff()
         {
-            if (SwagInitialized)
+            if (BaseMenuInitialized)
                 return;
 
-            SwagInitialized = true;
+            BaseMenuInitialized = true;
 
             const float scale = 0.95f;
 
@@ -131,17 +129,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
             };
         }
 
-        protected void UpdateMenuSongVolume()
-        {
-            TimeSpan time = TimeSpan.FromMilliseconds(Clock.CurrentTime - LastUpdatedTime);
-
-            if (Music.Volume.Value > 1D || time.Milliseconds < 100D)
-                return;
-
-            LastUpdatedTime = Clock.CurrentTime;
-            Music.Volume.Value = 0.0025D;
-        }
-
         protected void SetText(string text, int index)
         {
             Text[index].Text = text;
@@ -156,11 +143,11 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         public void InitializeEnterState()
         {
-            IsEnterPromptInitialized = true;
+            InitializedEnterVisuals = true;
 
             void Fade(Drawable drawable)
             {
-                if (PressedEnter && !ScheduledEnterText)
+                if (SelectedEnter && !ScheduledEnterText)
                 {
                     ScheduledEnterText = true;
 
@@ -171,10 +158,10 @@ namespace Funkin.NET.Game.Screens.Gameplay
                         .FadeOut();
                 }
 
-                if (PressedEnter)
+                if (SelectedEnter)
                     return;
 
-                if (!HasBangCycled)
+                if (!FlashBangComplete)
                 {
                     drawable.Alpha = 0f;
                     return;
@@ -194,13 +181,13 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
             void CircularOffset(Drawable drawable)
             {
-                if (!HasBangCycled)
+                if (!FlashBangComplete)
                     drawable.Alpha = 0f;
                 else
                     drawable.Alpha = 1f / 3f;
 
                 double rotOffset = 0D;
-                if (PressedEnter)
+                if (SelectedEnter)
                     rotOffset = (Clock.CurrentTime - TimeOnEntering) / 100D * 55D;
 
                 int offset = 999;
@@ -277,14 +264,14 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
             ScreenFlashBang.OnUpdate += drawable =>
             {
-                if (HasBangCycled)
+                if (FlashBangComplete)
                     return;
 
                 switch (drawable.Alpha)
                 {
                     case >= 1f /*when !PressedEnter*/:
                         drawable.FadeOutFromOne(1500D);
-                        HasBangCycled = true;
+                        FlashBangComplete = true;
                         break;
 
                     /*case >= 1f when PressedEnter:
@@ -307,20 +294,20 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (action != UniversalAction.Select)
                 return;
 
-            switch (IsQuirkyIntroFinished)
+            switch (FinishedTextIntroduction)
             {
                 case false:
                     Clear();
-                    PressedEnter = false;
-                    IsQuirkyIntroFinished = true;
-                    WasIntroFinishedThisCycle = true;
+                    SelectedEnter = false;
+                    FinishedTextIntroduction = true;
+                    InfoFinishedNow = true;
                     return;
 
-                case true when !WasIntroFinishedThisCycle && !DoNotPlayTheSoundAgainAaa:
+                case true when !InfoFinishedNow && !BlockSelectionSound:
                     if (ScreenFlashBang != null && ScreenFlashBang.Alpha != 0f)
                         return;
 
-                    DoNotPlayTheSoundAgainAaa = PressedEnter = true;
+                    BlockSelectionSound = SelectedEnter = true;
                     ConfirmSample.Play();
                     break;
             }
@@ -335,7 +322,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             foreach (MenuButton button in Buttons)
                 button.BeatHit();
 
-            if (IsQuirkyIntroFinished)
+            if (FinishedTextIntroduction)
                 return;
 
             switch (CurrentBeat)
@@ -390,8 +377,8 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
                 case 16D:
                     Clear();
-                    IsQuirkyIntroFinished = true;
-                    WasIntroFinishedThisCycle = true;
+                    FinishedTextIntroduction = true;
+                    InfoFinishedNow = true;
                     break;
             }
         }
@@ -401,6 +388,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg")) {Looping = true};
             Music.VolumeTo(0D);
+            Music.VolumeTo(1D, 4000D, Easing.In);
             Music.Start();
 
             ConfirmSample = new DrawableSample(audio.Samples.Get("Main/ConfirmEnter.ogg"));
