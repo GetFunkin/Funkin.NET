@@ -11,13 +11,12 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Input.Bindings;
-using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 
 namespace Funkin.NET.Game.Screens.Gameplay
 {
-    public class FunnyTextScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
+    public class EnterScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
         public enum TextDisplayType
         {
@@ -48,7 +47,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public MenuButton[] Buttons = new MenuButton[3];
         public bool RevealedButtons;
 
-        public FunnyTextScreen(TextDisplayType displayType)
+        public EnterScreen(TextDisplayType displayType)
         {
             DisplayType = displayType;
         }
@@ -492,7 +491,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
         }
 
         [BackgroundDependencyLoader]
-        private void Load(AudioManager audio, TextureStore textures, FunkinGame game, Storage storage)
+        private void Load(AudioManager audio, TextureStore textures, FunkinGame game)
         {
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg"));
             Music.Stop();
