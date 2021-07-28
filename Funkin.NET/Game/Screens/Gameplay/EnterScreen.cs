@@ -6,6 +6,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Audio;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
@@ -32,7 +33,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public bool ScheduledEnterText;
         public bool RevealedButtons;
 
-        public SpriteText[] Text = new SpriteText[3];
+        public TextFlowContainer FlowingText;
         public MenuButton[] Buttons = new MenuButton[3];
         public GirlfriendDanceTitle GirlfriendAnimation;
         public DrawableSample ConfirmSample;
@@ -127,18 +128,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
                     delay += delayIncrease;
                 }
             };
-        }
-
-        protected void SetText(string text, int index)
-        {
-            Text[index].Text = text;
-            Text[index].Position = new Vector2(0f, -80f + index * 40f);
-        }
-
-        protected void Clear()
-        {
-            foreach (SpriteText text in Text)
-                text.Text = "";
         }
 
         public void InitializeEnterState()
@@ -297,7 +286,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             switch (FinishedTextIntroduction)
             {
                 case false:
-                    Clear();
+                    FlowingText.Text = "";
                     SelectedEnter = false;
                     FinishedTextIntroduction = true;
                     InfoFinishedNow = true;
@@ -325,58 +314,60 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (FinishedTextIntroduction)
                 return;
 
+            static void WithFont(SpriteText text) => text.Font = FunkinFont.Funkin.With(size: 40f);
+
             switch (CurrentBeat)
             {
                 case 1D:
-                    SetText("TOMAT", 0);
+                    FlowingText.AddParagraph("TOMAT", WithFont);
                     break;
 
                 case 3D:
-                    SetText("PRESENTS", 1);
+                    FlowingText.AddParagraph("PRESENTS", WithFont);
                     break;
 
                 case 4D:
-                    Clear();
+                    FlowingText.Text = "";
                     break;
 
                 case 5D:
-                    SetText("UNASSOCIATED WITH", 0);
+                    FlowingText.AddParagraph("UNASSOCIATED WITH", WithFont);
                     break;
 
                 case 7D:
-                    SetText("NEWGROUNDS", 1);
+                    FlowingText.AddParagraph("NEWGROUNDS", WithFont);
                     break;
 
                 case 8D:
-                    Clear();
+                    FlowingText.Text = "";
                     break;
 
                 case 9D:
-                    SetText(FunkinGame.FunnyText[0].ToUpper(), 0);
+                    FlowingText.AddParagraph(FunkinGame.FunnyText[0].ToUpper(), WithFont);
                     break;
 
                 case 11D:
-                    SetText(FunkinGame.FunnyText[1].ToUpper(), 1);
+                    FlowingText.AddParagraph(FunkinGame.FunnyText[1].ToUpper(), WithFont);
                     break;
 
                 case 12D:
-                    Clear();
+                    FlowingText.Text = "";
                     break;
 
                 case 13D:
-                    SetText("FRIDAY", 0);
+                    FlowingText.AddParagraph("FRIDAY", WithFont);
                     break;
 
                 case 14D:
-                    SetText("NIGHT", 1);
+                    FlowingText.AddParagraph("NIGHT", WithFont);
                     break;
 
                 case 15D:
-                    SetText("FUNKIN'", 2);
+                    FlowingText.AddParagraph("FUNKIN'", WithFont);
                     break;
 
                 case 16D:
-                    Clear();
+                    FlowingText.Text = "";
                     FinishedTextIntroduction = true;
                     InfoFinishedNow = true;
                     break;
@@ -413,28 +404,25 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 Alpha = 0f
             };
 
-            AddInternal(Text[0] = new SpriteText
+            AddInternal(new FillFlowContainer
             {
+                RelativeSizeAxes = Axes.X,
+                AutoSizeAxes = Axes.Y,
+                Direction = FillDirection.Vertical,
                 Anchor = Anchor.Centre,
-                RelativeAnchorPosition = Size / 2f,
-                Font = FunkinFont.Funkin.With(size: 40f),
-                Origin = Anchor.Centre
-            });
-
-            AddInternal(Text[1] = new SpriteText
-            {
-                Anchor = Anchor.Centre,
-                RelativeAnchorPosition = Size / 2f,
-                Font = FunkinFont.Funkin.With(size: 40f),
-                Origin = Anchor.Centre
-            });
-
-            AddInternal(Text[2] = new SpriteText
-            {
-                Anchor = Anchor.Centre,
-                RelativeAnchorPosition = Size / 2f,
-                Font = FunkinFont.Funkin.With(size: 40f),
-                Origin = Anchor.Centre
+                Origin = Anchor.Centre,
+                Children = new Drawable[]
+                {
+                    FlowingText = new TextFlowContainer
+                    {
+                        Width = 680f,
+                        AutoSizeAxes = Axes.Y,
+                        TextAnchor = Anchor.TopCentre,
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Spacing = new Vector2(0, 2)
+                    }
+                }
             });
 
             for (int i = 0; i < Buttons.Length; i++)

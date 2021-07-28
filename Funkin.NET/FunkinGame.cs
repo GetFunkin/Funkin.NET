@@ -152,7 +152,7 @@ namespace Funkin.NET
             ScreenStack.ScreenExited += ScreenExited;
 
             ScreenStack.Push(
-                new StartupIntroductionScreen(new EnterScreen(EnterScreen.TextDisplayType.Intro)));
+                new StartupIntroductionScreen(new EnterScreen()));
 
             ProtectedDependencies.CacheAs(Settings = new SettingsOverlay());
             LoadComponentAsync(Settings, LeftFloatingOverlayContainer.Add, CancellationToken.None);
@@ -214,9 +214,8 @@ namespace Funkin.NET
         {
             switch (newScreen)
             {
-                case EnterScreen funny:
-                    if (funny.DisplayType == EnterScreen.TextDisplayType.Intro)
-                        IntroScreen = funny;
+                case EnterScreen enter: 
+                    IntroScreen = enter;
                     break;
 
                 case StartupIntroductionScreen menu:
