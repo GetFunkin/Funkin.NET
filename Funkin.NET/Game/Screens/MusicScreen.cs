@@ -36,7 +36,7 @@ namespace Funkin.NET.Game.Screens
             UpdateBeat();
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (oldStep != CurrentStep && CurrentStep > 0)
+            if (oldStep != CurrentStep && CurrentStep > 0D)
                 StepHit();
         }
 
