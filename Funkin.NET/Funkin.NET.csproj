@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Funkin.NET.Resources\Funkin.NET.Resources.csproj" />
+    <ProjectReference Include="..\GetFunkin.AdobeNecromancer\GetFunkin.AdobeNecromancer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
