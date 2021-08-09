@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Textures\**\*.png" />
+    <EmbeddedResource Include="Textures\**\*.xml" />
   </ItemGroup>
 
   <ItemGroup>

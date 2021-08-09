@@ -8,6 +8,7 @@ using System.Threading;
 using Funkin.NET.Core.Configuration;
 using Funkin.NET.Core.Graphics.Containers;
 using Funkin.NET.Core.Graphics.Cursor;
+using Funkin.NET.Core.Graphics.Textures;
 using Funkin.NET.Core.Input;
 using Funkin.NET.Core.Input.Bindings;
 using Funkin.NET.Core.Overlays;
@@ -67,7 +68,7 @@ namespace Funkin.NET
         protected UniversalActionContainer ActionContainer;
         protected FunkinScreenStack ScreenStack;
 
-        private readonly List<OverlayContainer> _visibleBlockingOverlays = new();
+        private readonly List<OverlayContainer> VisibleBlockingOverlays = new();
 
         public StartupIntroductionScreen MenuScreen { get; private set; }
 
@@ -243,7 +244,6 @@ namespace Funkin.NET
         [BackgroundDependencyLoader]
         private void Load()
         {
-            // don't care about android lol!
             using (FileStream hash = File.OpenRead(typeof(FunkinGame).Assembly.Location))
                 VersionHash = hash.ComputeMD5Hash();
 
@@ -253,6 +253,9 @@ namespace Funkin.NET
 
             ProtectedDependencies.CacheAs(this);
             ProtectedDependencies.CacheAs(LocalConfig);
+
+            SparrowAtlasStore sparrowAtlas = new(Resources);
+            ProtectedDependencies.CacheAs(sparrowAtlas);
 
             RegisterFonts();
             InitializeContent();
@@ -290,21 +293,21 @@ namespace Funkin.NET
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }
 
-        protected void UpdateBlockingOverlayFade() => ScreenContainer.FadeColour(_visibleBlockingOverlays.Any()
+        protected void UpdateBlockingOverlayFade() => ScreenContainer.FadeColour(VisibleBlockingOverlays.Any()
             ? new Colour4(0.5f, 0.5f, 0.5f, 1f)
             : Colour4.White, 500D, Easing.OutQuint);
 
         public void AddBlockingOverlay(OverlayContainer overlay)
         {
-            if (!_visibleBlockingOverlays.Contains(overlay))
-                _visibleBlockingOverlays.Add(overlay);
+            if (!VisibleBlockingOverlays.Contains(overlay))
+                VisibleBlockingOverlays.Add(overlay);
 
             UpdateBlockingOverlayFade();
         }
 
         public void RemoveBlockingOverlay(OverlayContainer overlay) => Schedule(() =>
         {
-            _visibleBlockingOverlays.Remove(overlay);
+            VisibleBlockingOverlays.Remove(overlay);
             UpdateBlockingOverlayFade();
         });
     }
