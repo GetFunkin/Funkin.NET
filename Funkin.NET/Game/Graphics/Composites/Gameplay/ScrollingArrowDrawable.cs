@@ -143,21 +143,25 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             if (HasBeenHit && HoldTime == 0)
                 return;
 
-            // sustain notes aren't implemented yet
-            // so ignore all held presses for now
-            // figure out sustain notes later?
             if (action != Key)
                 return;
-            
-            // TODO: sustain note support
+
             if (HoldTime <= 0 && (Position.Y is <= -250f or >= -150f || IsEnemyArrow))
                 return;
 
-            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.SongPosition > (TargetTime + HoldTime) || IsEnemyArrow)) {
+            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.SongPosition > TargetTime + HoldTime || IsEnemyArrow)) {
+                if (MusicConductor.SongPosition > TargetTime + HoldTime && IsHeld) {
+                    // Do some hit accuracy calculation
+                    // Maybe use TargetTime and StartHoldTime?
+                    
+                    // Remove note
+                    Alpha = 0f;
+                }
                 IsHeld = false;
                 return;
             }
 
+            // Set StartHoldTime when song time is near target time
             if (HoldTime > 0 && Math.Abs(MusicConductor.SongPosition - TargetTime) < 25)
                 StartHoldTime = MusicConductor.SongPosition;
 
