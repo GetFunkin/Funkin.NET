@@ -112,7 +112,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             // maybe reset clock when changing to BaseKeyPlayScreen ?
 
             double songPos;
-            if (IsHeld)
+            if (IsHeld && MusicConductor.SongPosition > TargetTime)
                 songPos = TargetTime;
             else if (LastHeldTime != 0 && StartHoldTime != 0)
                 songPos = MusicConductor.SongPosition - (LastHeldTime - StartHoldTime);
@@ -150,20 +150,19 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
                 return;
             
             // TODO: sustain note support
-            if (Position.Y is <= -250f or >= -150f || IsEnemyArrow)
+            if (HoldTime <= 0 && (Position.Y is <= -250f or >= -150f || IsEnemyArrow))
                 return;
 
-            if (!held && HoldTime > 0)
-                StartHoldTime = MusicConductor.SongPosition;
-            
-            if (held)
-            {
-                if (MusicConductor.SongPosition > HoldTime + TargetTime)
-                {
-                    IsHeld = false;
-                    return;
-                }
+            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.SongPosition > (TargetTime + HoldTime) || IsEnemyArrow)) {
+                IsHeld = false;
+                return;
+            }
 
+            if (HoldTime > 0 && Math.Abs(MusicConductor.SongPosition - TargetTime) < 25)
+                StartHoldTime = MusicConductor.SongPosition;
+
+            if (HoldTime > 0)
+            {
                 LastHeldTime = MusicConductor.SongPosition;
                 IsHeld = true;
 
