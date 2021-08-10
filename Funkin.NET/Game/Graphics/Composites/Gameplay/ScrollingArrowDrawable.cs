@@ -79,11 +79,11 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
         {
             string keyName = Enum.GetName(Key)!.ToLowerInvariant();
 
-            ArrowSprite.Texture = textures.Get($"Arrow/{keyName}_scroll");
-            AddInternal(ArrowSprite);
-
             HoldEndSprite.Texture = textures.Get($"Arrow/{keyName}_hold_end");
             AddInternal(HoldEndSprite);
+
+            ArrowSprite.Texture = textures.Get($"Arrow/{keyName}_scroll");
+            AddInternal(ArrowSprite);
         }
 
         protected override void Update()
