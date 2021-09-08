@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Funkin.NET.Resources;
+﻿using Funkin.NET.Resources;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Textures;

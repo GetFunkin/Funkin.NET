@@ -38,6 +38,9 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public DrawableSample ConfirmSample;
         public LogoTitle LogoAnimation;
         public Box ScreenFlashBang;
+
+        public string[] ChosenSplashText;
+
         protected override void Update()
         {
             base.Update();
@@ -342,11 +345,11 @@ namespace Funkin.NET.Game.Screens.Gameplay
                     break;
 
                 case 9D:
-                    FlowingText.AddParagraph(FunkinGame.FunnyText[0].ToUpper(), WithFont);
+                    FlowingText.AddParagraph(ChosenSplashText[0].ToUpper(), WithFont);
                     break;
 
                 case 11D:
-                    FlowingText.AddParagraph(FunkinGame.FunnyText[1].ToUpper(), WithFont);
+                    FlowingText.AddParagraph(ChosenSplashText[1].ToUpper(), WithFont);
                     break;
 
                 case 12D:
@@ -376,6 +379,8 @@ namespace Funkin.NET.Game.Screens.Gameplay
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio, TextureStore textures, FunkinGame game)
         {
+            ChosenSplashText = game.SplashText.GetSplashText();
+
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg")) {Looping = true};
             Music.VolumeTo(0D);
             Music.VolumeTo(1D, 4000D, Easing.In);

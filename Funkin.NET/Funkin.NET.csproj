@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Common\Providers\" />
     <Folder Include="Core\Music\Conductor\" />
   </ItemGroup>
 

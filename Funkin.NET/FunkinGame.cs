@@ -7,9 +7,11 @@ using System.Text.Json;
 using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Input;
+using Funkin.NET.Common.Providers;
 using Funkin.NET.Common.Screens;
 using Funkin.NET.Core.Input;
 using Funkin.NET.Game.Screens.Gameplay;
+using Funkin.NET.Intermediary;
 using Funkin.NET.Intermediary.ResourceStores;
 using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
@@ -25,7 +27,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
 using osu.Framework.Input;
 using osu.Framework.IO.Stores;
-using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 
@@ -34,13 +35,9 @@ namespace Funkin.NET
     /// <summary>
     ///     Base Funkin' game. Contains data game data. Different platforms likely build upon it, if only slightly.
     /// </summary>
-    public class FunkinGame : osu.Framework.Game
+    public class FunkinGame : IntermediaryGame
     {
         public const string ProgramName = "Funkin.NET";
-
-        public static List<string[]> FunnyTextList { get; protected set; }
-
-        public static string[] FunnyText { get; protected set; }
 
         public virtual Version AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
 
@@ -51,8 +48,6 @@ namespace Funkin.NET
         protected FunkinConfigManager LocalConfig { get; set; }
 
         protected DefaultCursorContainer DefaultCursorContainer { get; set; }
-
-        protected Storage Storage { get; set; }
 
         protected override Container<Drawable> Content => ProtectedContent;
 
@@ -66,7 +61,6 @@ namespace Funkin.NET
         protected ScalingContainer ScreenContainer;
         protected Container ScreenOffsetContainer;
         protected UniversalActionContainer ActionContainer;
-        protected DefaultScreenStack ScreenStack;
 
         private readonly List<OverlayContainer> VisibleBlockingOverlays = new();
 
@@ -76,20 +70,19 @@ namespace Funkin.NET
 
         public SettingsOverlay Settings;
 
+        public SplashTextProvider SplashText { get; }
+
         public FunkinGame()
         {
             Name = ProgramName;
 
             string path = Path.Combine("Json", "IntroText.json");
             string text = File.ReadAllText(path);
-            FunnyTextList = JsonSerializer.Deserialize<List<string[]>>(text);
-            FunnyText = FunnyTextList?[new Random().Next(0, FunnyTextList.Count)];
+            SplashText = new SplashTextProvider(text);
         }
 
         protected override void LoadComplete()
         {
-            base.LoadComplete();
-
             ShowFpsDisplay = LocalConfig.GetBindable<bool>(FunkinConfigManager.FunkinSetting.ShowFpsDisplay);
             ShowFpsDisplay.ValueChanged += x => FrameStatistics.Value = x.NewValue
                 ? FrameStatisticsMode.Full
@@ -149,8 +142,7 @@ namespace Funkin.NET
                 }
             });
 
-            ScreenStack.ScreenPushed += ScreenPushed;
-            ScreenStack.ScreenExited += ScreenExited;
+            base.LoadComplete();
 
             ScreenStack.Push(
                 new StartupIntroductionScreen(new EnterScreen()));
@@ -186,7 +178,7 @@ namespace Funkin.NET
             LocalConfig = new FunkinConfigManager(Storage);
         }
 
-        protected virtual Container CreateScalingContainer() =>
+        public override Container CreateScalingContainer() =>
             new ScalingContainer(FunkinConfigManager.ScalingMode.Everything);
 
         protected override void Dispose(bool isDisposing)
@@ -211,7 +203,7 @@ namespace Funkin.NET
             DefaultCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
         }
 
-        protected virtual void ScreenChanged(IScreen current, IScreen newScreen)
+        public override void ScreenChanged(IScreen current, IScreen newScreen)
         {
             switch (newScreen)
             {
@@ -225,24 +217,7 @@ namespace Funkin.NET
             }
         }
 
-        private void ScreenPushed(IScreen lastScreen, IScreen newScreen)
-        {
-            ScreenChanged(lastScreen, newScreen);
-            Logger.Log($"Screen ({lastScreen}) pushed to → {newScreen}");
-        }
-
-        private void ScreenExited(IScreen lastScreen, IScreen newScreen)
-        {
-            ScreenChanged(lastScreen, newScreen);
-            Logger.Log($"Screen ({lastScreen}) exited to → {newScreen}");
-
-            // todo: set to FunnyTextScreen exit edition
-            if (newScreen == null)
-                Exit();
-        }
-
-        [BackgroundDependencyLoader]
-        private void Load()
+        public override void OnBackgroundDependencyLoad()
         {
             using (FileStream hash = File.OpenRead(typeof(FunkinGame).Assembly.Location))
                 VersionHash = hash.ComputeMD5Hash();
@@ -256,12 +231,9 @@ namespace Funkin.NET
 
             SparrowAtlasStore sparrowAtlas = new(Resources);
             ProtectedDependencies.CacheAs(sparrowAtlas);
-
-            RegisterFonts();
-            InitializeContent();
         }
 
-        protected virtual void RegisterFonts()
+        public override void RegisterFonts()
         {
             AddFont(Resources, PathHelper.GetFont("VCR/VCR"));
             AddFont(Resources, PathHelper.GetFont("Funkin/Funkin"));
@@ -271,7 +243,7 @@ namespace Funkin.NET
             AddFont(Resources, PathHelper.GetFont("Torus/Torus-Bold"));
         }
 
-        protected virtual void InitializeContent()
+        public override void InitializeContent()
         {
             Drawable[] mainContent =
             {
