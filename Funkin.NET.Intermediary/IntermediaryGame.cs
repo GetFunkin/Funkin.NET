@@ -1,4 +1,6 @@
-﻿using osu.Framework;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
@@ -12,6 +14,10 @@ namespace Funkin.NET.Intermediary
         public Storage Storage { get; set; }
 
         public ScreenStack ScreenStack { get; set; }
+
+        public IServiceCollection Services { get; } = new ServiceCollection();
+
+        public IServiceProvider ServiceProvider => Services.BuildServiceProvider();
 
         public abstract void RegisterFonts();
 

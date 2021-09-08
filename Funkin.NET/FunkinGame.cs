@@ -17,6 +17,7 @@ using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
 using Funkin.NET.osuImpl.Overlays;
 using Funkin.NET.Resources;
+using Microsoft.Extensions.DependencyInjection;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
@@ -70,15 +71,9 @@ namespace Funkin.NET
 
         public SettingsOverlay Settings;
 
-        public SplashTextProvider SplashText { get; }
-
         public FunkinGame()
         {
             Name = ProgramName;
-
-            string path = Path.Combine("Json", "IntroText.json");
-            string text = File.ReadAllText(path);
-            SplashText = new SplashTextProvider(text);
         }
 
         protected override void LoadComplete()
@@ -231,6 +226,8 @@ namespace Funkin.NET
 
             SparrowAtlasStore sparrowAtlas = new(Resources);
             ProtectedDependencies.CacheAs(sparrowAtlas);
+
+            Services.AddSingleton<SplashTextProvider>();
         }
 
         public override void RegisterFonts()
