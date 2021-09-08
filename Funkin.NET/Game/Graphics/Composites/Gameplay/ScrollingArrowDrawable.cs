@@ -65,7 +65,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             };
 
             LifetimeStart = TargetTime - 5 * 1000; // Lifetime starts 5 seconds before target
-            LifetimeEnd = TargetTime + ((2 + holdTime) * 1000); // Lifetime ends 4 seconds after target
+            LifetimeEnd = TargetTime + (2 * 1000 + holdTime); // Lifetime ends 2 seconds + hold length after target
         }
 
         public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
@@ -79,11 +79,11 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
         {
             string keyName = Enum.GetName(Key)!.ToLowerInvariant();
 
-            ArrowSprite.Texture = textures.Get($"Arrow/{keyName}_scroll");
-            AddInternal(ArrowSprite);
-
             HoldEndSprite.Texture = textures.Get($"Arrow/{keyName}_hold_end");
             AddInternal(HoldEndSprite);
+
+            ArrowSprite.Texture = textures.Get($"Arrow/{keyName}_scroll");
+            AddInternal(ArrowSprite);
         }
 
         protected override void Update()
@@ -112,7 +112,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             // maybe reset clock when changing to BaseKeyPlayScreen ?
 
             double songPos;
-            if (IsHeld)
+            if (IsHeld && MusicConductor.SongPosition > TargetTime)
                 songPos = TargetTime;
             else if (LastHeldTime != 0 && StartHoldTime != 0)
                 songPos = MusicConductor.SongPosition - (LastHeldTime - StartHoldTime);
@@ -143,27 +143,30 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             if (HasBeenHit && HoldTime == 0)
                 return;
 
-            // sustain notes aren't implemented yet
-            // so ignore all held presses for now
-            // figure out sustain notes later?
             if (action != Key)
                 return;
-            
-            // TODO: sustain note support
-            if (Position.Y is <= -250f or >= -150f || IsEnemyArrow)
+
+            if (HoldTime <= 0 && (Position.Y is <= -250f or >= -150f || IsEnemyArrow))
                 return;
 
-            if (!held && HoldTime > 0)
-                StartHoldTime = MusicConductor.SongPosition;
-            
-            if (held)
-            {
-                if (MusicConductor.SongPosition > HoldTime + TargetTime)
-                {
-                    IsHeld = false;
-                    return;
+            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.SongPosition > TargetTime + HoldTime || IsEnemyArrow)) {
+                if (MusicConductor.SongPosition > TargetTime + HoldTime && IsHeld) {
+                    // Do some hit accuracy calculation
+                    // Maybe use TargetTime and StartHoldTime?
+                    
+                    // Remove note
+                    Alpha = 0f;
                 }
+                IsHeld = false;
+                return;
+            }
 
+            // Set StartHoldTime when song time is near target time
+            if (HoldTime > 0 && Math.Abs(MusicConductor.SongPosition - TargetTime) < 25)
+                StartHoldTime = MusicConductor.SongPosition;
+
+            if (HoldTime > 0)
+            {
                 LastHeldTime = MusicConductor.SongPosition;
                 IsHeld = true;
 
