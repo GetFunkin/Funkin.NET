@@ -1,4 +1,4 @@
-﻿using Funkin.NET.Core.Graphics.Textures;
+﻿using Funkin.NET.Intermediary.ResourceStores;
 using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;

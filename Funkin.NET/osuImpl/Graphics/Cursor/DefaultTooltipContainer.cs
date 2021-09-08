@@ -61,13 +61,13 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
                 };
             }
 
-            public override bool SetContent(object content)
+            public override void SetContent(LocalisableString content)
             {
-                if (content is not LocalisableString contentString)
-                    return false;
-
-                if (contentString == _text.Text)
-                    return true;
+                if (content == _text.Text)
+                {
+                    base.SetContent(content);
+                    return;
+                }
 
                 if (IsPresent)
                 {
@@ -77,7 +77,7 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
                 else
                     AutoSizeDuration = 0;
 
-                return true;
+                base.SetContent(content);
             }
 
             protected override void PopIn()

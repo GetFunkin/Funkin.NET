@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET.Resources", "Fun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetFunkin.AdobeNecromancer", "GetFunkin.AdobeNecromancer\GetFunkin.AdobeNecromancer.csproj", "{CA7A966A-1029-438C-9054-5BEC5172DA61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funkin.NET.Intermediary", "Funkin.NET.Intermediary\Funkin.NET.Intermediary.csproj", "{5703C9D6-8A44-4521-AA22-626B99E62E58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{CA7A966A-1029-438C-9054-5BEC5172DA61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA7A966A-1029-438C-9054-5BEC5172DA61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA7A966A-1029-438C-9054-5BEC5172DA61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5703C9D6-8A44-4521-AA22-626B99E62E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5703C9D6-8A44-4521-AA22-626B99E62E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5703C9D6-8A44-4521-AA22-626B99E62E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5703C9D6-8A44-4521-AA22-626B99E62E58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

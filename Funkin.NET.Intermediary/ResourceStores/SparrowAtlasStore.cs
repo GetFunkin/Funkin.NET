@@ -8,7 +8,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
 using osuRectangleF = osu.Framework.Graphics.Primitives.RectangleF;
 
-namespace Funkin.NET.Core.Graphics.Textures
+namespace Funkin.NET.Intermediary.ResourceStores
 {
     /// <summary>
     ///     ResourceStore designed for caching Textures loaded from a SparrowAtlas.
@@ -22,7 +22,6 @@ namespace Funkin.NET.Core.Graphics.Textures
         public SparrowAtlasStore(IResourceStore<byte[]> store = null) : base(store)
         {
             AddExtension("xml");
-            // AddExtension("png");
         }
 
         public Texture GetAtlas(string name)
@@ -71,13 +70,14 @@ namespace Funkin.NET.Core.Graphics.Textures
                 // add to cache if not already present
                 if (!cropCache.ContainsKey(crop))
                 {
-                    cropCache[crop] = SparrowAtlases[name].Crop(new osuRectangleF(crop.X, crop.Y, crop.Width, crop.Height));
+                    cropCache[crop] = SparrowAtlases[name]
+                        .Crop(new osuRectangleF(crop.X, crop.Y, crop.Width, crop.Height));
                     cropCache[crop].ScaleAdjust = 2f;
                 }
 
                 TextureAtlasCache[name][subTexture.Name] = cropCache[crop];
             }
-            
+
             // return previously-found texture
             return SparrowAtlases[name];
         }

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ppy.osu.Framework" Version="2021.907.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Funkin.NET.Resources\Funkin.NET.Resources.csproj" />
+    <ProjectReference Include="..\GetFunkin.AdobeNecromancer\GetFunkin.AdobeNecromancer.csproj" />
+  </ItemGroup>
+
+</Project>
