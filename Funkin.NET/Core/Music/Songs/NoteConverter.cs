@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Funkin.NET.Core.Input.Bindings;
 
-namespace Funkin.NET.Core.Songs
+namespace Funkin.NET.Core.Music.Songs
 {
     public class NoteConverter : JsonConverter<List<Note>>
     {

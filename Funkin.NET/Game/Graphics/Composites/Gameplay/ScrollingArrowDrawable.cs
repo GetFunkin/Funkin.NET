@@ -1,7 +1,7 @@
 ﻿using System;
-using Funkin.NET.Core.Conductor;
 using Funkin.NET.Core.Input.Bindings;
-using Funkin.NET.Core.Songs;
+using Funkin.NET.Core.Music.Conductor;
+using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Game.Screens.Gameplay;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;

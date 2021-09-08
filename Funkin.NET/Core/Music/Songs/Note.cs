@@ -1,6 +1,6 @@
 ﻿using Funkin.NET.Core.Input.Bindings;
 
-namespace Funkin.NET.Core.Songs
+namespace Funkin.NET.Core.Music.Songs
 {
     public class Note
     {

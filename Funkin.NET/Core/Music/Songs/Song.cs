@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
 
-namespace Funkin.NET.Core.Songs
+namespace Funkin.NET.Core.Music.Songs
 {
     public class Song
     {

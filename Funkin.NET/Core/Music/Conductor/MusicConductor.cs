@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Funkin.NET.Core.Songs;
+using Funkin.NET.Core.Music.Songs;
 using osu.Framework.Logging;
 
-namespace Funkin.NET.Core.Conductor
+namespace Funkin.NET.Core.Music.Conductor
 {
     /// <summary>
     ///     Class responsible for handling song BPM calculations, tracking <see cref="IBpmChange"/><c>s</c>, and some other stuff.

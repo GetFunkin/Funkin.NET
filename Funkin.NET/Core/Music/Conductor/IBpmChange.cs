@@ -1,4 +1,4 @@
-﻿namespace Funkin.NET.Core.Conductor
+﻿namespace Funkin.NET.Core.Music.Conductor
 {
     /// <summary>
     ///     Basic BPM change interface.
