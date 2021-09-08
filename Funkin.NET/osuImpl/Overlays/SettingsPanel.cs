@@ -21,7 +21,7 @@ namespace Funkin.NET.osuImpl.Overlays
     ///     See: osu!'s SettingsPanel. :p
     /// </summary>
     /// TODO: sidebar lol
-    public class SettingsPanel : FunkinFocusedOverlayContainer
+    public class SettingsPanel : DefaultFocusedOverlayContainer
     {
         public const float ContentMargins = 15;
         public const float TransitionLength = 600;

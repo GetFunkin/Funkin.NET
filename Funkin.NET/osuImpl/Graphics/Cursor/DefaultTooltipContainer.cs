@@ -13,9 +13,9 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
     /// <summary>
     ///     See: osu!'s OsuTooltipContainer.
     /// </summary>
-    public class FunkinTooltipContainer : TooltipContainer
+    public class DefaultTooltipContainer : TooltipContainer
     {
-        public FunkinTooltipContainer(CursorContainer cursor) : base(cursor)
+        public DefaultTooltipContainer(CursorContainer cursor) : base(cursor)
         {
         }
 

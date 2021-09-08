@@ -16,7 +16,7 @@ namespace Funkin.NET.osuImpl.Overlays.Settings
     /// <summary>
     ///     See: osu!'s SidebarButton.
     /// </summary>
-    public class SidebarButton : FunkinButton
+    public class SidebarButton : DefaultButton
     {
         private readonly ConstrainedIconContainer _iconContainer;
         private readonly SpriteText _headerText;

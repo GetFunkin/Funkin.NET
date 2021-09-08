@@ -9,7 +9,7 @@ using osu.Framework.Localisation;
 
 namespace Funkin.NET.osuImpl.Overlays.Settings
 {
-    public class SettingsButton : FunkinButton, IHasTooltip
+    public class SettingsButton : DefaultButton, IHasTooltip
     {
         public SettingsButton()
         {

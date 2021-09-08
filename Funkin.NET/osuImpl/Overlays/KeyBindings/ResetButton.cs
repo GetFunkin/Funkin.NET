@@ -4,7 +4,7 @@ using osu.Framework.Graphics;
 
 namespace Funkin.NET.osuImpl.Overlays.KeyBindings
 {
-    public class ResetButton : FunkinButton
+    public class ResetButton : DefaultButton
     {
         [BackgroundDependencyLoader]
         private void Load()

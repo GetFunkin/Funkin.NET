@@ -15,7 +15,7 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
     /// <summary>
     ///     See: osu!'s MenuCursorContainer.
     /// </summary>
-    public class FunkinCursor : CursorContainer
+    public class DefaultCursor : CursorContainer
     {
         public Cursor ActiveFunkinCursor { get; protected set; }
 

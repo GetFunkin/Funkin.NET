@@ -8,9 +8,9 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
 {
     /// <summary>
     ///     See: osu!'s MenuCursorContainer. <br />
-    ///     A container which provides a <see cref="FunkinCursor"/> which can be overridden by hovered <see cref="Drawable"/><c>s</c>.
+    ///     A container which provides a <see cref="DefaultCursor"/> which can be overridden by hovered <see cref="Drawable"/><c>s</c>.
     /// </summary>
-    public class FunkinCursorContainer : Container, IProvidesCursor
+    public class DefaultCursorContainer : Container, IProvidesCursor
     {
         protected override Container<Drawable> Content => ReadonlyContent;
 
@@ -29,11 +29,11 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
 
         public bool ProvidingUserCursor => true;
 
-        public FunkinCursorContainer()
+        public DefaultCursorContainer()
         {
             AddRangeInternal(new Drawable[]
             {
-                Cursor = new FunkinCursor
+                Cursor = new DefaultCursor
                 {
                     State =
                     {

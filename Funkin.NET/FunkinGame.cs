@@ -50,7 +50,7 @@ namespace Funkin.NET
 
         protected FunkinConfigManager LocalConfig { get; set; }
 
-        protected FunkinCursorContainer FunkinCursorContainer { get; set; }
+        protected DefaultCursorContainer DefaultCursorContainer { get; set; }
 
         protected Storage Storage { get; set; }
 
@@ -100,7 +100,7 @@ namespace Funkin.NET
 
             // todo: localization
 
-            FunkinCursorContainer.CanShowCursor = MenuScreen?.CursorVisible ?? false;
+            DefaultCursorContainer.CanShowCursor = MenuScreen?.CursorVisible ?? false;
 
             // todo: implement osu!'s volume control receptor
             AddRange(new Drawable[]
@@ -208,7 +208,7 @@ namespace Funkin.NET
         {
             base.UpdateAfterChildren();
 
-            FunkinCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
+            DefaultCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
         }
 
         protected virtual void ScreenChanged(IScreen current, IScreen newScreen)
@@ -275,7 +275,7 @@ namespace Funkin.NET
         {
             Drawable[] mainContent =
             {
-                FunkinCursorContainer = new FunkinCursorContainer
+                DefaultCursorContainer = new DefaultCursorContainer
                 {
                     RelativeSizeAxes = Axes.Both
                 },
@@ -283,7 +283,7 @@ namespace Funkin.NET
                 ActionContainer = new UniversalActionContainer(Storage, this)
             };
 
-            FunkinCursorContainer.Child = ProtectedContent = new FunkinTooltipContainer(FunkinCursorContainer.Cursor)
+            DefaultCursorContainer.Child = ProtectedContent = new DefaultTooltipContainer(DefaultCursorContainer.Cursor)
             {
                 RelativeSizeAxes = Axes.Both
             };

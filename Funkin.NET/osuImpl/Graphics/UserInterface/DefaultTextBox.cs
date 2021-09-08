@@ -20,7 +20,7 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
     /// <summary>
     ///     See: osu!'s OsuTextBox.
     /// </summary>
-    public class FunkinTextBox : BasicTextBox
+    public class DefaultTextBox : BasicTextBox
     {
         private readonly Sample[] _textAddedSamples = new Sample[4];
         private Sample _capsTextAddedSample;
@@ -45,7 +45,7 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
             Margin = new MarginPadding {Left = 2},
         };
 
-        public FunkinTextBox()
+        public DefaultTextBox()
         {
             Height = 40;
             TextContainer.Height = 0.5f;

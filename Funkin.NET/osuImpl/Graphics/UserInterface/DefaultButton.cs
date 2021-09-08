@@ -20,7 +20,7 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
     ///     See: osu!'s OsuButton. <br />
     ///     A button with added default sound effects. (lel no)
     /// </summary>
-    public class FunkinButton : Button
+    public class DefaultButton : Button
     {
         public LocalisableString Text
         {
@@ -58,7 +58,7 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
         protected Box Background;
         protected SpriteText SpriteText;
 
-        public FunkinButton()
+        public DefaultButton()
         {
             Height = 40;
 

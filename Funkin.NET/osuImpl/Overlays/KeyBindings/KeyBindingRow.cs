@@ -349,7 +349,7 @@ namespace Funkin.NET.osuImpl.Overlays.KeyBindings
             IsDefault.Value = Bindings.Select(b => b.KeyCombination).SequenceEqual(Defaults);
         }
 
-        public class CancelButton : FunkinButton
+        public class CancelButton : DefaultButton
         {
             public CancelButton()
             {
@@ -358,7 +358,7 @@ namespace Funkin.NET.osuImpl.Overlays.KeyBindings
             }
         }
 
-        public class ClearButton : FunkinButton
+        public class ClearButton : DefaultButton
         {
             public ClearButton()
             {

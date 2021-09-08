@@ -15,13 +15,13 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
     /// <summary>
     ///     See: osu!'s OsuScrollContainer.
     /// </summary>
-    public class BaseScrollContainer : FunkinScrollContainer<Drawable>
+    public class DefaultScrollContainer : FunkinScrollContainer<Drawable>
     {
-        public BaseScrollContainer()
+        public DefaultScrollContainer()
         {
         }
 
-        public BaseScrollContainer(Direction direction)
+        public DefaultScrollContainer(Direction direction)
             : base(direction)
         {
         }

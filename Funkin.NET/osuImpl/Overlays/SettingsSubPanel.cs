@@ -30,7 +30,7 @@ namespace Funkin.NET.osuImpl.Overlays
             });
         }
 
-        public class BackButton : FunkinButton
+        public class BackButton : DefaultButton
         {
             [BackgroundDependencyLoader]
             private void Load()

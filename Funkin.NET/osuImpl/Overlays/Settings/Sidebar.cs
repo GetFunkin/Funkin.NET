@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Funkin.NET.osuImpl.Graphics.Containers;
 using osu.Framework;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -76,7 +77,7 @@ namespace Funkin.NET.osuImpl.Overlays.Settings
             return base.OnMouseMove(e);
         }
 
-        public class SidebarScrollContainer : BaseScrollContainer
+        public class SidebarScrollContainer : DefaultScrollContainer
         {
             public SidebarScrollContainer()
             {

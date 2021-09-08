@@ -12,7 +12,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
     /// <summary>
     ///     See: osu!'s OsuFocusedOverlayContainer.
     /// </summary>
-    public abstract class FunkinFocusedOverlayContainer : FocusedOverlayContainer
+    public abstract class DefaultFocusedOverlayContainer : FocusedOverlayContainer
     {
         public Sample OpenSample { get; protected set; }
 

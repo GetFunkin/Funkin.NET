@@ -10,7 +10,7 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
     ///     See: osu!'s FocusedTextBox. <br />
     ///     A textbox which holds focus eagerly.
     /// </summary>
-    public class FocusedTextBox : FunkinTextBox
+    public class FocusedTextBox : DefaultTextBox
     {
         public bool Focused;
 
