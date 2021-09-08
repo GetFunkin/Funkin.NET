@@ -26,7 +26,7 @@ namespace Funkin.NET.Core.Graphics.Textures
 
         public Texture GetAtlas(string name)
         {
-            // append expected file extension
+            // append expected file extension for standardization
             if (!name.EndsWith(".xml"))
                 name += ".xml";
 
@@ -40,7 +40,7 @@ namespace Funkin.NET.Core.Graphics.Textures
             List<SubTexture> subTextures = new();
 
             // generate mapping of sub-textures from the xml file
-            Program.ReadAsXml(stream, subTextures, out string imageName, out bool successfulRead);
+            Necromancer.ReadAsXml(stream, subTextures, out string imageName, out bool successfulRead);
 
             // find the associated image path
             string imagePath = $"{Path.GetDirectoryName(name) ?? ""}/{imageName}";
@@ -78,7 +78,16 @@ namespace Funkin.NET.Core.Graphics.Textures
         }
 
         // return a texture from the atlas
-        public Texture GetTexture(string atlas, string textureName) =>
-            TextureAtlasCache[atlas.EndsWith(".xml") ? atlas : atlas + ".xml"][textureName];
+        public Texture GetTexture(string atlas, string textureName)
+        {
+            atlas = atlas.EndsWith(".xml") ? atlas : atlas + ".xml";
+
+            if (TextureAtlasCache.ContainsKey(atlas))
+                return TextureAtlasCache[atlas][textureName];
+
+            GetAtlas(atlas);
+
+            return TextureAtlasCache[atlas][textureName];
+        }
     }
 }
