@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Funkin.NET.Core.Input.Bindings;
+using Funkin.NET.Common.Input;
 using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Game.Graphics.Composites.Characters;

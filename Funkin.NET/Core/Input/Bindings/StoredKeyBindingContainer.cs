@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using Funkin.NET.Core.Json;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Platform;
 

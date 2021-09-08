@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Funkin.NET.Common.Screens;
 using Funkin.NET.Core.Music.Conductor;
-using Funkin.NET.Core.Screens;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 
@@ -10,7 +10,7 @@ namespace Funkin.NET.Game.Screens
     /// <summary>
     ///     Basic Music-playing screen. Allows for conductor integration.
     /// </summary>
-    public abstract class MusicScreen : FunkinScreen
+    public abstract class MusicScreen : DefaultScreen
     {
         public abstract double ExpectedBpm { get; }
 

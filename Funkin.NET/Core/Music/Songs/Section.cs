@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Funkin.NET.Core.Json;
 
 namespace Funkin.NET.Core.Music.Songs
 {

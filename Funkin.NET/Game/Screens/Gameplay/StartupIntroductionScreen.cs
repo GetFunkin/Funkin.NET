@@ -1,4 +1,4 @@
-﻿using Funkin.NET.Core.Screens;
+﻿using Funkin.NET.Common.Screens;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -10,9 +10,9 @@ using osuTK;
 
 namespace Funkin.NET.Game.Screens.Gameplay
 {
-    public class StartupIntroductionScreen : FunkinScreen
+    public class StartupIntroductionScreen : DefaultScreen
     {
-        public FunkinScreen NextScreen { get; }
+        public DefaultScreen NextScreen { get; }
 
         public TextFlowContainer TextFlow { get; protected set; }
 
@@ -22,7 +22,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         public override bool CursorVisible => false;
 
-        public StartupIntroductionScreen(FunkinScreen nextScreen)
+        public StartupIntroductionScreen(DefaultScreen nextScreen)
         {
             NextScreen = nextScreen;
         }

@@ -5,15 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading;
-using Funkin.NET.Core.Configuration;
-using Funkin.NET.Core.Graphics.Containers;
-using Funkin.NET.Core.Graphics.Cursor;
+using Funkin.NET.Common.Configuration;
+using Funkin.NET.Common.Input;
+using Funkin.NET.Common.Screens;
 using Funkin.NET.Core.Graphics.Textures;
 using Funkin.NET.Core.Input;
-using Funkin.NET.Core.Input.Bindings;
-using Funkin.NET.Core.Overlays;
-using Funkin.NET.Core.Screens;
 using Funkin.NET.Game.Screens.Gameplay;
+using Funkin.NET.osuImpl.Graphics.Containers;
+using Funkin.NET.osuImpl.Graphics.Cursor;
+using Funkin.NET.osuImpl.Overlays;
 using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -66,7 +66,7 @@ namespace Funkin.NET
         protected ScalingContainer ScreenContainer;
         protected Container ScreenOffsetContainer;
         protected UniversalActionContainer ActionContainer;
-        protected FunkinScreenStack ScreenStack;
+        protected DefaultScreenStack ScreenStack;
 
         private readonly List<OverlayContainer> VisibleBlockingOverlays = new();
 
@@ -119,7 +119,7 @@ namespace Funkin.NET
 
                             Children = new Drawable[]
                             {
-                                ScreenStack = new FunkinScreenStack
+                                ScreenStack = new DefaultScreenStack
                                 {
                                     RelativeSizeAxes = Axes.Both
                                 }
@@ -202,13 +202,13 @@ namespace Funkin.NET
                 {FrameworkSetting.WindowMode, WindowMode.Windowed}
             };
 
-        protected override UserInputManager CreateUserInputManager() => new FunkinUserInputManager();
+        protected override UserInputManager CreateUserInputManager() => new RightMouseSpecializedInputManager();
 
         protected override void UpdateAfterChildren()
         {
             base.UpdateAfterChildren();
 
-            FunkinCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IFunkinScreen)?.CursorVisible ?? false;
+            FunkinCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
         }
 
         protected virtual void ScreenChanged(IScreen current, IScreen newScreen)

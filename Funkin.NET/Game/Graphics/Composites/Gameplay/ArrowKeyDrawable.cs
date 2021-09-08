@@ -1,5 +1,5 @@
 ﻿using System;
-using Funkin.NET.Core.Input.Bindings;
+using Funkin.NET.Common.Input;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;

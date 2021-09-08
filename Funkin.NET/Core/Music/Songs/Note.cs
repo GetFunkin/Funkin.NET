@@ -1,4 +1,4 @@
-﻿using Funkin.NET.Core.Input.Bindings;
+﻿using Funkin.NET.Common.Input;
 
 namespace Funkin.NET.Core.Music.Songs
 {

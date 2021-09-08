@@ -1,5 +1,5 @@
 ﻿using System;
-using Funkin.NET.Core.Input.Bindings;
+using Funkin.NET.Common.Input;
 using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Game.Screens.Gameplay;

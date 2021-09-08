@@ -1,6 +1,5 @@
 ﻿using System;
-using Funkin.NET.Core.Graphics;
-using Funkin.NET.Core.Input.Bindings;
+using Funkin.NET.Common.Input;
 using Funkin.NET.Game.Graphics.Composites;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -314,7 +313,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (FinishedTextIntroduction)
                 return;
 
-            static void WithFont(SpriteText text) => text.Font = FunkinFont.Funkin.With(size: 40f);
+            static void WithFont(SpriteText text) => text.Font = new FontUsage("Funkin", 40f);
 
             switch (CurrentBeat)
             {
