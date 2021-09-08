@@ -12,9 +12,11 @@ namespace Funkin.NET.Core.Graphics.UserInterface
     /// </summary>
     public class FocusedTextBox : FunkinTextBox
     {
-        private bool focus;
+        public bool Focused;
 
-        private bool AllowImmediateFocus => host?.OnScreenKeyboardOverlapsGameWindow != true;
+        public bool AllowImmediateFocus => Host?.OnScreenKeyboardOverlapsGameWindow != true;
+
+        public override bool RequestsFocus => HoldFocus;
 
         public void TakeFocus()
         {
@@ -24,16 +26,18 @@ namespace Funkin.NET.Core.Graphics.UserInterface
 
         public bool HoldFocus
         {
-            get => AllowImmediateFocus && focus;
+            get => AllowImmediateFocus && Focused;
+
             set
             {
-                focus = value;
-                if (!focus && HasFocus)
+                Focused = value;
+
+                if (!Focused && HasFocus)
                     base.KillFocus();
             }
         }
 
-        [Resolved] private GameHost host { get; set; }
+        [Resolved] private GameHost Host { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -53,11 +57,10 @@ namespace Funkin.NET.Core.Graphics.UserInterface
 
         protected override bool OnKeyDown(KeyDownEvent e)
         {
-            if (!HasFocus) return false;
+            if (!HasFocus)
+                return false;
 
             return e.Key != Key.Escape && base.OnKeyDown(e);
         }
-
-        public override bool RequestsFocus => HoldFocus;
     }
 }

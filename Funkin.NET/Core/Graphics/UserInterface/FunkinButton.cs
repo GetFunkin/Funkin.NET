@@ -32,18 +32,18 @@ namespace Funkin.NET.Core.Graphics.UserInterface
             }
         }
 
-        private Color4? _backgroundColor;
+        private Color4? NullableBackgroundColor;
 
         public Color4 BackgroundColor
         {
             set
             {
-                _backgroundColor = value;
+                NullableBackgroundColor = value;
                 Background.FadeColour(value);
             }
         }
 
-        public virtual IEnumerable<string> FilterTerms => new[] { Text.ToString() };
+        public virtual IEnumerable<string> FilterTerms => new[] {Text.ToString()};
 
         public bool MatchingFilter
         {
@@ -100,7 +100,7 @@ namespace Funkin.NET.Core.Graphics.UserInterface
         [BackgroundDependencyLoader]
         private void Load()
         {
-            if (_backgroundColor == null)
+            if (NullableBackgroundColor == null)
                 BackgroundColor = Color4Extensions.FromHex(@"44aadd");
 
             Enabled.ValueChanged += EnabledChanged;
@@ -111,8 +111,8 @@ namespace Funkin.NET.Core.Graphics.UserInterface
         {
             if (Enabled.Value)
             {
-                Debug.Assert(_backgroundColor != null);
-                Background.FlashColour(_backgroundColor.Value, 200);
+                Debug.Assert(NullableBackgroundColor != null);
+                Background.FlashColour(NullableBackgroundColor.Value, 200);
             }
 
             return base.OnClick(e);
@@ -145,7 +145,7 @@ namespace Funkin.NET.Core.Graphics.UserInterface
             base.OnMouseUp(e);
         }
 
-        protected virtual SpriteText CreateText() => new SpriteText
+        protected virtual SpriteText CreateText() => new()
         {
             Depth = -1,
             Origin = Anchor.Centre,

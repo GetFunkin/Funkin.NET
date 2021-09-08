@@ -13,13 +13,13 @@ namespace Funkin.NET.Core.Screens.Background
     /// </summary>
     public abstract class BackgroundScreen : Screen, IEquatable<BackgroundScreen>
     {
-        private readonly bool _animateOnEnter;
+        private readonly bool AnimateOnEnter;
 
         public override bool IsPresent => base.IsPresent || Scheduler.HasPendingTasks;
 
         protected BackgroundScreen(bool animateOnEnter = true)
         {
-            _animateOnEnter = animateOnEnter;
+            AnimateOnEnter = animateOnEnter;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
         }
@@ -50,7 +50,7 @@ namespace Funkin.NET.Core.Screens.Background
 
         public override void OnEntering(IScreen last)
         {
-            if (_animateOnEnter)
+            if (AnimateOnEnter)
             {
                 this.FadeOut();
                 this.MoveToX(XMovementAmount);

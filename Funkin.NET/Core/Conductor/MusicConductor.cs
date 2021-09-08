@@ -15,10 +15,10 @@ namespace Funkin.NET.Core.Conductor
 
         public static double Bpm { get; set; } = DefaultBpm;
 
-        public static double SongPosition
+        public static double CurrentSongPosition
         {
-            get => _songPosition + Offset;
-            set => _songPosition = value;
+            get => SongPosition + Offset;
+            set => SongPosition = value;
         }
 
         public static double LastSongPosition { get; set; } = 0D;
@@ -33,14 +33,14 @@ namespace Funkin.NET.Core.Conductor
 
         public static double StepCrochet => Crochet / 4D;
 
-        public static ReadOnlyCollection<IBpmChange> ReadonlyChangeCollection => _bpmChangeMap.AsReadOnly();
+        public static ReadOnlyCollection<IBpmChange> ReadonlyChangeCollection => BpmChangeMap.AsReadOnly();
 
-        private static List<IBpmChange> _bpmChangeMap = new();
-        private static double _songPosition;
+        private static List<IBpmChange> BpmChangeMap = new();
+        private static double SongPosition;
 
         public static void MapBpmChanges(Song song)
         {
-            _bpmChangeMap = new List<IBpmChange>();
+            BpmChangeMap = new List<IBpmChange>();
 
             double bpm = song.Bpm;
             int totalSteps = 0;
@@ -52,7 +52,7 @@ namespace Funkin.NET.Core.Conductor
                 if ((note.ChangeBpm ?? false) && note.Bpm != bpm)
                 {
                     bpm = note.Bpm ?? bpm;
-                    _bpmChangeMap.Add(new BpmChange(totalSteps, totalPos, bpm));
+                    BpmChangeMap.Add(new BpmChange(totalSteps, totalPos, bpm));
                 }
 
                 int deltaSteps = note.LengthInSteps;
@@ -60,7 +60,7 @@ namespace Funkin.NET.Core.Conductor
                 totalPos += 60D / bpm * 1000D / 4D * deltaSteps;
             }
 
-            Logger.Log($"New BPM map loaded. Change map length: {_bpmChangeMap.Count}");
+            Logger.Log($"New BPM map loaded. Change map length: {BpmChangeMap.Count}");
         }
     }
 }

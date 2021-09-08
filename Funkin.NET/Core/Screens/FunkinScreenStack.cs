@@ -11,17 +11,17 @@ namespace Funkin.NET.Core.Screens
     /// </summary>
     public class FunkinScreenStack : ScreenStack
     {
-        [Cached] private BackgroundScreenStack _backgroundScreenStack;
-        private readonly ParallaxContainer _parallaxContainer;
+        [Cached] private BackgroundScreenStack BackgroundScreenStack;
+        private readonly ParallaxContainer ParallaxContainer;
 
-        protected float ParallaxAmount => _parallaxContainer.ParallaxAmount;
+        protected float ParallaxAmount => ParallaxContainer.ParallaxAmount;
 
         public FunkinScreenStack()
         {
-            InternalChild = _parallaxContainer = new ParallaxContainer
+            InternalChild = ParallaxContainer = new ParallaxContainer
             {
                 RelativeSizeAxes = Axes.Both,
-                Child = _backgroundScreenStack = new BackgroundScreenStack {RelativeSizeAxes = Axes.Both},
+                Child = BackgroundScreenStack = new BackgroundScreenStack {RelativeSizeAxes = Axes.Both},
             };
 
             ScreenPushed += InternalScreenPushed;
@@ -47,7 +47,7 @@ namespace Funkin.NET.Core.Screens
         }
 
         private void SetParallax(IScreen next) =>
-            _parallaxContainer.ParallaxAmount = ParallaxContainer.DefaultParallaxAmount *
+            ParallaxContainer.ParallaxAmount = ParallaxContainer.DefaultParallaxAmount *
                 ((IFunkinScreen) next)?.BackgroundParallaxAmount ?? 1.0f;
     }
 }

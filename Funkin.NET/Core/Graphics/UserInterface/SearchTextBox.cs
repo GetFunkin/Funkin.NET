@@ -1,4 +1,5 @@
-﻿using osu.Framework.Graphics;
+﻿using System;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input;
 using osu.Framework.Input.Events;
@@ -19,6 +20,7 @@ namespace Funkin.NET.Core.Graphics.UserInterface
         public SearchTextBox()
         {
             Height = 35;
+
             Add(new SpriteIcon
             {
                 Icon = FontAwesome.Solid.Search,
@@ -56,7 +58,6 @@ namespace Funkin.NET.Core.Graphics.UserInterface
         protected override bool OnKeyDown(KeyDownEvent e)
         {
             if (!e.ControlPressed && !e.ShiftPressed)
-            {
                 switch (e.Key)
                 {
                     case Key.Left:
@@ -65,26 +66,21 @@ namespace Funkin.NET.Core.Graphics.UserInterface
                     case Key.Down:
                         return false;
                 }
-            }
 
             if (!AllowCommit)
-            {
                 switch (e.Key)
                 {
                     case Key.KeypadEnter:
                     case Key.Enter:
                         return false;
                 }
-            }
 
             if (e.ShiftPressed)
-            {
                 switch (e.Key)
                 {
                     case Key.Delete:
                         return false;
                 }
-            }
 
             return base.OnKeyDown(e);
         }

@@ -112,15 +112,15 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             // maybe reset clock when changing to BaseKeyPlayScreen ?
 
             double songPos;
-            if (IsHeld && MusicConductor.SongPosition > TargetTime)
+            if (IsHeld && MusicConductor.CurrentSongPosition > TargetTime)
                 songPos = TargetTime;
             else if (LastHeldTime != 0 && StartHoldTime != 0)
-                songPos = MusicConductor.SongPosition - (LastHeldTime - StartHoldTime);
+                songPos = MusicConductor.CurrentSongPosition - (LastHeldTime - StartHoldTime);
             else
-                songPos = MusicConductor.SongPosition;
+                songPos = MusicConductor.CurrentSongPosition;
 
             if (IsHeld || LastHeldTime != 0)
-                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.SongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
+                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.CurrentSongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
 
             float by = (float) (songPos / TargetTime);
             Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
@@ -133,7 +133,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             
             HoldEndSprite.Show();
                 
-            float by = (float) (MusicConductor.SongPosition / (TargetTime + HoldTime));
+            float by = (float) (MusicConductor.CurrentSongPosition / (TargetTime + HoldTime));
             float lerpPos = Lerp(StartPos.Value.Y, TargetPosition.Y, by);
             HoldEndSprite.Position = new Vector2(0, lerpPos - Position.Y);
         }
@@ -149,8 +149,8 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             if (HoldTime <= 0 && (Position.Y is <= -250f or >= -150f || IsEnemyArrow))
                 return;
 
-            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.SongPosition > TargetTime + HoldTime || IsEnemyArrow)) {
-                if (MusicConductor.SongPosition > TargetTime + HoldTime && IsHeld) {
+            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.CurrentSongPosition > TargetTime + HoldTime || IsEnemyArrow)) {
+                if (MusicConductor.CurrentSongPosition > TargetTime + HoldTime && IsHeld) {
                     // Do some hit accuracy calculation
                     // Maybe use TargetTime and StartHoldTime?
                     
@@ -162,12 +162,12 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             }
 
             // Set StartHoldTime when song time is near target time
-            if (HoldTime > 0 && Math.Abs(MusicConductor.SongPosition - TargetTime) < 25)
-                StartHoldTime = MusicConductor.SongPosition;
+            if (HoldTime > 0 && Math.Abs(MusicConductor.CurrentSongPosition - TargetTime) < 25)
+                StartHoldTime = MusicConductor.CurrentSongPosition;
 
             if (HoldTime > 0)
             {
-                LastHeldTime = MusicConductor.SongPosition;
+                LastHeldTime = MusicConductor.CurrentSongPosition;
                 IsHeld = true;
 
                 // TODO: some kind of score for held notes maybe

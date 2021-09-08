@@ -14,7 +14,7 @@ namespace Funkin.NET.Core.Input.Bindings
 
         public virtual string Location => Storage.GetFullPath(Path.Combine("KeyBindings", GetType().Name + ".json"));
 
-        private readonly bool _expectedFileToBeCreated;
+        private readonly bool ExpectedFileToBeCreated;
 
         protected StoredKeyBindingContainer(Storage storage,
             SimultaneousBindingMode simultaneousMode = SimultaneousBindingMode.None,
@@ -24,14 +24,14 @@ namespace Funkin.NET.Core.Input.Bindings
             Storage = storage;
 
             if (!File.Exists(Location))
-                _expectedFileToBeCreated = true;
+                ExpectedFileToBeCreated = true;
         }
 
         public sealed override IEnumerable<IKeyBinding> DefaultKeyBindings
         {
             get
             {
-                if (_expectedFileToBeCreated)
+                if (ExpectedFileToBeCreated)
                     return FallbackKeyBindings;
 
                 JsonSerializerOptions options = new()
@@ -64,7 +64,7 @@ namespace Funkin.NET.Core.Input.Bindings
         {
             base.LoadComplete();
 
-            if (!_expectedFileToBeCreated)
+            if (!ExpectedFileToBeCreated)
                 return;
 
             JsonSerializerOptions options = new()

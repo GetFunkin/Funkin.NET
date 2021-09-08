@@ -9,21 +9,21 @@ namespace Funkin.NET.Core.Input.Bindings
 {
     public class UniversalActionContainer : StoredKeyBindingContainer<UniversalAction>, IHandleGlobalKeyboardInput
     {
-        private readonly Drawable _handler;
-        private InputManager _parentInputManager;
+        private readonly Drawable Handler;
+        private InputManager ParentInputManager;
 
         public UniversalActionContainer(Storage storage, Drawable game) : base(storage, SimultaneousBindingMode.All,
             KeyCombinationMatchingMode.Modifiers)
         {
             if (game is IKeyBindingHandler<UniversalAction>)
-                _handler = game;
+                Handler = game;
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            _parentInputManager = GetContainingInputManager();
+            ParentInputManager = GetContainingInputManager();
         }
 
         public override IEnumerable<IKeyBinding> FallbackKeyBindings => ArrowKeyBinds.Concat(SelectionKeyBinds);
@@ -52,9 +52,9 @@ namespace Funkin.NET.Core.Input.Bindings
         {
             get
             {
-                IEnumerable<Drawable> queue = _parentInputManager?.NonPositionalInputQueue ?? base.KeyBindingInputQueue;
+                IEnumerable<Drawable> queue = ParentInputManager?.NonPositionalInputQueue ?? base.KeyBindingInputQueue;
 
-                return _handler != null ? queue.Prepend(_handler) : queue;
+                return Handler != null ? queue.Prepend(Handler) : queue;
             }
         }
     }

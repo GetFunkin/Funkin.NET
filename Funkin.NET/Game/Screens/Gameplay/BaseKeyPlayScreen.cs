@@ -98,7 +98,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             if (!Music.IsRunning)
                 MusicConductor.Offset = Time.Current;
 
-            MusicConductor.SongPosition = Music.CurrentTime;
+            MusicConductor.CurrentSongPosition = Music.CurrentTime;
 
             if (!Initialized)
             {
@@ -419,7 +419,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 if (section is null)
                     continue;
 
-                Console.WriteLine($"Position: {MusicConductor.SongPosition} - Offset: {MusicConductor.Offset}");
+                Console.WriteLine($"Position: {MusicConductor.CurrentSongPosition} - Offset: {MusicConductor.Offset}");
 
                 ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[section.SectionNotes.Count];
                 for (int i = 0; i < section.SectionNotes.Count; i++)

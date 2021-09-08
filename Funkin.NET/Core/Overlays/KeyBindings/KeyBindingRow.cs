@@ -25,47 +25,48 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
 {
     public class KeyBindingRow : Container, IFilterable
     {
-        private readonly object _action;
-        private IEnumerable<IKeyBinding> _bindings;
+        private readonly object Action;
+        private readonly IEnumerable<IKeyBinding> Bindings;
 
         public const float TransitionTime = 150;
         public const float ConstantHeight = 20;
         public const float ConstantPadding = 5;
 
-        private bool _matchingFilter;
+        private bool RealMatchingFilter;
 
         public bool MatchingFilter
         {
-            get => _matchingFilter;
+            get => RealMatchingFilter;
+
             set
             {
-                _matchingFilter = value;
-                this.FadeTo(!_matchingFilter ? 0 : 1);
+                RealMatchingFilter = value;
+                this.FadeTo(!RealMatchingFilter ? 0 : 1);
             }
         }
 
-        private Container _content;
+        private Container RealContent;
 
         public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) =>
-            _content.ReceivePositionalInputAt(screenSpacePos);
+            RealContent.ReceivePositionalInputAt(screenSpacePos);
 
         public bool FilteringActive { get; set; }
 
-        private SpriteText _text;
-        private FillFlowContainer _cancelAndClearButtons;
-        private FillFlowContainer<KeyButton> _buttons;
+        private SpriteText Text;
+        private FillFlowContainer CancelAndClearButtons;
+        private FillFlowContainer<KeyButton> Buttons;
 
         private Bindable<bool> IsDefault { get; } = new BindableBool(true);
 
         public IEnumerable<string> FilterTerms =>
-            _bindings.Select(b => b.KeyCombination.ReadableString()).Prepend(_text.Text.ToString());
+            Bindings.Select(b => b.KeyCombination.ReadableString()).Prepend(Text.Text.ToString());
 
         [Resolved] private UniversalActionContainer ActionContainer { get; set; }
 
         public KeyBindingRow(object action, IEnumerable<IKeyBinding> bindings)
         {
-            _action = action;
-            _bindings = bindings;
+            Action = action;
+            Bindings = bindings;
 
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
@@ -80,7 +81,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
 
             InternalChildren = new Drawable[]
             {
-                _content = new Container
+                RealContent = new Container
                 {
                     RelativeSizeAxes = Axes.X,
                     AutoSizeAxes = Axes.Y,
@@ -103,21 +104,21 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
                             Alpha = 0.6f,
                         },
 
-                        _text = new SpriteText
+                        Text = new SpriteText
                         {
-                            Text = _action.GetDescription(),
+                            Text = Action.GetDescription(),
                             Font = FunkinFont.GetFont(size: 15f),
                             Margin = new MarginPadding(ConstantPadding),
                         },
 
-                        _buttons = new FillFlowContainer<KeyButton>
+                        Buttons = new FillFlowContainer<KeyButton>
                         {
                             AutoSizeAxes = Axes.Both,
                             Anchor = Anchor.TopRight,
                             Origin = Anchor.TopRight
                         },
 
-                        _cancelAndClearButtons = new FillFlowContainer
+                        CancelAndClearButtons = new FillFlowContainer
                         {
                             AutoSizeAxes = Axes.Both,
                             Padding = new MarginPadding(ConstantPadding) {Top = ConstantHeight + ConstantPadding * 2},
@@ -135,29 +136,29 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
                 }
             };
 
-            foreach (IKeyBinding b in _bindings)
-                _buttons.Add(new KeyButton(b));
+            foreach (IKeyBinding b in Bindings)
+                Buttons.Add(new KeyButton(b));
 
             UpdateIsDefaultValue();
         }
 
         protected override bool OnHover(HoverEvent e)
         {
-            _content.FadeEdgeEffectTo(1, TransitionTime, Easing.OutQuint);
+            RealContent.FadeEdgeEffectTo(1, TransitionTime, Easing.OutQuint);
 
             return base.OnHover(e);
         }
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            _content.FadeEdgeEffectTo(0, TransitionTime, Easing.OutQuint);
+            RealContent.FadeEdgeEffectTo(0, TransitionTime, Easing.OutQuint);
 
             base.OnHoverLost(e);
         }
 
-        public override bool AcceptsFocus => _bindTarget == null;
+        public override bool AcceptsFocus => BindTarget == null;
 
-        private KeyButton _bindTarget;
+        private KeyButton BindTarget;
 
         public bool AllowMainMouseButtons;
 
@@ -169,7 +170,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
 
         protected override bool OnMouseDown(MouseDownEvent e)
         {
-            if (!HasFocus || !_bindTarget.IsHovered)
+            if (!HasFocus || !BindTarget.IsHovered)
                 return base.OnMouseDown(e);
 
             if (!AllowMainMouseButtons)
@@ -182,7 +183,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
                 }
             }
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
+            BindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
             return true;
         }
 
@@ -195,19 +196,19 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
                 return;
             }
 
-            if (_bindTarget.IsHovered)
+            if (BindTarget.IsHovered)
                 DoFinalize();
             // prevent updating bind target before clear button's action
-            else if (!_cancelAndClearButtons.Any(b => b.IsHovered))
+            else if (!CancelAndClearButtons.Any(b => b.IsHovered))
                 UpdateBindTarget();
         }
 
         protected override bool OnScroll(ScrollEvent e)
         {
-            if (!HasFocus || !_bindTarget.IsHovered)
+            if (!HasFocus || !BindTarget.IsHovered)
                 return base.OnScroll(e);
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState, e.ScrollDelta),
+            BindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState, e.ScrollDelta),
                 ActionContainer);
             DoFinalize();
             return true;
@@ -219,7 +220,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
             if (!HasFocus)
                 return false;
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
+            BindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
 
             if (!IsModifier(e.Key))
                 DoFinalize();
@@ -243,7 +244,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
             if (!HasFocus)
                 return false;
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
+            BindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
             DoFinalize();
 
             return true;
@@ -265,7 +266,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
             if (!HasFocus)
                 return false;
 
-            _bindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
+            BindTarget.UpdateKeyCombination(KeyCombination.FromInputState(e.CurrentState), ActionContainer);
             DoFinalize();
 
             return true;
@@ -284,41 +285,41 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
 
         private void DoClear()
         {
-            if (_bindTarget == null)
+            if (BindTarget == null)
                 return;
 
-            _bindTarget.UpdateKeyCombination(InputKey.None, ActionContainer);
+            BindTarget.UpdateKeyCombination(InputKey.None, ActionContainer);
             DoFinalize();
         }
 
         private void DoFinalize()
         {
-            if (_bindTarget != null)
+            if (BindTarget != null)
             {
                 UpdateIsDefaultValue();
 
-                _bindTarget.IsBinding = false;
+                BindTarget.IsBinding = false;
                 Schedule(() =>
                 {
                     // schedule to ensure we don't instantly get focus back on next OnMouseClick (see AcceptFocus impl.)
-                    _bindTarget = null;
+                    BindTarget = null;
                 });
             }
 
             if (HasFocus)
                 GetContainingInputManager().ChangeFocus(null);
 
-            _cancelAndClearButtons.FadeOut(300, Easing.OutQuint);
-            _cancelAndClearButtons.BypassAutoSizeAxes |= Axes.Y;
+            CancelAndClearButtons.FadeOut(300, Easing.OutQuint);
+            CancelAndClearButtons.BypassAutoSizeAxes |= Axes.Y;
         }
 
         protected override void OnFocus(FocusEvent e)
         {
-            _content.AutoSizeDuration = 500;
-            _content.AutoSizeEasing = Easing.OutQuint;
+            RealContent.AutoSizeDuration = 500;
+            RealContent.AutoSizeEasing = Easing.OutQuint;
 
-            _cancelAndClearButtons.FadeIn(300, Easing.OutQuint);
-            _cancelAndClearButtons.BypassAutoSizeAxes &= ~Axes.Y;
+            CancelAndClearButtons.FadeIn(300, Easing.OutQuint);
+            CancelAndClearButtons.BypassAutoSizeAxes &= ~Axes.Y;
 
             UpdateBindTarget();
             base.OnFocus(e);
@@ -335,18 +336,18 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
         /// </summary>
         private void UpdateBindTarget()
         {
-            if (_bindTarget != null)
-                _bindTarget.IsBinding = false;
+            if (BindTarget != null)
+                BindTarget.IsBinding = false;
 
-            _bindTarget = _buttons.FirstOrDefault(b => b.IsHovered) ?? _buttons.FirstOrDefault();
+            BindTarget = Buttons.FirstOrDefault(b => b.IsHovered) ?? Buttons.FirstOrDefault();
 
-            if (_bindTarget != null)
-                _bindTarget.IsBinding = true;
+            if (BindTarget != null)
+                BindTarget.IsBinding = true;
         }
 
         private void UpdateIsDefaultValue()
         {
-            IsDefault.Value = _bindings.Select(b => b.KeyCombination).SequenceEqual(Defaults);
+            IsDefault.Value = Bindings.Select(b => b.KeyCombination).SequenceEqual(Defaults);
         }
 
         public class CancelButton : FunkinButton
@@ -371,21 +372,21 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
         {
             public readonly IKeyBinding WrappedBinding;
 
-            private readonly Box _box;
+            private readonly Box Box;
             public readonly SpriteText Text;
 
-            private Color4 _hoverColor;
+            private Color4 HoverColor;
 
-            private bool _isBinding;
+            private bool RealIsBinding;
 
             public bool IsBinding
             {
-                get => _isBinding;
+                get => RealIsBinding;
                 set
                 {
-                    if (value == _isBinding) return;
+                    if (value == RealIsBinding) return;
 
-                    _isBinding = value;
+                    RealIsBinding = value;
 
                     UpdateHoverState();
                 }
@@ -411,7 +412,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
                         Width = 80,
                         Height = ConstantHeight,
                     },
-                    _box = new Box
+                    Box = new Box
                     {
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4.Black
@@ -430,7 +431,7 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
             [BackgroundDependencyLoader]
             private void Load()
             {
-                _hoverColor = Color4Extensions.FromHex(@"eeaa00");
+                HoverColor = Color4Extensions.FromHex(@"eeaa00");
             }
 
             protected override bool OnHover(HoverEvent e)
@@ -447,14 +448,14 @@ namespace Funkin.NET.Core.Overlays.KeyBindings
 
             private void UpdateHoverState()
             {
-                if (_isBinding)
+                if (RealIsBinding)
                 {
-                    _box.FadeColour(Color4.White, TransitionTime, Easing.OutQuint);
+                    Box.FadeColour(Color4.White, TransitionTime, Easing.OutQuint);
                     Text.FadeColour(Color4.Black, TransitionTime, Easing.OutQuint);
                 }
                 else
                 {
-                    _box.FadeColour(IsHovered ? _hoverColor : Color4.Black, TransitionTime, Easing.OutQuint);
+                    Box.FadeColour(IsHovered ? HoverColor : Color4.Black, TransitionTime, Easing.OutQuint);
                     Text.FadeColour(IsHovered ? Color4.Black : Color4.White, TransitionTime, Easing.OutQuint);
                 }
             }

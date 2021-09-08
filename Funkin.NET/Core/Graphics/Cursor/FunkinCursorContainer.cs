@@ -12,9 +12,9 @@ namespace Funkin.NET.Core.Graphics.Cursor
     /// </summary>
     public class FunkinCursorContainer : Container, IProvidesCursor
     {
-        protected override Container<Drawable> Content => _content;
+        protected override Container<Drawable> Content => ReadonlyContent;
 
-        private readonly Container _content;
+        private readonly Container ReadonlyContent;
 
         public InputManager InputManager { get; protected set; }
 
@@ -40,7 +40,7 @@ namespace Funkin.NET.Core.Graphics.Cursor
                         Value = Visibility.Hidden
                     }
                 },
-                _content = new Container
+                ReadonlyContent = new Container
                 {
                     RelativeSizeAxes = Axes.Both
                 }

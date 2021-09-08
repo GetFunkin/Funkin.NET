@@ -6,7 +6,7 @@ using osu.Framework.Platform;
 namespace Funkin.NET.Core.Configuration
 {
     /// <summary>
-    ///     .ini-based configuration system used in Funkin.NET.
+    ///     <c>.ini</c>-based configuration system used in Funkin.NET.
     /// </summary>
     public class FunkinConfigManager : IniConfigManager<FunkinConfigManager.FunkinSetting>
     {

@@ -45,15 +45,15 @@ namespace Funkin.NET.Game.Screens
             if (Music is null || !Music.IsRunning)
                 return;
 
-            MusicConductor.SongPosition = Music.CurrentTime;
+            MusicConductor.CurrentSongPosition = Music.CurrentTime;
 
             IBpmChange lastChange = new BpmChange(0, 0D, 0D);
 
             foreach (IBpmChange bpmChange in MusicConductor.ReadonlyChangeCollection.Where(bpmChange =>
-                MusicConductor.SongPosition >= bpmChange.SongTime))
+                MusicConductor.CurrentSongPosition >= bpmChange.SongTime))
                 lastChange = bpmChange;
 
-            double crochet = (MusicConductor.SongPosition - lastChange.SongTime) / MusicConductor.StepCrochet;
+            double crochet = (MusicConductor.CurrentSongPosition - lastChange.SongTime) / MusicConductor.StepCrochet;
             double flooredCrochet = Math.Floor(crochet);
 
             CurrentStep = lastChange.StepTime + flooredCrochet;

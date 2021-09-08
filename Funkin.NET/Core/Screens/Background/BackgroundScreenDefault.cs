@@ -12,11 +12,11 @@ namespace Funkin.NET.Core.Screens.Background
     /// </summary>
     public class BackgroundScreenDefault : BackgroundScreen
     {
-        private Graphics.Backgrounds.Background _background;
-        private int _currentDisplay;
+        private Graphics.Backgrounds.Background Background;
+        private int CurrentDisplay;
         private const int BackgroundCount = 3;
-        private ScheduledDelegate _nextTask;
-        private CancellationTokenSource _cancellationTokenSource;
+        private ScheduledDelegate NextTask;
+        private CancellationTokenSource CancellationTokenSource;
 
         public BackgroundScreenDefault(bool animateOnEnter = true)
             : base(animateOnEnter)
@@ -26,7 +26,7 @@ namespace Funkin.NET.Core.Screens.Background
         [BackgroundDependencyLoader]
         private void Load()
         {
-            _currentDisplay = RNG.Next(0, BackgroundCount);
+            CurrentDisplay = RNG.Next(0, BackgroundCount);
 
             Next();
         }
@@ -40,37 +40,37 @@ namespace Funkin.NET.Core.Screens.Background
             Graphics.Backgrounds.Background nextBackground = CreateBackground();
 
             // in the case that the background hasn't changed, we want to avoid cancelling any tasks that could still be loading.
-            if (nextBackground == _background)
+            if (nextBackground == Background)
                 return false;
 
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource?.Cancel();
+            CancellationTokenSource = new CancellationTokenSource();
 
-            _nextTask?.Cancel();
-            _nextTask = Scheduler.AddDelayed(
-                () => { LoadComponentAsync(nextBackground, DisplayNext, _cancellationTokenSource.Token); }, 100D);
+            NextTask?.Cancel();
+            NextTask = Scheduler.AddDelayed(
+                () => { LoadComponentAsync(nextBackground, DisplayNext, CancellationTokenSource.Token); }, 100D);
 
             return true;
         }
 
         private void DisplayNext(Graphics.Backgrounds.Background newBackground)
         {
-            _background?.FadeOut(8000D, Easing.InOutSine);
-            _background?.Expire();
+            Background?.FadeOut(8000D, Easing.InOutSine);
+            Background?.Expire();
 
-            AddInternal(_background = newBackground);
+            AddInternal(Background = newBackground);
 
-            _currentDisplay++;
+            CurrentDisplay++;
         }
 
         private Graphics.Backgrounds.Background CreateBackground()
         {
-            Graphics.Backgrounds.Background newBackground = new(GetBackgroundTextureName()) {Depth = _currentDisplay};
+            Graphics.Backgrounds.Background newBackground = new(GetBackgroundTextureName()) {Depth = CurrentDisplay};
 
             return newBackground;
         }
 
         private string GetBackgroundTextureName() =>
-            PathHelper.GetTexture($"Backgrounds/menu-background-{_currentDisplay % BackgroundCount + 1}");
+            PathHelper.GetTexture($"Backgrounds/menu-background-{CurrentDisplay % BackgroundCount + 1}");
     }
 }

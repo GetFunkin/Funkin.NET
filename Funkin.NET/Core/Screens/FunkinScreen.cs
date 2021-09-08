@@ -36,9 +36,9 @@ namespace Funkin.NET.Core.Screens
         /// <summary>
         ///     The background created and owned by this screen. May be null if the background didn't change.
         /// </summary>
-        [CanBeNull] private BackgroundScreen _ownedBackground;
+        [CanBeNull] private BackgroundScreen OwnedBackground;
 
-        [CanBeNull] private BackgroundScreen _background;
+        [CanBeNull] private BackgroundScreen Background;
 
         [Resolved(canBeNull: true)]
         [CanBeNull]
@@ -60,23 +60,23 @@ namespace Funkin.NET.Core.Screens
                 throw new InvalidOperationException(
                     "Attempted to apply to background without a background stack being available.");
 
-            if (_background == null)
+            if (Background == null)
                 throw new InvalidOperationException("Attempted to apply to background before screen is pushed.");
 
-            _background.ApplyToBackground(action);
+            Background.ApplyToBackground(action);
         }
 
         public override void OnEntering(IScreen last)
         {
-            BackgroundStack?.Push(_ownedBackground = CreateBackground());
+            BackgroundStack?.Push(OwnedBackground = CreateBackground());
 
-            _background = BackgroundStack?.CurrentScreen as BackgroundScreen;
+            Background = BackgroundStack?.CurrentScreen as BackgroundScreen;
 
-            if (_background != _ownedBackground)
+            if (Background != OwnedBackground)
             {
                 // background may have not been replaced, at which point we don't want to track the background lifetime.
-                _ownedBackground?.Dispose();
-                _ownedBackground = null;
+                OwnedBackground?.Dispose();
+                OwnedBackground = null;
             }
 
             base.OnEntering(last);
@@ -87,7 +87,7 @@ namespace Funkin.NET.Core.Screens
             if (base.OnExiting(next))
                 return true;
 
-            if (_ownedBackground != null && BackgroundStack?.CurrentScreen == _ownedBackground)
+            if (OwnedBackground != null && BackgroundStack?.CurrentScreen == OwnedBackground)
                 BackgroundStack?.Exit();
 
             return false;

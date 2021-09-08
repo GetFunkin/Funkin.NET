@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Core\Conductor\" />
-    <Folder Include="Game\Mechanics\" />
   </ItemGroup>
 
 </Project>

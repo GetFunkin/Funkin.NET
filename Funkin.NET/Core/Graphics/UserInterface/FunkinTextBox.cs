@@ -38,7 +38,7 @@ namespace Funkin.NET.Core.Graphics.UserInterface
 
         protected override float CaretWidth => 3;
 
-        protected override SpriteText CreatePlaceholder() => new SpriteText
+        protected override SpriteText CreatePlaceholder() => new()
         {
             Font = new FontUsage("Torus-Regular"),
             Colour = new Color4(180, 180, 180, 255),
