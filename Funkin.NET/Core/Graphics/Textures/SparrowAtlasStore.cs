@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using Funkin.NET.Resources;
 using GetFunkin.AdobeNecromancer;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
@@ -43,13 +44,14 @@ namespace Funkin.NET.Core.Graphics.Textures
             Necromancer.ReadAsXml(stream, subTextures, out string imageName, out bool successfulRead);
 
             // find the associated image path
-            string imagePath = $"{Path.GetDirectoryName(name) ?? ""}/{imageName}";
+            string imagePath = PathHelper.SanitizeForResources($"{Path.GetDirectoryName(name) ?? ""}/{imageName}");
 
             // open a stream to the image
             using Stream textureStream = GetStream(imagePath);
 
             // cache the image in memory
             SparrowAtlases[name] = Texture.FromStream(textureStream);
+            SparrowAtlases[name].ScaleAdjust = 2f;
 
             TextureAtlasCache[name] = new Dictionary<string, Texture>();
 
@@ -68,7 +70,10 @@ namespace Funkin.NET.Core.Graphics.Textures
 
                 // add to cache if not already present
                 if (!cropCache.ContainsKey(crop))
+                {
                     cropCache[crop] = SparrowAtlases[name].Crop(new osuRectangleF(crop.X, crop.Y, crop.Width, crop.Height));
+                    cropCache[crop].ScaleAdjust = 2f;
+                }
 
                 TextureAtlasCache[name][subTexture.Name] = cropCache[crop];
             }

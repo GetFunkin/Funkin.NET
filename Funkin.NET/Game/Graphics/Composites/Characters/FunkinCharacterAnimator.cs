@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Funkin.NET.Resources;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Textures;
@@ -102,22 +103,6 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
 
         private static string GetPath(string character, string image) => $"{GetPath(character)}/{image}";
 
-        private static string FrameAsString(int frame)
-        {
-            if (frame == 0)
-                return "0000";
-
-            int zeroCount = 4;
-            int frameLength = frame.ToString().Length;
-            zeroCount -= frameLength;
-
-            StringBuilder builder = new();
-
-            return zeroCount <= 0
-                ? builder.Append(frame).ToString()
-                : builder.Append('0', zeroCount).Append(frame).ToString();
-        }
-
         private static TextureAnimation RetrieveByPrefix(this CharacterDrawable drawable, TextureStore textures,
             string prefix, int frameLengthDivider, int frameCount, bool looped)
         {
@@ -125,7 +110,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
 
             for (int i = 0; i < frameCount; i++)
             {
-                string texturePath = $"{GetPath(drawable.Character, prefix)}{FrameAsString(i)}";
+                string texturePath = $"{GetPath(drawable.Character, prefix)}{PathHelper.FrameAsString(i)}";
                 animation.AddFrame(textures.Get(texturePath), 1D / frameLengthDivider * 1000D);
             }
 
@@ -146,7 +131,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
 
             foreach (int frame in indices)
             {
-                string texturePath = $"{GetPath(drawable.Character, prefix)}{FrameAsString(frame)}";
+                string texturePath = $"{GetPath(drawable.Character, prefix)}{PathHelper.FrameAsString(frame)}";
                 animation.AddFrame(textures.Get(texturePath), 1D / frameLengthDivider * 1000D);
             }
 

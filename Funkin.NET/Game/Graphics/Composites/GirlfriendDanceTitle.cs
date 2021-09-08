@@ -1,4 +1,6 @@
-﻿using osu.Framework.Allocation;
+﻿using Funkin.NET.Core.Graphics.Textures;
+using Funkin.NET.Resources;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
@@ -18,7 +20,7 @@ namespace Funkin.NET.Game.Graphics.Composites
         public bool IsDancingLeft;
 
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textures)
+        private void Load(SparrowAtlasStore textures)
         {
             LeftAnim = new TextureAnimation
             {
@@ -34,11 +36,13 @@ namespace Funkin.NET.Game.Graphics.Composites
                 IsPlaying = true
             };
 
+            Texture Get(string name) => textures.GetTexture("Textures/Shared/gfDanceTitle.xml", name);
+
             foreach (int frame in LeftFrames)
-                LeftAnim.AddFrame(textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
+                LeftAnim.AddFrame(Get($"gfDance{PathHelper.FrameAsString(frame)}"), 1D / 24D * 1000D);
 
             foreach (int frame in RightFrames)
-                RightAnim.AddFrame(textures.Get($"Title/gfDance{frame}"), 1D / 24D * 1000D);
+                RightAnim.AddFrame(Get($"gfDance{PathHelper.FrameAsString(frame)}"), 1D / 24D * 1000D);
         }
 
         public void SwapAnimation()

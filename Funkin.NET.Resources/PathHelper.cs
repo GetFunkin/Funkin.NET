@@ -58,5 +58,21 @@ namespace Funkin.NET.Resources
 
             return sanitize ? SanitizeForResources(builder.ToString()) : builder.ToString();
         }
+
+        public static string FrameAsString(int frame)
+        {
+            if (frame == 0)
+                return "0000";
+
+            int zeroCount = 4;
+            int frameLength = frame.ToString().Length;
+            zeroCount -= frameLength;
+
+            StringBuilder builder = new();
+
+            return zeroCount <= 0
+                ? builder.Append(frame).ToString()
+                : builder.Append('0', zeroCount).Append(frame).ToString();
+        }
     }
 }
