@@ -70,6 +70,6 @@ namespace Funkin.NET.Common.Screens.Background
         }
 
         protected string GetBackgroundTextureName() =>
-            PathHelper.GetTexture($"Backgrounds/menu-background-{CurrentDisplay % BackgroundCount + 1}");
+            PathHelper.GetTexture($"Backgrounds/menu-background-{CurrentDisplay % BackgroundCount + 1}", includeTextures: false);
     }
 }

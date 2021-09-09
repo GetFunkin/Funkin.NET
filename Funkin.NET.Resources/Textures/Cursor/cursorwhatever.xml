@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="cursorwhatever.png">
+  <!-- Created with Adobe Animate version 21.0.1.37179 -->
+  <!-- http://www.adobe.com/products/animate.html -->
+  <SubTexture name="arrow click0000" x="4" y="4" width="96" height="107"/>
+  <SubTexture name="arrow jiggle0000" x="104" y="4" width="111" height="123"/>
+  <SubTexture name="arrow jiggle0001" x="104" y="4" width="111" height="123"/>
+  <SubTexture name="arrow jiggle0002" x="219" y="4" width="110" height="123" frameX="0" frameY="0" frameWidth="111" frameHeight="123"/>
+  <SubTexture name="arrow jiggle0003" x="219" y="4" width="110" height="123" frameX="0" frameY="0" frameWidth="111" frameHeight="123"/>
+  <SubTexture name="arrow jiggle0004" x="333" y="4" width="110" height="123" frameX="0" frameY="0" frameWidth="111" frameHeight="123"/>
+  <SubTexture name="arrow jiggle0005" x="333" y="4" width="110" height="123" frameX="0" frameY="0" frameWidth="111" frameHeight="123"/>
+</TextureAtlas>

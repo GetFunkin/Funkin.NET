@@ -1,4 +1,5 @@
 ﻿using Funkin.NET.Common.Screens;
+using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -68,7 +69,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 }
             };
 
-            FloatingHead.Texture = textures.Get("Title/disembodiedHead");
+            FloatingHead.Texture = textures.Get(PathHelper.GetTexture("Icons/bf-alive", includeTextures: false));
 
             static void Format(SpriteText text) => text.Font = new FontUsage("Torus-Regular", 30f);
             static void Bold(SpriteText text) => text.Font = new FontUsage("Torus-Bold", 30f);

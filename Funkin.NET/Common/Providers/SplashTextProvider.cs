@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
+using Funkin.NET.Resources;
 
 namespace Funkin.NET.Common.Providers
 {
@@ -11,8 +11,7 @@ namespace Funkin.NET.Common.Providers
 
         public SplashTextProvider()
         {
-            string json = File.ReadAllText(Path.Combine("Json", "IntroText.json"));
-            SplashTextList = JsonSerializer.Deserialize<List<string[]>>(json);
+            SplashTextList = JsonSerializer.Deserialize<List<string[]>>(PathHelper.Json.IntroTextJson);
         }
 
         public string[] GetSplashText() => SplashTextList[new Random().Next(0, SplashTextList.Count)];

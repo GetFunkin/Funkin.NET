@@ -1,1 +1,0 @@
-﻿Various FNF sprites. Unmodified.

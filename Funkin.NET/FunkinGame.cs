@@ -232,12 +232,12 @@ namespace Funkin.NET
 
         public override void RegisterFonts()
         {
-            AddFont(Resources, PathHelper.GetFont("VCR/VCR"));
-            AddFont(Resources, PathHelper.GetFont("Funkin/Funkin"));
-            AddFont(Resources, PathHelper.GetFont("Torus/Torus-Regular"));
-            AddFont(Resources, PathHelper.GetFont("Torus/Torus-Light"));
-            AddFont(Resources, PathHelper.GetFont("Torus/Torus-SemiBold"));
-            AddFont(Resources, PathHelper.GetFont("Torus/Torus-Bold"));
+            AddFont(Resources, PathHelper.Font.Vcr);
+            AddFont(Resources, PathHelper.Font.Funkin);
+            AddFont(Resources, PathHelper.Font.TorusRegular);
+            AddFont(Resources, PathHelper.Font.TorusLight);
+            AddFont(Resources, PathHelper.Font.TorusSemiBold);
+            AddFont(Resources, PathHelper.Font.TorusBold);
         }
 
         public override void InitializeContent()

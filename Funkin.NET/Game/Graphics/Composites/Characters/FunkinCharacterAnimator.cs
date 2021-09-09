@@ -109,7 +109,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
 
             for (int i = 0; i < frameCount; i++)
             {
-                string texturePath = $"{GetPath(drawable.Character, prefix)}{PathHelper.FrameAsString(i)}";
+                string texturePath = $"{GetPath(drawable.Character, prefix)}{PathHelper.Atlas.FrameAsString(i)}";
                 animation.AddFrame(textures.Get(texturePath), 1D / frameLengthDivider * 1000D);
             }
 
@@ -130,7 +130,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
 
             foreach (int frame in indices)
             {
-                string texturePath = $"{GetPath(drawable.Character, prefix)}{PathHelper.FrameAsString(frame)}";
+                string texturePath = $"{GetPath(drawable.Character, prefix)}{PathHelper.Atlas.FrameAsString(frame)}";
                 animation.AddFrame(textures.Get(texturePath), 1D / frameLengthDivider * 1000D);
             }
 

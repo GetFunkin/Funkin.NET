@@ -39,10 +39,10 @@ namespace Funkin.NET.Game.Graphics.Composites
             Texture Get(string name) => textures.GetTexture("Textures/Shared/gfDanceTitle.xml", name);
 
             foreach (int frame in LeftFrames)
-                LeftAnim.AddFrame(Get($"gfDance{PathHelper.FrameAsString(frame)}"), 1D / 24D * 1000D);
+                LeftAnim.AddFrame(Get($"gfDance{PathHelper.Atlas.FrameAsString(frame)}"), 1D / 24D * 1000D);
 
             foreach (int frame in RightFrames)
-                RightAnim.AddFrame(Get($"gfDance{PathHelper.FrameAsString(frame)}"), 1D / 24D * 1000D);
+                RightAnim.AddFrame(Get($"gfDance{PathHelper.Atlas.FrameAsString(frame)}"), 1D / 24D * 1000D);
         }
 
         public void SwapAnimation()
