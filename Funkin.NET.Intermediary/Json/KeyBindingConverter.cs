@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using osu.Framework.Input.Bindings;
 
-namespace Funkin.NET.Core.Json
+namespace Funkin.NET.Intermediary.Json
 {
     public class KeyBindingConverter<T> : JsonConverter<IKeyBinding>
     {

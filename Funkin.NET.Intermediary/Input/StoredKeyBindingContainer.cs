@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using Funkin.NET.Core.Json;
+using Funkin.NET.Intermediary.Json;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Platform;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Core.Input.Bindings
+namespace Funkin.NET.Intermediary.Input
 {
     public abstract class StoredKeyBindingContainer<T> : KeyBindingContainer<T> where T : struct
     {

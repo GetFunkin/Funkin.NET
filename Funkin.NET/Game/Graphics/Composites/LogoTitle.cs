@@ -1,4 +1,6 @@
-﻿using osu.Framework.Allocation;
+﻿using Funkin.NET.Intermediary.ResourceStores;
+using Funkin.NET.Resources;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
@@ -14,7 +16,7 @@ namespace Funkin.NET.Game.Graphics.Composites
         public TextureAnimation Anim;
         
         [BackgroundDependencyLoader]
-        private void Load(TextureStore textures)
+        private void Load(SparrowAtlasStore textures)
         {
             Anim = new TextureAnimation
             {
@@ -23,8 +25,10 @@ namespace Funkin.NET.Game.Graphics.Composites
                 IsPlaying = true
             };
 
+            Texture Get(string name) => textures.GetTexture(PathHelper.Texture.LogoBumpinXml, name);
+
             for (int i = 0; i < 15; i++)
-                Anim.AddFrame(textures.Get($"Title/logo bumpin{i}"), 1D / 24D * 1000D);
+                Anim.AddFrame(Get($"logo bumpin{PathHelper.Atlas.FrameAsString(i)}"), 1D / 24D * 1000D);
 
             AddInternal(Anim);
         }

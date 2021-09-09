@@ -104,6 +104,8 @@ namespace Funkin.NET.Resources
             public static string GfDanceTitleXml => GetTexture("Shared/gfDanceTitle.xml");
 
             public static string HealthBar => GetTexture("Shared/healthBar.png");
+
+            public static string LogoBumpinXml => GetTexture("Shared/logoBumpin.xml");
         }
 
         public static class Track

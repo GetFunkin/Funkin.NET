@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json;
 using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Providers;
 using Funkin.NET.Common.Screens;
-using Funkin.NET.Core.Input;
 using Funkin.NET.Game.Screens.Gameplay;
 using Funkin.NET.Intermediary;
+using Funkin.NET.Intermediary.Input;
 using Funkin.NET.Intermediary.ResourceStores;
 using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
@@ -34,7 +33,7 @@ using osu.Framework.Screens;
 namespace Funkin.NET
 {
     /// <summary>
-    ///     Base Funkin' game. Contains data game data. Different platforms likely build upon it, if only slightly.
+    ///     Base Funkin' game. Contains data game data. Different platforms will build upon it, if only slightly.
     /// </summary>
     public class FunkinGame : IntermediaryGame
     {
@@ -189,7 +188,7 @@ namespace Funkin.NET
                 {FrameworkSetting.WindowMode, WindowMode.Windowed}
             };
 
-        protected override UserInputManager CreateUserInputManager() => new RightMouseSpecializedInputManager();
+        protected override UserInputManager CreateUserInputManager() => new StandardInputManager();
 
         protected override void UpdateAfterChildren()
         {

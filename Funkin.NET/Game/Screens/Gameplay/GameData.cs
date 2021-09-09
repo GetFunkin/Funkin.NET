@@ -48,8 +48,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         public virtual float Accuracy => MathF.Round(GetAccuracyFromNoteHits(NoteHits), 2);
 
-        // TODO: health should lower on misses and raise on hits
-        // by a constant amount. also make that changeable easily?
+        // TODO: health should lower on misses and raise on hits by a constant amount. also make that changeable easily?
         public virtual float Health { get; set; }
 
         public virtual List<IGameData.HitAccuracyType> NoteHits { get; set; }

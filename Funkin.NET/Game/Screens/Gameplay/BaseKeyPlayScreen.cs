@@ -29,7 +29,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
          * score
          * everything else
          * single sprite for all arrows, recolor/rotate with code
-         * why is there a sixth arrow "[62100,6,0]"???????
          *
          * Notes:
          * Start music some time later

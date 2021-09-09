@@ -19,6 +19,8 @@
   <ItemGroup>
     <None Remove="Textures\Cursor\cursorwhatever.png" />
     <None Remove="Textures\Cursor\cursorwhatever.xml" />
+    <None Remove="Textures\Shared\logoBumpin.png" />
+    <None Remove="Textures\Shared\logoBumpin.xml" />
   </ItemGroup>
 
   <ItemGroup>
