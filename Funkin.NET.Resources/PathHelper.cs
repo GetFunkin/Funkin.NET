@@ -93,19 +93,25 @@ namespace Funkin.NET.Resources
 
         public static class Texture
         {
-            public static string MenuBackground1 => GetTexture("Backgrounds/menu-background-1.png");
+            public static string MenuBackground1 => GetTexture("Backgrounds/menu-background-1.png", includeTextures: false);
 
-            public static string MenuBackground2 => GetTexture("Backgrounds/menu-background-2.png");
+            public static string MenuBackground2 => GetTexture("Backgrounds/menu-background-2.png", includeTextures: false);
 
-            public static string MenuBackground3 => GetTexture("Backgrounds/menu-background-3.png");
+            public static string MenuBackground3 => GetTexture("Backgrounds/menu-background-3.png", includeTextures: false);
 
             public static string CursorXml => GetTexture("Cursor/cursorwhatever.xml");
 
             public static string GfDanceTitleXml => GetTexture("Shared/gfDanceTitle.xml");
 
-            public static string HealthBar => GetTexture("Shared/healthBar.png");
+            public static string HealthBar => GetTexture("Shared/healthBar.png", includeTextures: false);
 
             public static string LogoBumpinXml => GetTexture("Shared/logoBumpin.xml");
+
+            public static string StoryModeButton => GetTexture("Shared/story mode white.png", includeTextures: false);
+
+            public static string FreeplayButton => GetTexture("Shared/freeplay white.png", includeTextures: false);
+
+            public static string OptionsButton => GetTexture("Shared/options white.png", includeTextures: false);
         }
 
         public static class Track

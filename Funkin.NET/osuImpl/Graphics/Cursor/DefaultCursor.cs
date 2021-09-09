@@ -1,4 +1,6 @@
 ﻿using Funkin.NET.Common.Configuration;
+using Funkin.NET.Intermediary.ResourceStores;
+using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -79,11 +81,11 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
             }
 
             [BackgroundDependencyLoader]
-            private void Load(FunkinConfigManager config, TextureStore textures)
+            private void Load(FunkinConfigManager config, SparrowAtlasStore textures)
             {
                 CursorDown = new Sprite
                 {
-                    Texture = textures.Get("Cursor/arrow click"),
+                    Texture = textures.GetTexture(PathHelper.Texture.CursorXml, "arrow click0000"),
                     AlwaysPresent = true
                 };
 
@@ -94,8 +96,10 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
                     Loop = true
                 };
 
+                Texture Jiggle(int frame) => textures.GetTexture(PathHelper.Texture.CursorXml, $"arrow jiggle{PathHelper.Atlas.FrameAsString(frame)}");
+
                 for (int i = 0; i < 6; i++)
-                    CursorAnimation.AddFrame(textures.Get($"Cursor/arrow jiggle{i}"), 1D / 24D * 1000D);
+                    CursorAnimation.AddFrame(Jiggle(i), 1D / 24D * 1000D);
 
                 Children = new Drawable[]
                 {

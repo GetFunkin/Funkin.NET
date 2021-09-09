@@ -2,6 +2,7 @@
 using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Providers;
 using Funkin.NET.Game.Graphics.Composites;
+using Funkin.NET.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -435,9 +436,9 @@ namespace Funkin.NET.Game.Screens.Gameplay
             {
                 string request = i switch
                 {
-                    0 => "Title/story mode white",
-                    1 => "Title/freeplay white",
-                    2 => "Title/options white",
+                    0 => PathHelper.Texture.StoryModeButton,
+                    1 => PathHelper.Texture.FreeplayButton,
+                    2 => PathHelper.Texture.OptionsButton,
                     _ => ""
                 };
 

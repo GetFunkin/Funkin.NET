@@ -36,7 +36,7 @@ namespace Funkin.NET.Game.Graphics.Composites
                 IsPlaying = true
             };
 
-            Texture Get(string name) => textures.GetTexture("Textures/Shared/gfDanceTitle.xml", name);
+            Texture Get(string name) => textures.GetTexture(PathHelper.Texture.GfDanceTitleXml, name);
 
             foreach (int frame in LeftFrames)
                 LeftAnim.AddFrame(Get($"gfDance{PathHelper.Atlas.FrameAsString(frame)}"), 1D / 24D * 1000D);
