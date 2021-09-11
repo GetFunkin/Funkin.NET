@@ -10,15 +10,28 @@ namespace Funkin.NET.Resources
     /// </summary>
     public static class PathHelper
     {
+        /// <summary>
+        ///     Utilities for retrieving embedded resources.
+        /// </summary>
         public static class EmbeddedResource
         {
+            /// <summary>
+            ///     Sanitizes and streamlines embedded resource paths.
+            /// </summary>
+            /// <param name="path">The path to sanitize.</param>
+            /// <param name="assembly">The assembly to use. Defaults to <see cref="Assembly"/></param>.
+            /// <returns>A sanitized path with the assembly name added to the beginning if it was not already there.</returns>
             public static string SanitizeForEmbeds(string path, Assembly assembly = null)
             {
+                // replace '/' and '\' with '.'
                 path = path.Replace(Path.DirectorySeparatorChar, '.')
                     .Replace('/', '.').Replace('\\', '.');
 
+                // if no assembly was set, use ours
                 assembly ??= Assembly;
 
+                // if the assembly name doesn't exist, cry about it through an exception
+                // if the path doesn't start with the assembly name, add it to the beginning
                 if (!path.StartsWith(assembly.GetName().Name ?? throw new NullReferenceException("Assembly name was null.")))
                     path = $"{assembly.GetName().Name}.{path}";
 
@@ -45,15 +58,27 @@ namespace Funkin.NET.Resources
         {
             public static string IntroTextPath => GetPath("Json/IntroText");
 
-            public static string IntroTextJson => GetJson(IntroTextPath);
+            public static string IntroTextJson => GetEmbeddedJson(IntroTextPath);
 
-            public static string GetJson(string path)
+            /// <summary>
+            ///     Retrieves an embedded JSON by opening a stream (sanitized with <see cref="EmbeddedResource.SanitizeForEmbeds"/>) and initializing a <see cref="StreamReader"/>.
+            /// </summary>
+            /// <param name="path">The embedded path.</param>
+            /// <param name="assembly">The assembly to retrieve from. Defaults to <see cref="Assembly"/>.</param>
+            /// <returns>The contents of the Json at the specified path.</returns>
+            public static string GetEmbeddedJson(string path, Assembly assembly = null)
             {
-                using Stream stream = Assembly.GetManifestResourceStream(EmbeddedResource.SanitizeForEmbeds(path));
+                using Stream stream = Assembly.GetManifestResourceStream(EmbeddedResource.SanitizeForEmbeds(path, assembly));
                 using TextReader reader = new StreamReader(stream ?? throw new NullReferenceException("Null stream."));
                 return reader.ReadToEnd();
             }
 
+            /// <summary>
+            ///     Sanitizes and streamlines Json paths.
+            /// </summary>
+            /// <remarks>
+            ///     <c>Json/</c> will be added to the beginning if it was not already.
+            /// </remarks>
             public static string GetPath(string path, bool sanitize = true)
             {
                 StringBuilder builder = new();
@@ -119,19 +144,32 @@ namespace Funkin.NET.Resources
             public static string FreakyMenu => GetTrack("Main/FreakyMenu.ogg");
         }
 
+        /// <summary>
+        ///     Sparrow atlas utilities.
+        /// </summary>
         public static class Atlas
         {
+            /// <summary>
+            ///     Converts a frame to a 4-digit string.
+            /// </summary>
             public static string FrameAsString(int frame)
             {
+                // if it's 0, waste no time
+                // and just return "0000"
                 if (frame == 0)
                     return "0000";
 
                 int zeroCount = 4;
                 int frameLength = frame.ToString().Length;
+
+                // subtract the amount of expected zeroes
                 zeroCount -= frameLength;
 
                 StringBuilder builder = new();
 
+                // if there are no zeroes, return the frame,
+                // otherwise append zeroes to the beginning
+                // of the string, then add the frame count
                 return zeroCount <= 0
                     ? builder.Append(frame).ToString()
                     : builder.Append('0', zeroCount).Append(frame).ToString();
@@ -140,9 +178,11 @@ namespace Funkin.NET.Resources
 
         public static Assembly Assembly => typeof(PathHelper).Assembly;
 
+        // replaces '\' and the directory separator character with '/'
         public static string SanitizeForResources(string path) =>
             path.Replace('\\', '/').Replace(Path.DirectorySeparatorChar, '/');
 
+        // replaces '\' and '/' with the directory separator character
         public static string SanitizeForComputer(string path) =>
             path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 

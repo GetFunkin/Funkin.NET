@@ -145,11 +145,17 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 {
                     ScheduledEnterText = true;
 
-                    // I am aware that this is a crime again humanity
-                    // unfortunately, I live in a world where god is dead
-                    drawable.FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D)
-                        .FadeOut().Delay(150D).FadeIn().Delay(150D).FadeOut().Delay(150D).FadeIn().Delay(150D)
-                        .FadeOut();
+                    TransformSequence<Drawable> sequence = drawable.Delay(0);
+
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (i % 2 == 0)
+                            sequence.FadeOut();
+                        else
+                            sequence.FadeIn();
+
+                        sequence.Delay(150D);
+                    }
                 }
 
                 if (SelectedEnter)

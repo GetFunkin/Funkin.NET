@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.IO.Stores;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
@@ -15,11 +17,11 @@ namespace Funkin.NET.Intermediary
 
         public ScreenStack ScreenStack { get; set; }
 
+        public virtual IEnumerable<(ResourceStore<byte[]>, string)> Fonts { get; }
+
         public IServiceCollection Services { get; } = new ServiceCollection();
 
         public IServiceProvider ServiceProvider => Services.BuildServiceProvider();
-
-        public abstract void RegisterFonts();
 
         public virtual void InitializeContent()
         {
@@ -37,8 +39,10 @@ namespace Funkin.NET.Intermediary
         private void Load()
         {
             OnBackgroundDependencyLoad();
+            
+            foreach ((ResourceStore<byte[]> resources, string fontPath) in Fonts)
+                AddFont(resources, fontPath);
 
-            RegisterFonts();
             InitializeContent();
         }
 

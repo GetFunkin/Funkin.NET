@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text.Json.Serialization;
+using Funkin.NET.Resources;
 
 namespace Funkin.NET.Core.Music.Songs
 {
@@ -31,12 +33,7 @@ namespace Funkin.NET.Core.Music.Songs
             return track.Song;
         }
 
-        public static Song GetSongFromFile(string filePath)
-        {
-            if (!File.Exists(filePath))
-                throw new ArgumentException("File doesn't exist", nameof(filePath));
-
-            return GetSong(File.ReadAllText(filePath));
-        }
+        public static Song GetSongFromFile(string filePath, Assembly assembly = null) => GetSong(PathHelper.Json.GetEmbeddedJson(
+                PathHelper.EmbeddedResource.SanitizeForEmbeds(filePath, assembly), assembly));
     }
 }

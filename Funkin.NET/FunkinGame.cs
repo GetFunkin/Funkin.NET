@@ -12,6 +12,7 @@ using Funkin.NET.Game.Screens.Gameplay;
 using Funkin.NET.Intermediary;
 using Funkin.NET.Intermediary.Input;
 using Funkin.NET.Intermediary.ResourceStores;
+using Funkin.NET.Intermediary.Utilities;
 using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
 using Funkin.NET.osuImpl.Overlays;
@@ -39,11 +40,15 @@ namespace Funkin.NET
     {
         public const string ProgramName = "Funkin.NET";
 
-        public virtual Version AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
-
-        public virtual string Version => AssemblyVersion.ToString();
-
-        public string VersionHash { get; set; }
+        public override IEnumerable<(ResourceStore<byte[]>, string)> Fonts => new[]
+        {
+            (Resources, PathHelper.Font.Vcr),
+            (Resources, PathHelper.Font.Funkin),
+            (Resources, PathHelper.Font.TorusRegular),
+            (Resources, PathHelper.Font.TorusLight),
+            (Resources, PathHelper.Font.TorusSemiBold),
+            (Resources, PathHelper.Font.TorusBold)
+        };
 
         protected FunkinConfigManager LocalConfig { get; set; }
 
@@ -64,10 +69,6 @@ namespace Funkin.NET
 
         private readonly List<OverlayContainer> VisibleBlockingOverlays = new();
 
-        public StartupIntroductionScreen MenuScreen { get; private set; }
-
-        public EnterScreen IntroScreen { get; private set; }
-
         public SettingsOverlay Settings;
 
         public FunkinGame()
@@ -77,19 +78,15 @@ namespace Funkin.NET
 
         protected override void LoadComplete()
         {
-            ShowFpsDisplay = LocalConfig.GetBindable<bool>(FunkinConfigManager.FunkinSetting.ShowFpsDisplay);
-            ShowFpsDisplay.ValueChanged += x => FrameStatistics.Value = x.NewValue
-                ? FrameStatisticsMode.Full
-                : FrameStatisticsMode.None;
-            ShowFpsDisplay.TriggerChange();
+            ShowFpsDisplay.SetBindable(LocalConfig, FunkinConfigManager.FunkinSetting.ShowFpsDisplay, x =>
+                FrameStatistics.Value = x.NewValue
+                    ? FrameStatisticsMode.Full
+                    : FrameStatisticsMode.None);
 
             FrameStatistics.ValueChanged += x => ShowFpsDisplay.Value = x.NewValue != FrameStatisticsMode.None;
 
-            // todo: localization
+            DefaultCursorContainer.CanShowCursor = false;
 
-            DefaultCursorContainer.CanShowCursor = MenuScreen?.CursorVisible ?? false;
-
-            // todo: implement osu!'s volume control receptor
             AddRange(new Drawable[]
             {
                 ScreenOffsetContainer = new Container
@@ -197,25 +194,8 @@ namespace Funkin.NET
             DefaultCursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
         }
 
-        public override void ScreenChanged(IScreen current, IScreen newScreen)
-        {
-            switch (newScreen)
-            {
-                case EnterScreen enter: 
-                    IntroScreen = enter;
-                    break;
-
-                case StartupIntroductionScreen menu:
-                    MenuScreen = menu;
-                    break;
-            }
-        }
-
         public override void OnBackgroundDependencyLoad()
         {
-            using (FileStream hash = File.OpenRead(typeof(FunkinGame).Assembly.Location))
-                VersionHash = hash.ComputeMD5Hash();
-
             Resources.AddStore(new DllResourceStore(PathHelper.Assembly));
 
             ProtectedDependencies.CacheAs(Storage);
@@ -227,16 +207,6 @@ namespace Funkin.NET
             ProtectedDependencies.CacheAs(sparrowAtlas);
 
             Services.AddSingleton<SplashTextProvider>();
-        }
-
-        public override void RegisterFonts()
-        {
-            AddFont(Resources, PathHelper.Font.Vcr);
-            AddFont(Resources, PathHelper.Font.Funkin);
-            AddFont(Resources, PathHelper.Font.TorusRegular);
-            AddFont(Resources, PathHelper.Font.TorusLight);
-            AddFont(Resources, PathHelper.Font.TorusSemiBold);
-            AddFont(Resources, PathHelper.Font.TorusBold);
         }
 
         public override void InitializeContent()
