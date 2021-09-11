@@ -19,7 +19,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
     /// </summary>
     public class ScrollingArrowDrawable : CompositeDrawable
     {
-        public virtual KeyAssociatedAction Key { get; }
+        public virtual KeyAction Key { get; }
 
         public virtual double TargetTime { get; }
 
@@ -43,7 +43,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
         protected bool IsHeld;
         protected bool RegisteredAccuracyType;
 
-        public ScrollingArrowDrawable(KeyAssociatedAction key, double targetTime, int holdTime, Vector2 targetPos,
+        public ScrollingArrowDrawable(KeyAction key, double targetTime, int holdTime, Vector2 targetPos,
             double songSpeed, bool isEnemyArrow)
         {
             Key = key;
@@ -138,7 +138,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             HoldEndSprite.Position = new Vector2(0, lerpPos - Position.Y);
         }
 
-        public virtual void Press(KeyAssociatedAction action, bool held)
+        public virtual void Press(KeyAction action, bool held)
         {
             if (HasBeenHit && HoldTime == 0)
                 return;
@@ -195,7 +195,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             AccuracyType = hitType;
         }
 
-        public virtual void Release(KeyAssociatedAction action)
+        public virtual void Release(KeyAction action)
         {
             IsHeld = false;
         }

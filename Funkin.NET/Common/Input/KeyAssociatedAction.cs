@@ -1,6 +1,6 @@
 ﻿namespace Funkin.NET.Common.Input
 {
-    public enum KeyAssociatedAction
+    public enum KeyAction
     {
         Left = 0,
         Down = 1,

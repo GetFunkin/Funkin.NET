@@ -42,12 +42,12 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public const int MusicStartOffset = 5 * 1000;
         public const int ScrollingArrowStartPos = 1000 * 15;
 
-        public static readonly KeyAssociatedAction[] ArrowValues =
+        public static readonly KeyAction[] ArrowValues =
         {
-            KeyAssociatedAction.Left,
-            KeyAssociatedAction.Down,
-            KeyAssociatedAction.Up,
-            KeyAssociatedAction.Right
+            KeyAction.Left,
+            KeyAction.Down,
+            KeyAction.Up,
+            KeyAction.Right
         };
 
         public override double ExpectedBpm { get; }
@@ -142,7 +142,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             float offset = 140f;
             for (int i = 0; i < ArrowValues.Length; i++)
             {
-                KeyAssociatedAction arrowKey = ArrowValues[i];
+                KeyAction arrowKey = ArrowValues[i];
                 PlayerArrows[i] = new ArrowKeyDrawable(arrowKey)
                 {
                     Anchor = Anchor.Centre,
@@ -162,7 +162,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             offset = 140f;
             for (int i = ArrowValues.Length - 1; i >= 0; i--)
             {
-                KeyAssociatedAction arrowKey = ArrowValues[i];
+                KeyAction arrowKey = ArrowValues[i];
                 OpponentArrows[i] = new ArrowKeyDrawable(arrowKey)
                 {
                     Anchor = Anchor.Centre,
@@ -339,7 +339,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         public virtual bool OnPressed(UniversalAction action)
         {
-            if (!ArrowValues.Contains((KeyAssociatedAction) (int) action))
+            if (!ArrowValues.Contains((KeyAction) (int) action))
                 return false;
 
             int value = (int) action;
@@ -366,14 +366,14 @@ namespace Funkin.NET.Game.Screens.Gameplay
             Console.WriteLine($"{IsPressed[value]}, {IsHeld[value]}");
 
             foreach (ScrollingArrowDrawable arrow in NotesAhead.SelectMany(arrowArray => arrowArray))
-                arrow.Press((KeyAssociatedAction) (int) action, IsHeld[value]);
+                arrow.Press((KeyAction) (int) action, IsHeld[value]);
 
             return true;
         }
 
         public virtual void OnReleased(UniversalAction action)
         {
-            if (!ArrowValues.Contains((KeyAssociatedAction) (int) action))
+            if (!ArrowValues.Contains((KeyAction) (int) action))
                 return;
 
             int value = (int) action;
@@ -387,7 +387,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             IsHeld[value] = false;
 
             foreach (ScrollingArrowDrawable arrow in NotesAhead.SelectMany(arrowArray => arrowArray))
-                arrow.Release((KeyAssociatedAction) (int) action);
+                arrow.Release((KeyAction) (int) action);
         }
 
         protected virtual void Initialize()
@@ -439,7 +439,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                         startOffset += MusicStartOffset;
 
                     note.Offset += startOffset;
-                    note.Key = (KeyAssociatedAction)keyToUse;
+                    note.Key = (KeyAction)keyToUse;
 
                     arrows[i] = new ScrollingArrowDrawable(note, notePos, Song.Speed, !mustHitSection)
                     {
