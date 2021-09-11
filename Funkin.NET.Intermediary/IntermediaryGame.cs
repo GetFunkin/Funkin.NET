@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Funkin.NET.Intermediary.Injection;
 using Funkin.NET.Intermediary.Injection.Services;
@@ -64,11 +65,14 @@ namespace Funkin.NET.Intermediary
                     continue;
 
                 const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
-                MethodInfo provider = type.GetMethod(IService.ProviderMethod, flags);
+                MethodInfo[] provider = type.GetMethods().Where(x => x.GetCustomAttribute<ProvidesServiceAttribute>() != null).ToArray();
                 IService service;
 
-                if (provider is not null)
-                    service = (IService) provider.Invoke(null, null);
+                if (provider.Length > 1)
+                    throw new Exception("Multiple methods marked with ProvidesServiceAttribute.");
+
+                if (provider[0] is not null)
+                    service = (IService)provider[0].Invoke(null, null);
                 else
                     service = (IService) Activator.CreateInstance(type);
 

@@ -17,6 +17,7 @@ namespace Funkin.NET.Common.Providers
 
         public string[] GetSplashText() => SplashTextList[new Random().Next(0, SplashTextList.Count)];
 
+        [ProvidesService]
         public static SplashTextProvider CreateProvider() => new(PathHelper.Json.IntroTextJson);
     }
 }
