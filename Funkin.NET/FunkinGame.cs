@@ -126,7 +126,7 @@ namespace Funkin.NET
 
             OverlayContainer[] singleDisplaySideOverlays =
             {
-                Containers[FunkinContainers.Settings] as OverlayContainer
+                Containers.As<SettingsOverlay>(FunkinContainers.Settings)
             };
 
             foreach (OverlayContainer overlay in singleDisplaySideOverlays)
