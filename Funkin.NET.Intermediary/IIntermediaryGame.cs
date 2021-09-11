@@ -18,6 +18,8 @@ namespace Funkin.NET.Intermediary
 
         IEnumerable<(ResourceStore<byte[]>, string)> FontStore { get; }
 
+        CastDictionary<ContainerRequest, Container> Containers { get; }
+
         void InitializeContent();
 
         void OnBackgroundDependencyLoad();

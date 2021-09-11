@@ -10,7 +10,7 @@ namespace Funkin.NET.Common.Utilities
 
         void UpdateBlockingOverlayFade();
 
-        void AddBlockingOverlay(OverlayContainer overlay)
+        public void AddBlockingOverlay(OverlayContainer overlay)
         {
             if (!VisibleBlockingOverlays.Contains(overlay))
                 VisibleBlockingOverlays.Add(overlay);
@@ -18,7 +18,7 @@ namespace Funkin.NET.Common.Utilities
             UpdateBlockingOverlayFade();
         }
 
-        void RemoveBlockingOverlay(OverlayContainer overlay) => ScheduleTask(() =>
+        public void RemoveBlockingOverlay(OverlayContainer overlay) => ScheduleTask(() =>
         {
             VisibleBlockingOverlays.Remove(overlay);
             UpdateBlockingOverlayFade();

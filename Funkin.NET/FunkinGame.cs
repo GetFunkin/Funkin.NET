@@ -51,20 +51,16 @@ namespace Funkin.NET
             (Resources, PathHelper.Font.TorusBold)
         };
 
-        protected override Container<Drawable> Content => GameContent;
+        protected override Container<Drawable> Content => Containers[FunkinContainers.Content];
 
         public List<OverlayContainer> VisibleBlockingOverlays { get; } = new();
 
         protected FunkinConfigManager Configuration;
-        protected DefaultCursorContainer CursorContainer;
-        protected Container GameContent;
         protected DependencyContainer DependencyContainer;
         protected Bindable<bool> ShowFpsDisplay;
         protected Dictionary<OverlayContainerType, Container> OverlayContainers;
-        protected ScalingContainer ScreenContainer;
         protected Container ScreenOffsetContainer;
         protected UniversalActionContainer ActionContainer;
-        protected SettingsOverlay Settings;
 
         protected FunkinGame()
         {
@@ -80,7 +76,7 @@ namespace Funkin.NET
                     : FrameStatisticsMode.None);
 
             FrameStatistics.ValueChanged += x => ShowFpsDisplay.Value = x.NewValue != FrameStatisticsMode.None;
-            CursorContainer.CanShowCursor = false;
+            Containers.As<DefaultCursorContainer>(FunkinContainers.Cursor).CanShowCursor = false;
             OverlayContainers = new Dictionary<OverlayContainerType, Container>();
 
             static Container QuickContainer() => new()
@@ -96,7 +92,7 @@ namespace Funkin.NET
 
                     Children = new Drawable[]
                     {
-                        ScreenContainer = new ScalingContainer(FunkinConfigManager.ScalingMode.On)
+                        Containers[FunkinContainers.Screen] = new ScalingContainer(FunkinConfigManager.ScalingMode.On)
                         {
                             RelativeSizeAxes = Axes.Both,
                             Anchor = Anchor.Centre,
@@ -123,13 +119,14 @@ namespace Funkin.NET
 
             ScreenStack.Push(new StartupIntroductionScreen(new EnterScreen()));
 
-            DependencyContainer.CacheAs(Settings = new SettingsOverlay());
-            LoadComponentAsync(Settings, OverlayContainers[OverlayContainerType.LeftFloating].Add,
+            DependencyContainer.CacheAs(Containers[FunkinContainers.Settings] = new SettingsOverlay());
+            LoadComponentAsync(Containers[FunkinContainers.Settings],
+                OverlayContainers[OverlayContainerType.LeftFloating].Add,
                 CancellationToken.None);
 
             OverlayContainer[] singleDisplaySideOverlays =
             {
-                Settings
+                Containers[FunkinContainers.Settings] as OverlayContainer
             };
 
             foreach (OverlayContainer overlay in singleDisplaySideOverlays)
@@ -147,6 +144,9 @@ namespace Funkin.NET
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             DependencyContainer = new DependencyContainer(base.CreateChildDependencies(parent));
 
+        public override Container CreateScalingContainer() =>
+            new ScalingContainer(FunkinConfigManager.ScalingMode.On);
+
         public override void SetHost(GameHost host)
         {
             base.SetHost(host);
@@ -154,9 +154,6 @@ namespace Funkin.NET
             Storage = host.Storage;
             Configuration = new FunkinConfigManager(Storage);
         }
-
-        public override Container CreateScalingContainer() =>
-            new ScalingContainer(FunkinConfigManager.ScalingMode.On);
 
         protected override void Dispose(bool isDisposing)
         {
@@ -177,7 +174,8 @@ namespace Funkin.NET
         {
             base.UpdateAfterChildren();
 
-            CursorContainer.CanShowCursor = (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
+            Containers.As<DefaultCursorContainer>(FunkinContainers.Cursor).CanShowCursor =
+                (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
         }
 
         public override void OnBackgroundDependencyLoad()
@@ -196,7 +194,7 @@ namespace Funkin.NET
         {
             Drawable[] mainContent =
             {
-                CursorContainer = new DefaultCursorContainer
+                Containers[FunkinContainers.Cursor] = new DefaultCursorContainer
                 {
                     RelativeSizeAxes = Axes.Both
                 },
@@ -204,18 +202,20 @@ namespace Funkin.NET
                 ActionContainer = new UniversalActionContainer(Storage, this)
             };
 
-            CursorContainer.Child = GameContent = new DefaultTooltipContainer(CursorContainer.Cursor)
-            {
-                RelativeSizeAxes = Axes.Both
-            };
+            Containers[FunkinContainers.Cursor].Child = Containers[FunkinContainers.Content] =
+                new DefaultTooltipContainer(Containers.As<DefaultCursorContainer>(FunkinContainers.Cursor).Cursor)
+                {
+                    RelativeSizeAxes = Axes.Both
+                };
 
             DependencyContainer.Cache(ActionContainer);
 
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }
 
-        public void UpdateBlockingOverlayFade() => ScreenContainer.FadeColour(VisibleBlockingOverlays.Any()
-            ? new Colour4(0.5f, 0.5f, 0.5f, 1f)
-            : Colour4.White, 500D, Easing.OutQuint);
+        public void UpdateBlockingOverlayFade() => Containers[FunkinContainers.Screen].FadeColour(
+            VisibleBlockingOverlays.Any()
+                ? new Colour4(0.5f, 0.5f, 0.5f, 1f)
+                : Colour4.White, 500D, Easing.OutQuint);
     }
 }

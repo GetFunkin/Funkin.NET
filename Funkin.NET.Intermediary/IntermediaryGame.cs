@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Funkin.NET.Intermediary.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using osu.Framework;
 using osu.Framework.Allocation;
@@ -22,6 +23,8 @@ namespace Funkin.NET.Intermediary
 
         public virtual IEnumerable<(ResourceStore<byte[]>, string)> FontStore { get; } =
             Array.Empty<(ResourceStore<byte[]>, string)>();
+
+        public virtual CastDictionary<ContainerRequest, Container> Containers { get; } = new();
 
         public IServiceCollection Services { get; } = new ServiceCollection();
 

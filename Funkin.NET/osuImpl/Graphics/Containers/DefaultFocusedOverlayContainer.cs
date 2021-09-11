@@ -1,4 +1,5 @@
 ﻿using System;
+using Funkin.NET.Common.Utilities;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -62,12 +63,12 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                         OpenSample.Play();
 
                     if (BlockScreenWideMouse)
-                        ResolvedGame.AddBlockingOverlay(this);
+                        (ResolvedGame as IOverlayContainer).AddBlockingOverlay(this);
                     break;
 
                 case Visibility.Hidden:
                     if (BlockScreenWideMouse)
-                        ResolvedGame.RemoveBlockingOverlay(this);
+                        (ResolvedGame as IOverlayContainer).RemoveBlockingOverlay(this);
                     break;
 
                 default:
@@ -86,7 +87,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
         protected override void Dispose(bool isDisposing)
         {
             base.Dispose(isDisposing);
-            ResolvedGame.RemoveBlockingOverlay(this);
+            (ResolvedGame as IOverlayContainer).RemoveBlockingOverlay(this);
         }
     }
 }
