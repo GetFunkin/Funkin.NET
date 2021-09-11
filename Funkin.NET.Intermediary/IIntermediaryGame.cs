@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Funkin.NET.Intermediary.Injection;
 using Funkin.NET.Intermediary.Utilities;
 using osu.Framework.Graphics.Containers;
@@ -19,6 +20,8 @@ namespace Funkin.NET.Intermediary
         IEnumerable<(ResourceStore<byte[]>, string)> FontStore { get; }
 
         CastDictionary<ContainerRequest, Container> Containers { get; }
+
+        Assembly Assembly { get; }
 
         void InitializeContent();
 

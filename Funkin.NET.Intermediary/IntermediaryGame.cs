@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Funkin.NET.Intermediary.Injection;
+using Funkin.NET.Intermediary.Injection.Services;
 using Funkin.NET.Intermediary.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using osu.Framework;
@@ -25,6 +28,8 @@ namespace Funkin.NET.Intermediary
             Array.Empty<(ResourceStore<byte[]>, string)>();
 
         public virtual CastDictionary<ContainerRequest, Container> Containers { get; } = new();
+
+        public abstract Assembly Assembly { get; }
 
         public IServiceCollection Services { get; } = new ServiceCollection();
 
@@ -52,6 +57,26 @@ namespace Funkin.NET.Intermediary
 
             foreach ((ResourceStore<byte[]> resources, string fontPath) in FontStore)
                 AddFont(resources, fontPath);
+
+            foreach (Type type in Assembly.GetTypes())
+            {
+                if (!typeof(IService).IsAssignableFrom(type) || type.IsAbstract)
+                    continue;
+
+                const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
+                MethodInfo provider = type.GetMethod(IService.ProviderMethod, flags);
+                IService service;
+
+                if (provider is not null)
+                    service = (IService) provider.Invoke(null, null);
+                else
+                    service = (IService) Activator.CreateInstance(type);
+
+                if (service is null)
+                    throw new NullReferenceException($"Failed to create service of type: {type.Name}");
+
+                Services.AddSingleton(type, service);
+            }
 
             InitializeContent();
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Input;
@@ -35,6 +36,8 @@ namespace Funkin.NET
     public abstract class FunkinGame : IntermediaryGame, IOverlayContainer
     {
         public const string ProgramName = "Funkin.NET";
+
+        public override Assembly Assembly => typeof(FunkinGame).Assembly;
 
         public override IEnumerable<IResourceStore<byte[]>> ResourceStores => new IResourceStore<byte[]>[]
         {
@@ -186,8 +189,6 @@ namespace Funkin.NET
 
             SparrowAtlasStore sparrowAtlas = new(Resources);
             DependencyContainer.CacheAs(sparrowAtlas);
-
-            Services.AddSingleton<SplashTextProvider>();
         }
 
         public override void InitializeContent()

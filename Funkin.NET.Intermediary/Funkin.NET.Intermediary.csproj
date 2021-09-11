@@ -15,4 +15,8 @@
     <ProjectReference Include="..\GetFunkin.AdobeNecromancer\GetFunkin.AdobeNecromancer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Injection\Services\" />
+  </ItemGroup>
+
 </Project>
