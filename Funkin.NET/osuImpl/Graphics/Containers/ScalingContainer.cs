@@ -95,14 +95,13 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
         }
 
         private bool RequiresBackgroundVisible =>
-            ScalingMode.Value is FunkinConfigManager.ScalingMode.Everything or FunkinConfigManager.ScalingMode
-                .ExcludeOverlays && (SizeX.Value != 1 || SizeY.Value != 1);
+            ScalingMode.Value is FunkinConfigManager.ScalingMode.On && (SizeX.Value != 1 || SizeY.Value != 1);
 
         private void UpdateSize()
         {
             const float fadeTime = 500f;
 
-            if (TargetMode == FunkinConfigManager.ScalingMode.Everything)
+            if (TargetMode == FunkinConfigManager.ScalingMode.On)
             {
                 // the top level scaling container manages the background to be displayed while scaling.
                 if (RequiresBackgroundVisible)

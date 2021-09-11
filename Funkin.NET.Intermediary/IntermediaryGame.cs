@@ -17,7 +17,11 @@ namespace Funkin.NET.Intermediary
 
         public ScreenStack ScreenStack { get; set; }
 
-        public virtual IEnumerable<(ResourceStore<byte[]>, string)> Fonts { get; }
+        public virtual IEnumerable<IResourceStore<byte[]>> ResourceStores { get; } =
+            Array.Empty<ResourceStore<byte[]>>();
+
+        public virtual IEnumerable<(ResourceStore<byte[]>, string)> FontStore { get; } =
+            Array.Empty<(ResourceStore<byte[]>, string)>();
 
         public IServiceCollection Services { get; } = new ServiceCollection();
 
@@ -38,9 +42,12 @@ namespace Funkin.NET.Intermediary
         [BackgroundDependencyLoader]
         private void Load()
         {
+            foreach (IResourceStore<byte[]> store in ResourceStores)
+                Resources.AddStore(store);
+
             OnBackgroundDependencyLoad();
-            
-            foreach ((ResourceStore<byte[]> resources, string fontPath) in Fonts)
+
+            foreach ((ResourceStore<byte[]> resources, string fontPath) in FontStore)
                 AddFont(resources, fontPath);
 
             InitializeContent();
@@ -54,20 +61,23 @@ namespace Funkin.NET.Intermediary
             ScreenStack.ScreenExited += ScreenExited;
         }
 
-        private void ScreenPushed(IScreen lastScreen, IScreen newScreen)
+        protected virtual void ScreenPushed(IScreen lastScreen, IScreen newScreen)
         {
             ScreenChanged(lastScreen, newScreen);
             Logger.Log($"Screen ({lastScreen}) pushed to → {newScreen}");
         }
 
-        private void ScreenExited(IScreen lastScreen, IScreen newScreen)
+        protected virtual void ScreenExited(IScreen lastScreen, IScreen newScreen)
         {
             ScreenChanged(lastScreen, newScreen);
             Logger.Log($"Screen ({lastScreen}) exited to → {newScreen}");
 
-            // todo: set to FunnyTextScreen exit edition
             if (newScreen == null)
                 Exit();
         }
+
+        // serves the purpose of exposing scheduling to outside members
+        // why is this normally protected, peppy? please...
+        public virtual void ScheduleTask(Action action) => Schedule(action);
     }
 }

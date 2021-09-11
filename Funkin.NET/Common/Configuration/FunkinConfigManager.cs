@@ -31,9 +31,11 @@ namespace Funkin.NET.Common.Configuration
 
         public override TrackedSettings CreateTrackedSettings() => new()
         {
-            new TrackedSetting<ScalingMode>(FunkinSetting.Scaling,
-                x => new SettingDescription(x, "scaling", x.GetDescription()))
+            CreateTrackedSetting<ScalingMode>(FunkinSetting.Scaling, "scaling")
         };
+
+        public TrackedSetting<TEnum> CreateTrackedSetting<TEnum>(FunkinSetting setting, string name) =>
+            new(setting, x => new SettingDescription(x, name, x.GetDescription()));
 
         public enum FunkinSetting
         {
@@ -53,8 +55,7 @@ namespace Funkin.NET.Common.Configuration
         public enum ScalingMode
         {
             Off,
-            Everything,
-            ExcludeOverlays
+            On
         }
     }
 }
