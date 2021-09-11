@@ -1,6 +1,6 @@
 ﻿using System;
 using Funkin.NET.Common.Input;
-using Funkin.NET.Common.Providers;
+using Funkin.NET.Common.Services;
 using Funkin.NET.Game.Graphics.Composites;
 using Funkin.NET.Resources;
 using Microsoft.Extensions.DependencyInjection;
@@ -388,7 +388,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio, TextureStore textures, FunkinGame game)
         {
-            ChosenSplashText = game.ServiceProvider.GetRequiredService<SplashTextProvider>().GetSplashText();
+            ChosenSplashText = game.ServiceProvider.GetRequiredService<SplashTextService>().GetSplashText();
 
             Music = new DrawableTrack(audio.Tracks.Get(@"Main/FreakyMenu.ogg")) {Looping = true};
             Music.VolumeTo(0D);

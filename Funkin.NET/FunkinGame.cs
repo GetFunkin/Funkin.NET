@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Input;
-using Funkin.NET.Common.Providers;
 using Funkin.NET.Common.Screens;
 using Funkin.NET.Common.Utilities;
 using Funkin.NET.Game.Screens.Gameplay;

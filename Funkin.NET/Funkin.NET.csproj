@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Utilities\" />
-    <Folder Include="Common\Providers\" />
+    <Folder Include="Common\Services\" />
     <Folder Include="Core\Music\Conductor\" />
   </ItemGroup>
 

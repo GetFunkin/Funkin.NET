@@ -4,13 +4,13 @@ using System.Text.Json;
 using Funkin.NET.Intermediary.Injection.Services;
 using Funkin.NET.Resources;
 
-namespace Funkin.NET.Common.Providers
+namespace Funkin.NET.Common.Services
 {
-    public class SplashTextProvider : IService
+    public class SplashTextService : IService
     {
         public List<string[]> SplashTextList { get; }
 
-        public SplashTextProvider(string jsonPath)
+        public SplashTextService(string jsonPath)
         {
             SplashTextList = JsonSerializer.Deserialize<List<string[]>>(jsonPath);
         }
@@ -18,6 +18,6 @@ namespace Funkin.NET.Common.Providers
         public string[] GetSplashText() => SplashTextList[new Random().Next(0, SplashTextList.Count)];
 
         [ProvidesService]
-        public static SplashTextProvider CreateProvider() => new(PathHelper.Json.IntroTextJson);
+        public static SplashTextService CreateProvider() => new(PathHelper.Json.IntroTextJson);
     }
 }
