@@ -6,40 +6,29 @@ using osuTK;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Common.Screens.Background
+namespace Funkin.NET.Intermediary.Screens.Backgrounds
 {
-    /// <summary>
-    ///     See: osu!'s BackgroundScreen.
-    /// </summary>
-    public abstract class BackgroundScreen : Screen, IEquatable<BackgroundScreen>
+    public abstract class BaseBackgroundScreen : Screen, IBackgroundScreen
     {
-        private readonly bool AnimateOnEnter;
+        public const float DefaultTransitionLength = 500f;
+        public const float DefaultXMovementAmount = 50f;
 
         public override bool IsPresent => base.IsPresent || Scheduler.HasPendingTasks;
 
-        protected BackgroundScreen(bool animateOnEnter = true)
+        public virtual float TransitionLength { get; set; } = DefaultTransitionLength;
+
+        public virtual float XMovementAmount { get; set; } = DefaultXMovementAmount;
+
+        public virtual bool AnimateOnEnter { get; set; }
+
+        protected BaseBackgroundScreen(bool animateOnEnter = true)
         {
             AnimateOnEnter = animateOnEnter;
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
         }
 
-        public virtual bool Equals(BackgroundScreen other) => other?.GetType() == GetType();
-
-        private const float TransitionLength = 500f;
-        private const float XMovementAmount = 50f;
-
-        protected override bool OnKeyDown(KeyDownEvent e)
-        {
-            // we don't want to handle escape key.
-            return false;
-        }
-
-        /// <summary>
-        /// Apply arbitrary changes to this background in a thread safe manner.
-        /// </summary>
-        /// <param name="action">The operation to perform.</param>
-        public void ApplyToBackground(Action<BackgroundScreen> action) => Schedule(() => action.Invoke(this));
+        protected override bool OnKeyDown(KeyDownEvent e) => false;
 
         protected override void Update()
         {
@@ -82,9 +71,13 @@ namespace Funkin.NET.Common.Screens.Background
         public override void OnResuming(IScreen last)
         {
             if (IsLoaded)
-                this.MoveToX(0, TransitionLength, Easing.OutExpo);
+                this.MoveToX(0f, TransitionLength, Easing.OutExpo);
 
             base.OnResuming(last);
         }
+
+        public virtual void ScheduleTask(Action action) => Schedule(action);
+
+        public virtual bool Equals(IBackgroundScreen other) => other?.GetType() == GetType();
     }
 }

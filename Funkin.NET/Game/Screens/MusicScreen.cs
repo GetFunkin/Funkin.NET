@@ -2,6 +2,7 @@
 using System.Linq;
 using Funkin.NET.Common.Screens;
 using Funkin.NET.Core.Music.Conductor;
+using Funkin.NET.Intermediary.Screens;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 

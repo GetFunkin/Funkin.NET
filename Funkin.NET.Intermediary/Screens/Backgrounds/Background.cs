@@ -1,5 +1,4 @@
 ﻿using System;
-using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
@@ -9,21 +8,24 @@ using osuTK;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.osuImpl.Graphics.Backgrounds
+namespace Funkin.NET.Intermediary.Screens.Backgrounds
 {
     public class Background : CompositeDrawable, IEquatable<Background>
     {
-        public const float BlurScale = 0.5f;
+        public const float DefaultBlurScale = 0.5f;
 
         public Sprite Sprite { get; }
 
         public string SpriteName { get; }
 
+        public float BlurScale { get; set; } = DefaultBlurScale;
+
         public BufferedContainer BufferedContainer { get; protected set; }
 
-        public Background(string spriteName = "")
+        public Background(string spriteName, Texture texture)
         {
             SpriteName = spriteName;
+
             RelativeSizeAxes = Axes.Both;
 
             AddInternal(Sprite = new Sprite
@@ -31,23 +33,19 @@ namespace Funkin.NET.osuImpl.Graphics.Backgrounds
                 RelativeSizeAxes = Axes.Both,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                FillMode = FillMode.Fill
+                FillMode = FillMode.Fill,
+                Texture = texture
             });
         }
 
-        [BackgroundDependencyLoader]
-        private void Load(TextureStore textures)
-        {
-            Sprite.Texture = textures.Get(SpriteName);
-        }
-
-        public Vector2 BlurSigma => BufferedContainer?.BlurSigma / BlurScale ?? Vector2.Zero;
+        public virtual Vector2 BlurSigma => BufferedContainer?.BlurSigma / BlurScale ?? Vector2.Zero;
 
         /// <summary>
         ///     Smoothly adjusts <see cref="IBufferedContainer.BlurSigma"/> over time.
         /// </summary>
         /// <returns>A <see cref="TransformSequence{T}"/> to which further transforms can be added.</returns>
-        public void BlurTo(Vector2 newBlurSigma, double duration = 0, Easing easing = Easing.None)
+        public virtual TransformSequence<BufferedContainer> BlurTo(Vector2 newBlurSigma, double duration = 0,
+            Easing easing = Easing.None)
         {
             if (BufferedContainer == null && newBlurSigma != Vector2.Zero)
             {
@@ -63,10 +61,11 @@ namespace Funkin.NET.osuImpl.Graphics.Backgrounds
             }
 
             if (BufferedContainer != null)
-                BufferedContainer.FrameBufferScale =
-                    newBlurSigma == Vector2.Zero ? Vector2.One : new Vector2(BlurScale);
+                BufferedContainer.FrameBufferScale = newBlurSigma == Vector2.Zero
+                    ? Vector2.One
+                    : new Vector2(BlurScale);
 
-            BufferedContainer?.BlurTo(newBlurSigma * BlurScale, duration, easing);
+            return BufferedContainer?.BlurTo(newBlurSigma * BlurScale, duration, easing);
         }
 
         public virtual bool Equals(Background other)

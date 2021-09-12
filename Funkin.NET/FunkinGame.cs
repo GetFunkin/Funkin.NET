@@ -10,6 +10,7 @@ using Funkin.NET.Game.Screens.Gameplay;
 using Funkin.NET.Intermediary;
 using Funkin.NET.Intermediary.Input;
 using Funkin.NET.Intermediary.ResourceStores;
+using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Utilities;
 using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
@@ -177,7 +178,7 @@ namespace Funkin.NET
             base.UpdateAfterChildren();
 
             Containers.As<DefaultCursorContainer>(FunkinContainers.Cursor).CanShowCursor =
-                (ScreenStack.CurrentScreen as IDefaultScreen)?.CursorVisible ?? false;
+                (ScreenStack.CurrentScreen as DefaultScreen)?.CursorVisible ?? false;
         }
 
         public override void OnBackgroundDependencyLoad()

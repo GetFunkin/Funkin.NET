@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using Funkin.NET.Intermediary.Screens.Backgrounds;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
 using osuTK;
-
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Common.Screens.Background
+namespace Funkin.NET.Intermediary.Screens
 {
     public class BackgroundScreenStack : ScreenStack
     {
@@ -17,12 +17,12 @@ namespace Funkin.NET.Common.Screens.Background
             Origin = Anchor.Centre;
         }
 
-        public void Push(BackgroundScreen screen)
+        public virtual void Push(IBackgroundScreen screen)
         {
             if (screen == null)
                 return;
 
-            if (EqualityComparer<BackgroundScreen>.Default.Equals((BackgroundScreen) CurrentScreen, screen))
+            if (EqualityComparer<IBackgroundScreen>.Default.Equals((IBackgroundScreen) CurrentScreen, screen))
                 return;
 
             base.Push(screen);

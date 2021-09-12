@@ -1,5 +1,6 @@
 ﻿using Funkin.NET.Common.Configuration;
-using Funkin.NET.Common.Screens.Background;
+using Funkin.NET.Common.Screens.Backgrounds;
+using Funkin.NET.Intermediary.Screens;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -115,7 +116,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                             Depth = float.MaxValue
                         });
 
-                        _backgroundStack.Push(new ScalingBackgroundScreen());
+                        _backgroundStack.Push(new ScalingDefaultBackgroundScreen(DefaultBackgroundType.Purple));
                     }
 
                     _backgroundStack.FadeIn(fadeTime);
@@ -170,11 +171,15 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             }
         }
 
-        public class ScalingBackgroundScreen : BackgroundScreenDefault
+        public class ScalingDefaultBackgroundScreen : DefaultBackgroundScreen
         {
             public override void OnEntering(IScreen last)
             {
                 this.FadeInFromZero(4000D, Easing.OutQuint);
+            }
+
+            public ScalingDefaultBackgroundScreen(DefaultBackgroundType backgroundType) : base(backgroundType)
+            {
             }
         }
 

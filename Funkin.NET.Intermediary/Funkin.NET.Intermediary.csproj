@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Graphics\Containers\" />
     <Folder Include="Injection\Services\" />
   </ItemGroup>
 

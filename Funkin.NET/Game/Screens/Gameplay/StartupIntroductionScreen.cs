@@ -1,4 +1,7 @@
 ﻿using Funkin.NET.Common.Screens;
+using Funkin.NET.Common.Screens.Backgrounds;
+using Funkin.NET.Intermediary.Screens;
+using Funkin.NET.Intermediary.Screens.Backgrounds;
 using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -103,5 +106,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 this.Push(NextScreen);
             });
         }
+
+        public override IBackgroundScreen CreateBackground() => new DefaultBackgroundScreen(DefaultBackgroundType.Purple);
     }
 }

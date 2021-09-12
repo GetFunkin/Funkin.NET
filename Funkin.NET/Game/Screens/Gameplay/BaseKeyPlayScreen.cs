@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Funkin.NET.Common.Input;
+using Funkin.NET.Common.Screens.Backgrounds;
 using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Game.Graphics.Composites.Characters;
 using Funkin.NET.Game.Graphics.Composites.Gameplay;
+using Funkin.NET.Intermediary.Screens.Backgrounds;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics;
@@ -457,5 +459,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         public static BaseKeyPlayScreen GetPlayScreen(string json, string instrumental, string voices) =>
             new(Song.GetSongFromFile(json), instrumental, voices);
+
+        public override IBackgroundScreen CreateBackground() => new DefaultBackgroundScreen(DefaultBackgroundType.Yellow);
     }
 }
