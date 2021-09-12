@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Funkin.NET.Intermediary.Injection;
+using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Utilities;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
@@ -13,7 +14,7 @@ namespace Funkin.NET.Intermediary
     {
         Storage Storage { get; set; }
 
-        ScreenStack ScreenStack { get; set; }
+        DefaultScreenStack ScreenStack { get; set; }
 
         IEnumerable<IResourceStore<byte[]>> ResourceStores { get; }
 

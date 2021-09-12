@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Funkin.NET.Intermediary.Injection;
 using Funkin.NET.Intermediary.Injection.Services;
+using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using osu.Framework;
@@ -20,7 +20,7 @@ namespace Funkin.NET.Intermediary
     {
         public Storage Storage { get; set; }
 
-        public ScreenStack ScreenStack { get; set; }
+        public DefaultScreenStack ScreenStack { get; set; }
 
         public virtual IEnumerable<IResourceStore<byte[]>> ResourceStores { get; } =
             Array.Empty<ResourceStore<byte[]>>();
@@ -63,8 +63,7 @@ namespace Funkin.NET.Intermediary
             {
                 if (!typeof(IService).IsAssignableFrom(type) || type.IsAbstract)
                     continue;
-
-                const BindingFlags flags = BindingFlags.Public | BindingFlags.Static;
+                
                 MethodInfo[] provider = type.GetMethods().Where(x => x.GetCustomAttribute<ProvidesServiceAttribute>() != null).ToArray();
                 IService service;
 

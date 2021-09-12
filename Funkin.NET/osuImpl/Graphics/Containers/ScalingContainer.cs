@@ -23,26 +23,26 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
         public Bindable<float> SizeY;
         public Bindable<float> PosX;
         public Bindable<float> PosY;
+        public BackgroundScreenStack BackgroundStack;
         public readonly FunkinConfigManager.ScalingMode? TargetMode;
         public Bindable<FunkinConfigManager.ScalingMode> ScalingMode;
 
-        private readonly Container _content;
-        private readonly Container _sizableContainer;
-        private BackgroundScreenStack _backgroundStack;
-        private bool allowScaling = true;
+        protected readonly Container ProtectedContent;
+        protected readonly Container SizableContainer;
+        protected bool OriginalAllowScaling = true;
 
         /// <summary>
         /// Whether user scaling preferences should be applied. Enabled by default.
         /// </summary>
         public bool AllowScaling
         {
-            get => allowScaling;
+            get => OriginalAllowScaling;
             set
             {
-                if (value == allowScaling)
+                if (value == OriginalAllowScaling)
                     return;
 
-                allowScaling = value;
+                OriginalAllowScaling = value;
 
                 if (IsLoaded)
                     UpdateSize();
@@ -54,16 +54,16 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             TargetMode = targetMode;
             RelativeSizeAxes = Axes.Both;
 
-            InternalChild = _sizableContainer = new AlwaysInputContainer
+            InternalChild = SizableContainer = new AlwaysInputContainer
             {
                 RelativeSizeAxes = Axes.Both,
                 RelativePositionAxes = Axes.Both,
                 CornerRadius = 10f,
-                Child = _content = new ScalingDrawSizePreservingFillContainer(true)
+                Child = ProtectedContent = new ScalingDrawSizePreservingFillContainer(true)
             };
         }
 
-        protected override Container<Drawable> Content => _content;
+        protected override Container<Drawable> Content => ProtectedContent;
 
         public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) => true;
 
@@ -92,7 +92,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             base.LoadComplete();
 
             UpdateSize();
-            _sizableContainer.FinishTransforms();
+            SizableContainer.FinishTransforms();
         }
 
         private bool RequiresBackgroundVisible =>
@@ -107,22 +107,22 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                 // the top level scaling container manages the background to be displayed while scaling.
                 if (RequiresBackgroundVisible)
                 {
-                    if (_backgroundStack == null)
+                    if (BackgroundStack == null)
                     {
-                        AddInternal(_backgroundStack = new BackgroundScreenStack
+                        AddInternal(BackgroundStack = new BackgroundScreenStack
                         {
                             Colour = new Colour4(0.1f, 0.1f, 0.1f, 1f),
                             Alpha = 0,
                             Depth = float.MaxValue
                         });
 
-                        _backgroundStack.Push(new ScalingDefaultBackgroundScreen(DefaultBackgroundType.Purple));
+                        BackgroundStack.Push(new ScalingDefaultBackgroundScreen(DefaultBackgroundType.Purple));
                     }
 
-                    _backgroundStack.FadeIn(fadeTime);
+                    BackgroundStack.FadeIn(fadeTime);
                 }
                 else
-                    _backgroundStack?.FadeOut(fadeTime);
+                    BackgroundStack?.FadeOut(fadeTime);
             }
 
             bool scaling = AllowScaling && (TargetMode == null || ScalingMode.Value == TargetMode);
@@ -133,12 +133,12 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             bool requiresMasking = scaling && targetSize != Vector2.One;
 
             if (requiresMasking)
-                _sizableContainer.Masking = true;
+                SizableContainer.Masking = true;
 
-            _sizableContainer.MoveTo(targetPosition, 500D, Easing.OutQuart);
-            _sizableContainer.ResizeTo(targetSize, 500D, Easing.OutQuart).OnComplete(_ =>
+            SizableContainer.MoveTo(targetPosition, 500D, Easing.OutQuart);
+            SizableContainer.ResizeTo(targetSize, 500D, Easing.OutQuart).OnComplete(_ =>
             {
-                _sizableContainer.Masking = requiresMasking;
+                SizableContainer.Masking = requiresMasking;
             });
         }
 

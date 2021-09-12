@@ -1,5 +1,4 @@
-﻿using Funkin.NET.Common.Screens;
-using Funkin.NET.Common.Screens.Backgrounds;
+﻿using Funkin.NET.Common.Screens.Backgrounds;
 using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Screens.Backgrounds;
 using Funkin.NET.Resources;

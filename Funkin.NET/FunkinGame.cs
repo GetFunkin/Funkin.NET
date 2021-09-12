@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Input;
-using Funkin.NET.Common.Screens;
 using Funkin.NET.Common.Utilities;
 using Funkin.NET.Game.Screens.Gameplay;
 using Funkin.NET.Intermediary;
@@ -16,7 +15,6 @@ using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
 using Funkin.NET.osuImpl.Overlays;
 using Funkin.NET.Resources;
-using Microsoft.Extensions.DependencyInjection;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
@@ -27,6 +25,7 @@ using osu.Framework.Graphics.Performance;
 using osu.Framework.Input;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
+using osu.Framework.Screens;
 
 namespace Funkin.NET
 {
@@ -148,7 +147,7 @@ namespace Funkin.NET
             DependencyContainer = new DependencyContainer(base.CreateChildDependencies(parent));
 
         public override Container CreateScalingContainer() =>
-            new ScalingContainer(FunkinConfigManager.ScalingMode.On);
+            Containers[FunkinContainers.ScalingContainer] = new ScalingContainer(FunkinConfigManager.ScalingMode.On);
 
         public override void SetHost(GameHost host)
         {
@@ -212,6 +211,21 @@ namespace Funkin.NET
             DependencyContainer.Cache(ActionContainer);
 
             base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
+        }
+
+        public override void ScreenChanged(IScreen current, IScreen newScreen)
+        {
+            base.ScreenChanged(current, newScreen);
+
+            if (newScreen is not DefaultScreen backgroundProvider 
+                || ScreenStack is not DefaultScreenStack backgroundStack
+                || Containers[FunkinContainers.ScalingContainer] is null) 
+                return;
+
+            backgroundStack.SetParallax(backgroundProvider);
+            ScreenStack.SetParallax(backgroundProvider);
+            Containers.As<ScalingContainer>(FunkinContainers.ScalingContainer).BackgroundStack?.Push(backgroundProvider.CreateBackground());
+            ScreenStack.BackgroundScreenStack.Push(backgroundProvider.CreateBackground());
         }
 
         public void UpdateBlockingOverlayFade() => Containers[FunkinContainers.Screen].FadeColour(

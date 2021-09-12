@@ -19,10 +19,7 @@ namespace Funkin.NET.Intermediary.Screens
 
         public virtual void Push(IBackgroundScreen screen)
         {
-            if (screen == null)
-                return;
-
-            if (EqualityComparer<IBackgroundScreen>.Default.Equals((IBackgroundScreen) CurrentScreen, screen))
+            if (screen is null)
                 return;
 
             base.Push(screen);

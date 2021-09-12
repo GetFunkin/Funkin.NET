@@ -10,7 +10,7 @@ namespace Funkin.NET.Intermediary.Screens
     public class DefaultScreenStack : ScreenStack
     {
         protected readonly ParallaxContainer ParallaxContainer;
-        protected readonly BackgroundScreenStack BackgroundScreenStack;
+        public readonly BackgroundScreenStack BackgroundScreenStack;
 
         public DefaultScreenStack()
         {
@@ -24,7 +24,7 @@ namespace Funkin.NET.Intermediary.Screens
             };
         }
 
-        protected virtual void SetParallax(IScreen next)
+        public virtual void SetParallax(IScreen next)
         {
             if (next is not DefaultScreen screen)
             {

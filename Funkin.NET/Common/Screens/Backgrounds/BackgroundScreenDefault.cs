@@ -8,6 +8,8 @@ namespace Funkin.NET.Common.Screens.Backgrounds
 {
     public class DefaultBackgroundScreen : BaseBackgroundScreen
     {
+        public static int ScreenDepth;
+
         public Background Background;
 
         public DefaultBackgroundType BackgroundType { get; }
@@ -20,6 +22,8 @@ namespace Funkin.NET.Common.Screens.Backgrounds
         [BackgroundDependencyLoader]
         private void Load(TextureStore textures)
         {
+            ScreenDepth++;
+
             Texture texture = BackgroundType switch
             {
                 DefaultBackgroundType.Yellow => textures.Get(PathHelper.Texture.MenuBackground1),
@@ -36,7 +40,10 @@ namespace Funkin.NET.Common.Screens.Backgrounds
                 _ => throw new NullReferenceException()
             };
 
-            AddInternal(Background = new Background(name, texture));
+            AddInternal(Background = new Background(name, texture)
+            {
+                Depth = ScreenDepth
+            });
         }
     }
 }
