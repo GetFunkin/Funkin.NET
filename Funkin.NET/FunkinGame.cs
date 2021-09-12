@@ -94,7 +94,7 @@ namespace Funkin.NET
 
                     Children = new Drawable[]
                     {
-                        Containers[FunkinContainers.Screen] = new ScalingContainer(FunkinConfigManager.ScalingMode.On)
+                        Containers[FunkinContainers.Screen] = new Container
                         {
                             RelativeSizeAxes = Axes.Both,
                             Anchor = Anchor.Centre,
@@ -218,13 +218,11 @@ namespace Funkin.NET
             base.ScreenChanged(current, newScreen);
 
             if (newScreen is not DefaultScreen backgroundProvider 
-                || ScreenStack is not DefaultScreenStack backgroundStack
                 || Containers[FunkinContainers.ScalingContainer] is null) 
                 return;
-
-            backgroundStack.SetParallax(backgroundProvider);
-            ScreenStack.SetParallax(backgroundProvider);
+            
             Containers.As<ScalingContainer>(FunkinContainers.ScalingContainer).BackgroundStack?.Push(backgroundProvider.CreateBackground());
+            ScreenStack.SetParallax(backgroundProvider);
             ScreenStack.BackgroundScreenStack.Push(backgroundProvider.CreateBackground());
         }
 

@@ -116,6 +116,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                             Depth = float.MaxValue
                         });
 
+                        // why does this die
                         BackgroundStack.Push(new ScalingDefaultBackgroundScreen(DefaultBackgroundType.Purple));
                     }
 
