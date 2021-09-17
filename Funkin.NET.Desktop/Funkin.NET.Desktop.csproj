@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Funkin.Net\Funkin.NET.csproj" />
+    <ProjectReference Include="..\Funkin.NET\Funkin.NET.csproj" />
   </ItemGroup>
 
   <!-- lol thanks tml -->
