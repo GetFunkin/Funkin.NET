@@ -1,7 +1,8 @@
 name: Build Funkin.NET
 
 # Controls when the action will run. 
-#on:
+on:
+    push:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
