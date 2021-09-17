@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET.Desktop", "Funkin.NET.Desktop\Funkin.NET.Desktop.csproj", "{DE315A1A-F6DF-4308-8EE2-972BCA89E14D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET", "Funkin.Net\Funkin.NET.csproj", "{9D77002F-E9D0-4BDC-85EB-3C4379AD305B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Funkin.NET", "Funkin.NET\Funkin.NET.csproj", "{9D77002F-E9D0-4BDC-85EB-3C4379AD305B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA1B21DE-DC42-47C7-9990-85B6D0F68B31}"
 	ProjectSection(SolutionItems) = preProject
