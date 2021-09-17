@@ -90,6 +90,7 @@ jobs:
         shell: bash
         run: |
           git submodule update --init --recursive
+          dotnet restore Funkin.NET.sln
           dotnet build Funkin.NET.sln --configuration DEBUG
           dotnet build Funkin.NET.sln --configuration RELEASE
           
