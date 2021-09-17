@@ -23,6 +23,7 @@ jobs:
         if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
+          git submodule update --init --recursive
           dotnet build Funkin.NET.sln --configuration DEBUG
           dotnet build Funkin.NET.sln --configuration RELEASE
           
