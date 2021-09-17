@@ -23,8 +23,8 @@ jobs:
         if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
-          dotnet build Funkin.NET.sln "Debug|AnyCPU"
-          dotnet build Funkin.NET.sln "Release|AnyCPU"
+          dotnet build Funkin.NET.sln --configuration DEBUG
+          dotnet build Funkin.NET.sln --configuration RELEASE
           
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
