@@ -8,37 +8,48 @@ namespace Funkin.NET.Core.Music.Conductor
     /// <summary>
     ///     Class responsible for handling song BPM calculations, tracking <see cref="IBpmChange"/><c>s</c>, and some other stuff.
     /// </summary>
-    public static class MusicConductor
+    public class MusicConductor
     {
-        public const double DefaultBpm = 100D;
         public const int DefaultSafeFrames = 10;
 
-        public static double Bpm { get; set; } = DefaultBpm;
+        protected double RealBpm;
 
-        public static double CurrentSongPosition
+        public virtual double Bpm
+        {
+            get => RealBpm;
+
+            set => RealBpm = value;
+        }
+
+        public virtual double CurrentSongPosition
         {
             get => SongPosition + Offset;
             set => SongPosition = value;
         }
 
-        public static double LastSongPosition { get; set; } = 0D;
+        public virtual double LastSongPosition { get; set; } = 0D;
 
-        public static double Offset { get; set; } = 0D;
+        public virtual double Offset { get; set; } = 0D;
 
-        public static int SafeFrames { get; set; } = DefaultSafeFrames;
+        public virtual int SafeFrames { get; set; } = DefaultSafeFrames;
 
-        public static double SafeZoneOffset => SafeFrames / 60 * 1000; // TODO: hard-coded 60 fps calculation is STUPID
+        public virtual double SafeZoneOffset => SafeFrames / 60 * 1000; // TODO: hard-coded 60 fps calculation is STUPID
 
-        public static double Crochet => 60 / Bpm * 1000D;
+        public virtual double Crochet => 60 / Bpm * 1000D;
 
-        public static double StepCrochet => Crochet / 4D;
+        public virtual double StepCrochet => Crochet / 4D;
 
-        public static ReadOnlyCollection<IBpmChange> ReadonlyChangeCollection => BpmChangeMap.AsReadOnly();
+        public virtual ReadOnlyCollection<IBpmChange> ReadonlyChangeCollection => BpmChangeMap.AsReadOnly();
 
-        private static List<IBpmChange> BpmChangeMap = new();
-        private static double SongPosition;
+        protected List<IBpmChange> BpmChangeMap = new();
+        protected double SongPosition;
 
-        public static void MapBpmChanges(Song song)
+        public MusicConductor(double bpm)
+        {
+            RealBpm = bpm;
+        }
+
+        public virtual void MapBpmChanges(Song song)
         {
             BpmChangeMap = new List<IBpmChange>();
 

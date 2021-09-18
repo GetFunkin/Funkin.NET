@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Funkin.NET.Intermediary.Screens.Backgrounds;
+﻿using Funkin.NET.Intermediary.Screens.Backgrounds;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
 using osuTK;

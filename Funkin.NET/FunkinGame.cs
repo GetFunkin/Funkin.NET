@@ -5,6 +5,8 @@ using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Utilities;
+using Funkin.NET.Core.Music.Conductor;
+using Funkin.NET.Game.Screens;
 using Funkin.NET.Game.Screens.Gameplay;
 using Funkin.NET.Intermediary;
 using Funkin.NET.Intermediary.Input;
@@ -15,6 +17,7 @@ using Funkin.NET.osuImpl.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.Cursor;
 using Funkin.NET.osuImpl.Overlays;
 using Funkin.NET.Resources;
+using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
@@ -52,6 +55,10 @@ namespace Funkin.NET
             (Resources, PathHelper.Font.TorusSemiBold),
             (Resources, PathHelper.Font.TorusBold)
         };
+
+        [CanBeNull] public MusicScreen CurrentMusicScreen { get; protected set; }
+
+        public MusicConductor Conductor => CurrentMusicScreen?.Conductor ?? new MusicConductor(120D);
 
         protected override Container<Drawable> Content => Containers[FunkinContainers.Content];
 
@@ -217,11 +224,17 @@ namespace Funkin.NET
         {
             base.ScreenChanged(current, newScreen);
 
-            if (newScreen is not DefaultScreen backgroundProvider 
-                || Containers[FunkinContainers.ScalingContainer] is null) 
+            if (newScreen is MusicScreen musicScreen)
+                CurrentMusicScreen = musicScreen;
+            else
+                CurrentMusicScreen = null;
+
+            if (newScreen is not DefaultScreen backgroundProvider
+                || Containers[FunkinContainers.ScalingContainer] is null)
                 return;
-            
-            Containers.As<ScalingContainer>(FunkinContainers.ScalingContainer).BackgroundStack?.Push(backgroundProvider.CreateBackground());
+
+            Containers.As<ScalingContainer>(FunkinContainers.ScalingContainer).BackgroundStack
+                ?.Push(backgroundProvider.CreateBackground());
             ScreenStack.SetParallax(backgroundProvider);
             ScreenStack.BackgroundScreenStack.Push(backgroundProvider.CreateBackground());
         }

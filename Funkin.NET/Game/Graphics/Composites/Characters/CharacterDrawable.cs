@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Funkin.NET.Core.Music.Conductor;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
@@ -20,6 +19,9 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
         protected bool DanceCycled;
         public bool PixelScaling;
         public bool Flip;
+
+        [Resolved]
+        protected FunkinGame Game { get; private set; }
 
         public CharacterDrawable(string character, CharacterType type)
         {
@@ -115,7 +117,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Characters
                 if (Character == "dad")
                     multiplier = 6.1f;
 
-                if (HoldTimer >= MusicConductor.StepCrochet * multiplier * 0.001D)
+                if (HoldTimer >= Game.Conductor.StepCrochet * multiplier * 0.001D)
                 {
                     HitDance();
                     HoldTimer = 0;

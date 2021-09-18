@@ -23,8 +23,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
 {
     public class EnterScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {
-        public override double ExpectedBpm => 102D;
-        
         public double TimeOnEntering = TimeSpan.Zero.Milliseconds;
         public bool FinishedTextIntroduction;
         public bool InitializedEnterVisuals;
@@ -45,6 +43,11 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public Box ScreenFlashBang;
 
         public string[] ChosenSplashText;
+
+        public EnterScreen()
+        {
+            MusicBpm.Value = 102D;
+        }
 
         protected override void Update()
         {

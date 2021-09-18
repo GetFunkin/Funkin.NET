@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Screens.Backgrounds;
-using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Game.Graphics.Composites.Characters;
 using Funkin.NET.Game.Graphics.Composites.Gameplay;
@@ -52,8 +51,6 @@ namespace Funkin.NET.Game.Screens.Gameplay
             KeyAction.Right
         };
 
-        public override double ExpectedBpm { get; }
-
         public virtual Song Song { get; }
 
         public virtual DrawableTrack VocalTrack { get; protected set; }
@@ -66,13 +63,13 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         public virtual bool[] IsPressed { get; protected set; }
 
-        public IGameData GameData;
+        public IGameData GameData = new GameData();
 
         protected ArrowKeyDrawable[] PlayerArrows;
         protected ArrowKeyDrawable[] OpponentArrows;
         protected CharacterDrawable[] Characters;
         protected bool Initialized;
-        protected readonly LinkedList<ScrollingArrowDrawable[]> NotesAhead;
+        protected readonly LinkedList<ScrollingArrowDrawable[]> NotesAhead = new();
         protected readonly IEnumerator<Section> SectionEnumerators;
         protected Sprite HealthBarBackground;
         protected Box StaticRedBox;
@@ -83,12 +80,10 @@ namespace Funkin.NET.Game.Screens.Gameplay
         public BaseKeyPlayScreen(Song song, string instrumentalPath, string vocalPath)
         {
             Song = song;
-            ExpectedBpm = song.Bpm;
+            MusicBpm.Value = song.Bpm;
             InstrumentalPath = instrumentalPath;
             VocalPath = vocalPath;
-            NotesAhead = new LinkedList<ScrollingArrowDrawable[]>();
             SectionEnumerators = song.Sections.GetEnumerator();
-            GameData = new GameData();
             //Position = new Vector2(100, 100);
         }
 
@@ -97,9 +92,9 @@ namespace Funkin.NET.Game.Screens.Gameplay
             base.Update();
 
             if (!Music.IsRunning)
-                MusicConductor.Offset = Time.Current;
+                Conductor.Offset = Time.Current;
 
-            MusicConductor.CurrentSongPosition = Music.CurrentTime;
+            Conductor.CurrentSongPosition = Music.CurrentTime;
 
             if (!Initialized)
             {
@@ -394,7 +389,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
         protected virtual void Initialize()
         {
-            MusicConductor.Offset = Time.Current;
+            Conductor.Offset = Time.Current;
 
             Scheduler.AddDelayed(() => // Start music in 5 seconds
             {
@@ -420,7 +415,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 if (section is null)
                     continue;
 
-                Console.WriteLine($"Position: {MusicConductor.CurrentSongPosition} - Offset: {MusicConductor.Offset}");
+                Console.WriteLine($"Position: {Conductor.CurrentSongPosition} - Offset: {Conductor.Offset}");
 
                 ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[section.SectionNotes.Count];
                 for (int i = 0; i < section.SectionNotes.Count; i++)
@@ -436,7 +431,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
 
                     Vector2 notePos = mustHitSection ? PlayerArrows[keyToUse].Position : OpponentArrows[keyToUse].Position;
 
-                    double startOffset = MusicConductor.Offset;
+                    double startOffset = Conductor.Offset;
                     if (!Music.IsRunning)
                         startOffset += MusicStartOffset;
 

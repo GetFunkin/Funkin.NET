@@ -1,6 +1,5 @@
 ﻿using System;
 using Funkin.NET.Common.Input;
-using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Game.Screens.Gameplay;
 using osu.Framework.Allocation;
@@ -42,6 +41,9 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
         protected double LastHeldTime;
         protected bool IsHeld;
         protected bool RegisteredAccuracyType;
+
+        [Resolved]
+        protected FunkinGame Game { get; private set; }
 
         public ScrollingArrowDrawable(KeyAction key, double targetTime, int holdTime, Vector2 targetPos,
             double songSpeed, bool isEnemyArrow)
@@ -107,20 +109,21 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
 
         private void UpdateArrowPos()
         {
-            if (!StartPos.HasValue) return;
+            if (!StartPos.HasValue) 
+                return;
             // BUG: fix big numbers making stuff slower
             // maybe reset clock when changing to BaseKeyPlayScreen ?
 
             double songPos;
-            if (IsHeld && MusicConductor.CurrentSongPosition > TargetTime)
+            if (IsHeld && Game.Conductor.CurrentSongPosition > TargetTime)
                 songPos = TargetTime;
             else if (LastHeldTime != 0 && StartHoldTime != 0)
-                songPos = MusicConductor.CurrentSongPosition - (LastHeldTime - StartHoldTime);
+                songPos = Game.Conductor.CurrentSongPosition - (LastHeldTime - StartHoldTime);
             else
-                songPos = MusicConductor.CurrentSongPosition;
+                songPos = Game.Conductor.CurrentSongPosition;
 
             if (IsHeld || LastHeldTime != 0)
-                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {MusicConductor.CurrentSongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
+                Console.WriteLine($"{nameof(songPos)} ({songPos}) = {Game.Conductor.CurrentSongPosition} - ({LastHeldTime} - {StartHoldTime}) | IsHeld: {IsHeld}");
 
             float by = (float) (songPos / TargetTime);
             Position = new Vector2(TargetPosition.X, Lerp(StartPos.Value.Y, TargetPosition.Y, by));
@@ -133,7 +136,7 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             
             HoldEndSprite.Show();
                 
-            float by = (float) (MusicConductor.CurrentSongPosition / (TargetTime + HoldTime));
+            float by = (float) (Game.Conductor.CurrentSongPosition / (TargetTime + HoldTime));
             float lerpPos = Lerp(StartPos.Value.Y, TargetPosition.Y, by);
             HoldEndSprite.Position = new Vector2(0, lerpPos - Position.Y);
         }
@@ -149,8 +152,8 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             if (HoldTime <= 0 && (Position.Y is <= -250f or >= -150f || IsEnemyArrow))
                 return;
 
-            if (HoldTime > 0 && (Position.Y >= -150f || MusicConductor.CurrentSongPosition > TargetTime + HoldTime || IsEnemyArrow)) {
-                if (MusicConductor.CurrentSongPosition > TargetTime + HoldTime && IsHeld) {
+            if (HoldTime > 0 && (Position.Y >= -150f || Game.Conductor.CurrentSongPosition > TargetTime + HoldTime || IsEnemyArrow)) {
+                if (Game.Conductor.CurrentSongPosition > TargetTime + HoldTime && IsHeld) {
                     // Do some hit accuracy calculation
                     // Maybe use TargetTime and StartHoldTime?
                     
@@ -162,12 +165,12 @@ namespace Funkin.NET.Game.Graphics.Composites.Gameplay
             }
 
             // Set StartHoldTime when song time is near target time
-            if (HoldTime > 0 && Math.Abs(MusicConductor.CurrentSongPosition - TargetTime) < 25)
-                StartHoldTime = MusicConductor.CurrentSongPosition;
+            if (HoldTime > 0 && Math.Abs(Game.Conductor.CurrentSongPosition - TargetTime) < 25)
+                StartHoldTime = Game.Conductor.CurrentSongPosition;
 
             if (HoldTime > 0)
             {
-                LastHeldTime = MusicConductor.CurrentSongPosition;
+                LastHeldTime = Game.Conductor.CurrentSongPosition;
                 IsHeld = true;
 
                 // TODO: some kind of score for held notes maybe
