@@ -23,7 +23,12 @@ namespace Funkin.NET.Core.Json
                 let offset = noteArray[0].GetInt32()
                 let key = noteArray[1].GetInt32()
                 let holdTime = noteArray[2].GetInt32()
-                select new Note(offset, (KeyAction) key, holdTime)).ToList();
+                select new Note
+                {
+                    Offset = offset,
+                    Key = (KeyAction) key,
+                    HoldLength = holdTime
+                }).ToList();
         }
 
         public override void Write(Utf8JsonWriter writer, List<Note> value, JsonSerializerOptions options)

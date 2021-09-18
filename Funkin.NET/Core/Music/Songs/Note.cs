@@ -7,24 +7,17 @@ namespace Funkin.NET.Core.Music.Songs
         /// <summary>
         /// The time when the note has to be pressed (in milliseconds)
         /// </summary>
-        public double Offset { get; set; }
+        public virtual double Offset { get; set; }
 
         // TODO: one key -> unlimited key-combos
         /// <summary>
         /// The key that has to be pressed
         /// </summary>
-        public KeyAction Key { get; set; }
+        public virtual KeyAction Key { get; set; }
 
         /// <summary>
         /// How long the player has to hold the note (in milliseconds)
         /// </summary>
-        public int HoldLength { get; }
-
-        public Note(int offset, KeyAction key, int holdLength)
-        {
-            Offset = offset;
-            Key = key;
-            HoldLength = holdLength;
-        }
+        public virtual int HoldLength { get; set; }
     }
 }

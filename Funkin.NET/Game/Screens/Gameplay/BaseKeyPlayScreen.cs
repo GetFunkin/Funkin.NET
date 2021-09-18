@@ -4,6 +4,7 @@ using System.Linq;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Screens.Backgrounds;
 using Funkin.NET.Core.Music.Songs;
+using Funkin.NET.Core.Music.Songs.Legacy;
 using Funkin.NET.Game.Graphics.Composites.Characters;
 using Funkin.NET.Game.Graphics.Composites.Gameplay;
 using Funkin.NET.Intermediary.Screens.Backgrounds;
@@ -51,7 +52,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             KeyAction.Right
         };
 
-        public virtual Song Song { get; }
+        public virtual ISong Song { get; }
 
         public virtual DrawableTrack VocalTrack { get; protected set; }
 
@@ -70,14 +71,14 @@ namespace Funkin.NET.Game.Screens.Gameplay
         protected CharacterDrawable[] Characters;
         protected bool Initialized;
         protected readonly LinkedList<ScrollingArrowDrawable[]> NotesAhead = new();
-        protected readonly IEnumerator<Section> SectionEnumerators;
+        protected readonly IEnumerator<ISection> SectionEnumerators;
         protected Sprite HealthBarBackground;
         protected Box StaticRedBox;
         protected Box DynamicGreenBox;
         protected HealthIconDrawable PlayerIcon;
         protected HealthIconDrawable OpponentIcon;
 
-        public BaseKeyPlayScreen(Song song, string instrumentalPath, string vocalPath)
+        public BaseKeyPlayScreen(ISong song, string instrumentalPath, string vocalPath)
         {
             Song = song;
             MusicBpm.Value = song.Bpm;
@@ -410,24 +411,24 @@ namespace Funkin.NET.Game.Screens.Gameplay
                 if (!SectionEnumerators.MoveNext())
                     break;
 
-                Section section = SectionEnumerators.Current;
+                ISection legacySection = SectionEnumerators.Current;
 
-                if (section is null)
+                if (legacySection is null)
                     continue;
 
                 Console.WriteLine($"Position: {Conductor.CurrentSongPosition} - Offset: {Conductor.Offset}");
 
-                ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[section.SectionNotes.Count];
-                for (int i = 0; i < section.SectionNotes.Count; i++)
+                ScrollingArrowDrawable[] arrows = new ScrollingArrowDrawable[legacySection.SectionNotes.Count];
+                for (int i = 0; i < legacySection.SectionNotes.Count; i++)
                 {
-                    Note note = section.SectionNotes[i];
+                    Note note = legacySection.SectionNotes[i];
                     int keyToUse = (int) note.Key;
 
                     if (keyToUse >= 4)
                         keyToUse -= 4;
 
-                    bool mustHitSection = (section.MustHitSection && (int) note.Key < 4) ||
-                                          (!section.MustHitSection && (int) note.Key >= 4);
+                    bool mustHitSection = (legacySection.MustHitSection && (int) note.Key < 4) ||
+                                          (!legacySection.MustHitSection && (int) note.Key >= 4);
 
                     Vector2 notePos = mustHitSection ? PlayerArrows[keyToUse].Position : OpponentArrows[keyToUse].Position;
 
@@ -453,7 +454,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
         }
 
         public static BaseKeyPlayScreen GetPlayScreen(string json, string instrumental, string voices) =>
-            new(Song.GetSongFromFile(json), instrumental, voices);
+            new(LegacySong.GetSongFromFile(json), instrumental, voices);
 
         public override IBackgroundScreen CreateBackground() => new DefaultBackgroundScreen(DefaultBackgroundType.Yellow);
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Funkin.NET.Core.Music.Songs;
+using Funkin.NET.Core.Music.Songs.Legacy;
 using osu.Framework.Logging;
 
 namespace Funkin.NET.Core.Music.Conductor
@@ -49,24 +50,24 @@ namespace Funkin.NET.Core.Music.Conductor
             RealBpm = bpm;
         }
 
-        public virtual void MapBpmChanges(Song song)
+        public virtual void MapBpmChanges(ISong legacySong)
         {
             BpmChangeMap = new List<IBpmChange>();
 
-            double bpm = song.Bpm;
+            double bpm = legacySong.Bpm;
             int totalSteps = 0;
             double totalPos = 0;
 
-            foreach (Section note in song.Sections)
+            foreach (ISection noteSection in legacySong.Sections)
             {
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if ((note.ChangeBpm ?? false) && note.Bpm != bpm)
+                if ((noteSection.ChangeBpm ?? false) && noteSection.Bpm != bpm)
                 {
-                    bpm = note.Bpm ?? bpm;
+                    bpm = noteSection.Bpm ?? bpm;
                     BpmChangeMap.Add(new BpmChange(totalSteps, totalPos, bpm));
                 }
 
-                int deltaSteps = note.LengthInSteps;
+                int deltaSteps = noteSection.LengthInSteps;
                 totalSteps += deltaSteps;
                 totalPos += 60D / bpm * 1000D / 4D * deltaSteps;
             }

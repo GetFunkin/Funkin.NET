@@ -2,9 +2,9 @@
 using System.Text.Json.Serialization;
 using Funkin.NET.Core.Json;
 
-namespace Funkin.NET.Core.Music.Songs
+namespace Funkin.NET.Core.Music.Songs.Legacy
 {
-    public class Section
+    public class LegacySection : ISection
     {
         [JsonPropertyName("mustHitSection")] public bool MustHitSection { get; set; }
 
