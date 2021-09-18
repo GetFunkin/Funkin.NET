@@ -1,5 +1,6 @@
 ﻿using System;
 using Funkin.NET.Common.Utilities;
+using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -8,11 +9,8 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
 using osuTK;
 
-namespace Funkin.NET.osuImpl.Graphics.Containers
+namespace Funkin.NET.Common.Graphics.Containers
 {
-    /// <summary>
-    ///     See: osu!'s OsuFocusedOverlayContainer.
-    /// </summary>
     public abstract class DefaultFocusedOverlayContainer : FocusedOverlayContainer
     {
         public Sample OpenSample { get; protected set; }
@@ -33,7 +31,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
 
         public FunkinGame ResolvedGame => ResolvableGame;
 
-        // receive input outside our bounds so we can trigger a close event on ourselves.
+        //Receive input outside our bounds so we can trigger a close event on ourselves.
         public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) =>
             BlockScreenWideMouse || base.ReceivePositionalInputAt(screenSpacePos);
 
@@ -72,7 +70,9 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    // Feedback that a state was updated, even if it somehow doesn't fall under an existing visibility.
+                    OpenSample.Play();
+                    break;
             }
 
             base.UpdateState(state);
@@ -81,12 +81,13 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
         [BackgroundDependencyLoader]
         private void Load(AudioManager audio)
         {
-            OpenSample = audio.Samples.Get("Main/ConfirmEnter.ogg");
+            OpenSample = audio.Samples.Get(PathHelper.Sample.ConfirmEnter);
         }
 
         protected override void Dispose(bool isDisposing)
         {
             base.Dispose(isDisposing);
+
             (ResolvedGame as IOverlayContainer).RemoveBlockingOverlay(this);
         }
     }

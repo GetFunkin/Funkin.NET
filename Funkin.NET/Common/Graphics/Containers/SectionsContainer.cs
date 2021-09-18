@@ -10,7 +10,7 @@ using osu.Framework.Utils;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.osuImpl.Graphics.Containers
+namespace Funkin.NET.Common.Graphics.Containers
 {
     /// <summary>
     ///     See: osu!'s SectionsContainer. <br />

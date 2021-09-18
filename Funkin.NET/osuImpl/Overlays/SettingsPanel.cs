@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Funkin.NET.osuImpl.Graphics.Containers;
+using Funkin.NET.Common.Graphics.Containers;
 using Funkin.NET.osuImpl.Graphics.UserInterface;
 using Funkin.NET.osuImpl.Overlays.Settings;
 using osu.Framework.Allocation;

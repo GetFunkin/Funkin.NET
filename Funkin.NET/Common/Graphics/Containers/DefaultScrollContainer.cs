@@ -10,31 +10,15 @@ using osuTK.Input;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.osuImpl.Graphics.Containers
+namespace Funkin.NET.Common.Graphics.Containers
 {
-    /// <summary>
-    ///     See: osu!'s OsuScrollContainer.
-    /// </summary>
     public class DefaultScrollContainer : FunkinScrollContainer<Drawable>
     {
-        public DefaultScrollContainer()
-        {
-        }
-
-        public DefaultScrollContainer(Direction direction)
-            : base(direction)
-        {
-        }
     }
 
-    /// <summary>
-    ///     See: osu!'s OsuScrollContainer&lt;T&gt;.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class FunkinScrollContainer<T> : ScrollContainer<T> where T : Drawable
     {
         public const float ScrollBarHeight = 10;
-        public const float ScrollBarPadding = 3;
 
         /// <summary>
         ///     Allows controlling the scroll bar from any position in the container using the right mouse button. <br />
@@ -47,17 +31,17 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
         /// </summary>
         public double DistanceDecayOnRightMouseScrollbar = 0.02;
 
-        private bool ShouldPerformRightMouseScroll(MouseButtonEvent e) =>
+        protected bool ShouldPerformRightMouseScroll(MouseButtonEvent e) =>
             RightMouseScrollbar && e.Button == MouseButton.Right;
 
-        private void ScrollFromMouseEvent(UIEvent e) =>
+        protected void ScrollFromMouseEvent(UIEvent e) =>
             ScrollTo(
                 Clamp(ToLocalSpace(e.ScreenSpaceMousePosition)[ScrollDim] / DrawSize[ScrollDim]) *
                 Content.DrawSize[ScrollDim], true, DistanceDecayOnRightMouseScrollbar);
 
-        private bool _rightMouseDragging;
+        protected bool RightMouseDragging;
 
-        protected override bool IsDragging => base.IsDragging || _rightMouseDragging;
+        protected override bool IsDragging => base.IsDragging || RightMouseDragging;
 
         public FunkinScrollContainer(Direction scrollDirection = Direction.Vertical)
             : base(scrollDirection)
@@ -71,12 +55,11 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
 
             ScrollFromMouseEvent(e);
             return true;
-
         }
 
         protected override void OnDrag(DragEvent e)
         {
-            if (_rightMouseDragging)
+            if (RightMouseDragging)
             {
                 ScrollFromMouseEvent(e);
                 return;
@@ -90,16 +73,16 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             if (!ShouldPerformRightMouseScroll(e))
                 return base.OnDragStart(e);
 
-            _rightMouseDragging = true;
+            RightMouseDragging = true;
             return true;
 
         }
 
         protected override void OnDragEnd(DragEndEvent e)
         {
-            if (_rightMouseDragging)
+            if (RightMouseDragging)
             {
-                _rightMouseDragging = false;
+                RightMouseDragging = false;
                 return;
             }
 
@@ -108,29 +91,29 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
 
         protected override bool OnScroll(ScrollEvent e)
         {
-            // allow for controlling volume when alt is held.
-            // mostly for compatibility with osu-stable.
+            // Allow for controlling volume when alt is held.
+            // Mostly for compatibility with osu-stable.
             return !e.AltPressed && base.OnScroll(e);
         }
 
-        protected override ScrollbarContainer CreateScrollbar(Direction direction) => new OsuScrollbar(direction);
+        protected override ScrollbarContainer CreateScrollbar(Direction direction) => new DefaultScrollbar(direction);
 
-        protected class OsuScrollbar : ScrollbarContainer
+        protected class DefaultScrollbar : ScrollbarContainer
         {
-            private Color4 _hoverColor;
-            private Color4 _defaultColor;
-            private Color4 _highlightColor;
+            protected Color4 HoverColor;
+            protected Color4 DefaultColor;
+            protected Color4 HighlightColor;
 
-            private readonly Box _box;
+            protected readonly Box ContainingBox;
 
-            public OsuScrollbar(Direction scrollDir)
+            public DefaultScrollbar(Direction scrollDir)
                 : base(scrollDir)
             {
                 Blending = BlendingParameters.Additive;
 
                 CornerRadius = 5;
 
-                // needs to be set initially for the ResizeTo to respect minimum size
+                // Needs to be set initially for the ResizeTo to respect minimum size.
                 Size = new Vector2(ScrollBarHeight);
 
                 const float margin = 3;
@@ -144,15 +127,15 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                 };
 
                 Masking = true;
-                Child = _box = new Box {RelativeSizeAxes = Axes.Both};
+                Child = ContainingBox = new Box {RelativeSizeAxes = Axes.Both};
             }
 
             [BackgroundDependencyLoader]
             private void Load()
             {
-                Colour = _defaultColor = Color4Extensions.FromHex("888");
-                _hoverColor = Color4Extensions.FromHex("fff");
-                _highlightColor = Color4Extensions.FromHex(@"88b300");
+                Colour = DefaultColor = Color4Extensions.FromHex("888");
+                HoverColor = Color4Extensions.FromHex("fff");
+                HighlightColor = Color4Extensions.FromHex(@"88b300");
             }
 
             public override void ResizeTo(float val, int duration = 0, Easing easing = Easing.None)
@@ -161,26 +144,24 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
                 {
                     [(int) ScrollDirection] = val
                 };
+
                 this.ResizeTo(size, duration, easing);
             }
 
             protected override bool OnHover(HoverEvent e)
             {
-                this.FadeColour(_hoverColor, 100);
+                this.FadeColour(HoverColor, 100);
                 return true;
             }
 
-            protected override void OnHoverLost(HoverLostEvent e)
-            {
-                this.FadeColour(_defaultColor, 100);
-            }
+            protected override void OnHoverLost(HoverLostEvent e) => this.FadeColour(DefaultColor, 100);
 
             protected override bool OnMouseDown(MouseDownEvent e)
             {
                 if (!base.OnMouseDown(e)) return false;
 
-                // note that we are changing the color of the box here as to not interfere with the hover effect.
-                _box.FadeColour(_highlightColor, 100);
+                // Note that we are changing the color of the box here as to not interfere with the hover effect.
+                ContainingBox.FadeColour(HighlightColor, 100);
                 return true;
             }
 
@@ -188,7 +169,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             {
                 if (e.Button != MouseButton.Left) return;
 
-                _box.FadeColour(Color4.White, 100);
+                ContainingBox.FadeColour(Color4.White, 100);
 
                 base.OnMouseUp(e);
             }

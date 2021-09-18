@@ -11,12 +11,8 @@ using osuTK;
 // ReSharper disable VirtualMemberCallInConstructor
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
-namespace Funkin.NET.osuImpl.Graphics.Containers
+namespace Funkin.NET.Common.Graphics.Containers
 {
-    /// <summary>
-    ///     See: osu!'s ScalingContainer. <br />
-    ///     Handles user-defined scaling, allowing application at multiple levels defined by <see cref="FunkinConfigManager.ScalingMode"/>
-    /// </summary>
     public class ScalingContainer : Container
     {
         public Bindable<float> SizeX;
@@ -37,6 +33,7 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
         public bool AllowScaling
         {
             get => OriginalAllowScaling;
+
             set
             {
                 if (value == OriginalAllowScaling)
@@ -95,8 +92,8 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             SizableContainer.FinishTransforms();
         }
 
-        private bool RequiresBackgroundVisible =>
-            ScalingMode.Value is FunkinConfigManager.ScalingMode.On && (SizeX.Value != 1 || SizeY.Value != 1);
+        private bool RequiresBackgroundVisible => ScalingMode.Value is FunkinConfigManager.ScalingMode.On
+                                                  && (SizeX.Value != 1 || SizeY.Value != 1);
 
         private void UpdateSize()
         {
@@ -129,8 +126,9 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
             bool scaling = AllowScaling && (TargetMode == null || ScalingMode.Value == TargetMode);
 
             Vector2 targetSize = scaling ? new Vector2(SizeX.Value, SizeY.Value) : Vector2.One;
-            Vector2 targetPosition =
-                scaling ? new Vector2(PosX.Value, PosY.Value) * (Vector2.One - targetSize) : Vector2.Zero;
+            Vector2 targetPosition = scaling 
+                ? new Vector2(PosX.Value, PosY.Value) * (Vector2.One - targetSize) 
+                : Vector2.Zero;
             bool requiresMasking = scaling && targetSize != Vector2.One;
 
             if (requiresMasking)
@@ -145,24 +143,24 @@ namespace Funkin.NET.osuImpl.Graphics.Containers
 
         public class ScalingDrawSizePreservingFillContainer : DrawSizePreservingFillContainer
         {
-            private readonly bool _applyUIScale;
-            private Bindable<float> _uiScale;
+            protected readonly bool ApplyUIScale;
+            protected Bindable<float> UIScale;
 
             public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) => true;
 
             public ScalingDrawSizePreservingFillContainer(bool applyUIScale)
             {
-                _applyUIScale = applyUIScale;
+                ApplyUIScale = applyUIScale;
             }
 
             [BackgroundDependencyLoader]
             private void Load(FunkinConfigManager config)
             {
-                if (!_applyUIScale)
+                if (!ApplyUIScale)
                     return;
 
-                _uiScale = config.GetBindable<float>(FunkinConfigManager.FunkinSetting.UIScale);
-                _uiScale.BindValueChanged(ScaleChanged, true);
+                UIScale = config.GetBindable<float>(FunkinConfigManager.FunkinSetting.UIScale);
+                UIScale.BindValueChanged(ScaleChanged, true);
             }
 
             private void ScaleChanged(ValueChangedEvent<float> args)

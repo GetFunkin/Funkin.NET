@@ -1,6 +1,6 @@
 ﻿using osu.Framework.Graphics;
 
-namespace Funkin.NET.osuImpl.Graphics.Containers
+namespace Funkin.NET.Common.Graphics.Containers
 {
     /// <summary>
     ///     See: osu!'s UserTrackingScrollContainer.

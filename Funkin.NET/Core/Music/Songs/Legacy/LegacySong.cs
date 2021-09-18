@@ -21,7 +21,8 @@ namespace Funkin.NET.Core.Music.Songs.Legacy
         [JsonPropertyName("song")] public virtual string SongName { get; set; }
 
         [JsonConverter(typeof(ListInterfaceConverter<LegacySection, ISection>))]
-        [JsonPropertyName("notes")] public virtual List<ISection> Sections { get; set; }
+        [JsonPropertyName("notes")]
+        public virtual List<ISection> Sections { get; set; }
 
         [JsonPropertyName("bpm")] public virtual double Bpm { get; set; }
 
