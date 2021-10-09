@@ -7,7 +7,7 @@ namespace Funkin.NET.Desktop
     /// <summary>
     ///     Desktop entry-point class.
     /// </summary>
-    public static class Launch
+    public static class Program
     {
         /// <summary>
         ///     Host name used to get a suitable host (<see cref="Host.GetSuitableHost"/>
