@@ -75,9 +75,10 @@ namespace Funkin.NET.Intermediary.Screens.Backgrounds
 
             base.OnResuming(last);
         }
-
-        public virtual void ScheduleTask(Action action) => Schedule(action);
+        
+        public void ApplyToBackground(Action<IBackgroundScreen> action) => Schedule(() => action.Invoke(this));
 
         public virtual bool Equals(IBackgroundScreen other) => other?.GetType() == GetType();
+
     }
 }

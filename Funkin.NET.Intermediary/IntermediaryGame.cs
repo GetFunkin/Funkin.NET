@@ -106,9 +106,5 @@ namespace Funkin.NET.Intermediary
             if (newScreen == null)
                 Exit();
         }
-
-        // serves the purpose of exposing scheduling to outside members
-        // why is this normally protected, peppy? please...
-        public virtual void ScheduleTask(Action action) => Schedule(action);
     }
 }

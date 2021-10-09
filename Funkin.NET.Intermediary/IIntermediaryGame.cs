@@ -10,7 +10,7 @@ using osu.Framework.Screens;
 
 namespace Funkin.NET.Intermediary
 {
-    public interface IIntermediaryGame : IServiceHoster, IScheduler
+    public interface IIntermediaryGame : IServiceHoster
     {
         Storage Storage { get; set; }
 

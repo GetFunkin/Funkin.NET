@@ -4,8 +4,8 @@ using osu.Framework.Screens;
 
 namespace Funkin.NET.Intermediary.Screens.Backgrounds
 {
-    public interface IBackgroundScreen : IScreen, IScheduler, IEquatable<IBackgroundScreen>, IDisposable
+    public interface IBackgroundScreen : IScreen, IEquatable<IBackgroundScreen>, IDisposable
     {
-        void ApplyToBackground(Action<IBackgroundScreen> action) => ScheduleTask(() => action.Invoke(this));
+        void ApplyToBackground(Action<IBackgroundScreen> action);
     }
 }

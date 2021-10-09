@@ -113,7 +113,7 @@ namespace Funkin.NET.Resources
 
             public static string KeyPress4 => GetSample("Keyboard/key-press-4.mp3");
 
-            public static string ConfirmEnter => GetSample("Main/ConfirmEnter.ogg");
+            public static string ConfirmEnter => GetSample("Main/ConfirmEnter.ogg", includeSamples: false);
         }
 
         public static class Texture

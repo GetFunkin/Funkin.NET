@@ -239,9 +239,25 @@ namespace Funkin.NET
             ScreenStack.BackgroundScreenStack.Push(backgroundProvider.CreateBackground());
         }
 
-        public void UpdateBlockingOverlayFade() => Containers[FunkinContainers.Screen].FadeColour(
+        public void UpdateBlockingOverlayFade() => Containers[FunkinContainers.Screen].FadeColour
+        (
             VisibleBlockingOverlays.Any()
                 ? new Colour4(0.5f, 0.5f, 0.5f, 1f)
-                : Colour4.White, 500D, Easing.OutQuint);
+                : Colour4.White, 500D, Easing.OutQuint
+        );
+
+        public void AddBlockingOverlay(OverlayContainer overlay)
+        {
+            if (!VisibleBlockingOverlays.Contains(overlay))
+                VisibleBlockingOverlays.Add(overlay);
+
+            UpdateBlockingOverlayFade();
+        }
+
+        public void RemoveBlockingOverlay(OverlayContainer overlay) => Schedule(() =>
+        {
+            VisibleBlockingOverlays.Remove(overlay);
+            UpdateBlockingOverlayFade();
+        });
     }
 }
