@@ -3,4 +3,4 @@
 	url = https://github.com/GetFunkin/GetFunkin.AdobeNecromancer.git
 [submodule "osu-framework"]
 	path = osu-framework
-	url = git@github.com:GetFunkin/osu-framework.git
+	url=https://github.com/GetFunkin/Funkin.NET.git
