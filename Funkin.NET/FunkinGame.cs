@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Graphics.Containers;
 using Funkin.NET.Common.Input;
-using Funkin.NET.Common.Utilities;
 using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Game.Screens;
 using Funkin.NET.Game.Screens.Gameplay;
@@ -15,13 +13,11 @@ using Funkin.NET.Intermediary.ResourceStores;
 using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Utilities;
 using Funkin.NET.osuImpl.Graphics.Cursor;
-using Funkin.NET.osuImpl.Overlays;
 using Funkin.NET.Resources;
 using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
-using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
@@ -35,7 +31,7 @@ namespace Funkin.NET
     /// <summary>
     ///     Base Funkin' game. Contains data game data. Different platforms will build upon it, if only slightly.
     /// </summary>
-    public abstract class FunkinGame : IntermediaryGame, IOverlayContainer
+    public abstract class FunkinGame : IntermediaryGame
     {
         public const string ProgramName = "Funkin.NET";
 
@@ -67,7 +63,6 @@ namespace Funkin.NET
         protected FunkinConfigManager Configuration;
         protected DependencyContainer DependencyContainer;
         protected Bindable<bool> ShowFpsDisplay;
-        protected Dictionary<OverlayContainerType, Container> OverlayContainers;
         protected Container ScreenOffsetContainer;
         protected UniversalActionContainer ActionContainer;
 
@@ -86,12 +81,6 @@ namespace Funkin.NET
 
             FrameStatistics.ValueChanged += x => ShowFpsDisplay.Value = x.NewValue != FrameStatisticsMode.None;
             Containers.As<DefaultCursorContainer>(FunkinContainers.Cursor).CanShowCursor = false;
-            OverlayContainers = new Dictionary<OverlayContainerType, Container>();
-
-            static Container QuickContainer() => new()
-            {
-                RelativeSizeAxes = Axes.Both
-            };
 
             AddRange(new Drawable[]
             {
@@ -116,38 +105,12 @@ namespace Funkin.NET
                             }
                         }
                     }
-                },
-
-                OverlayContainers[OverlayContainerType.Content] = QuickContainer(),
-                OverlayContainers[OverlayContainerType.RightFloating] = QuickContainer(),
-                OverlayContainers[OverlayContainerType.LeftFloating] = QuickContainer(),
-                OverlayContainers[OverlayContainerType.TopMost] = QuickContainer(),
+                }
             });
 
             base.LoadComplete();
 
             ScreenStack.Push(new StartupIntroductionScreen(new EnterScreen()));
-
-            DependencyContainer.CacheAs(Containers[FunkinContainers.Settings] = new SettingsOverlay());
-            LoadComponentAsync(Containers[FunkinContainers.Settings],
-                OverlayContainers[OverlayContainerType.LeftFloating].Add,
-                CancellationToken.None);
-
-            OverlayContainer[] singleDisplaySideOverlays =
-            {
-                Containers.As<SettingsOverlay>(FunkinContainers.Settings)
-            };
-
-            foreach (OverlayContainer overlay in singleDisplaySideOverlays)
-            {
-                overlay.State.ValueChanged += x =>
-                {
-                    if (x.NewValue == Visibility.Hidden)
-                        return;
-
-                    singleDisplaySideOverlays.Where(y => y != overlay).ForEach(y => y.Hide());
-                };
-            }
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -238,26 +201,5 @@ namespace Funkin.NET
             ScreenStack.SetParallax(backgroundProvider);
             ScreenStack.BackgroundScreenStack.Push(backgroundProvider.CreateBackground());
         }
-
-        public void UpdateBlockingOverlayFade() => Containers[FunkinContainers.Screen].FadeColour
-        (
-            VisibleBlockingOverlays.Any()
-                ? new Colour4(0.5f, 0.5f, 0.5f, 1f)
-                : Colour4.White, 500D, Easing.OutQuint
-        );
-
-        public void AddBlockingOverlay(OverlayContainer overlay)
-        {
-            if (!VisibleBlockingOverlays.Contains(overlay))
-                VisibleBlockingOverlays.Add(overlay);
-
-            UpdateBlockingOverlayFade();
-        }
-
-        public void RemoveBlockingOverlay(OverlayContainer overlay) => Schedule(() =>
-        {
-            VisibleBlockingOverlays.Remove(overlay);
-            UpdateBlockingOverlayFade();
-        });
     }
 }

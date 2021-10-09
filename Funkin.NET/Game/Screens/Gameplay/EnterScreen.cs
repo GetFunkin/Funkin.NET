@@ -461,7 +461,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
                         this.Push(BaseKeyPlayScreen.GetPlayScreen("Json/Songs/Bopeebo/bopeebo-normal.json",
                             "Songs/Bopeebo/Inst.ogg", "Songs/Bopeebo/Voices.ogg"));
                     },
-                    2 => game.Containers[FunkinContainers.Settings].Show,
+                    // 2 => game.Containers[FunkinContainers.Settings].Show,
                     _ => null
                 };
 
