@@ -70,11 +70,14 @@ namespace Funkin.NET.Intermediary.Screens.Backgrounds
 
         public virtual bool Equals(Background other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+                return false;
 
-            return other.GetType() == GetType()
-                   && other.SpriteName == SpriteName;
+            if (ReferenceEquals(this, other))
+                return true;
+
+
+            return other.GetType() == GetType() && other.SpriteName == SpriteName;
         }
     }
 }

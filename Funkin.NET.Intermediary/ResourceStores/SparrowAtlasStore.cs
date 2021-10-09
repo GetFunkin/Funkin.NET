@@ -6,7 +6,7 @@ using Funkin.NET.Resources;
 using GetFunkin.AdobeNecromancer;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.IO.Stores;
-using osuRectangleF = osu.Framework.Graphics.Primitives.RectangleF;
+using osuRect = osu.Framework.Graphics.Primitives.RectangleF;
 
 namespace Funkin.NET.Intermediary.ResourceStores
 {
@@ -71,7 +71,7 @@ namespace Funkin.NET.Intermediary.ResourceStores
                 if (!cropCache.ContainsKey(crop))
                 {
                     cropCache[crop] = SparrowAtlases[name]
-                        .Crop(new osuRectangleF(crop.X, crop.Y, crop.Width, crop.Height));
+                        .Crop(new osuRect(crop.X, crop.Y, crop.Width, crop.Height));
                     cropCache[crop].ScaleAdjust = 2f;
                 }
 
