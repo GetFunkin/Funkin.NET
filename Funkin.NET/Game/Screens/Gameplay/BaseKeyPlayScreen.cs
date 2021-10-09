@@ -17,6 +17,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Bindings;
+using osu.Framework.Input.Events;
 using osuTK;
 
 // ReSharper disable VirtualMemberCallInConstructor
@@ -335,12 +336,12 @@ namespace Funkin.NET.Game.Screens.Gameplay
             Scheduler.AddDelayed(() => { OpponentIcon.ScaleTo(oldOpponentScale, 500D); }, 100D);
         }
 
-        public virtual bool OnPressed(UniversalAction action)
+        public virtual bool OnPressed(KeyBindingPressEvent<UniversalAction> e)
         {
-            if (!ArrowValues.Contains((KeyAction) (int) action))
+            if (!ArrowValues.Contains((KeyAction) (int) e.Action))
                 return false;
 
-            int value = (int) action;
+            int value = (int) e.Action;
             if (value >= PlayerArrows.Length || NotesAhead.First is null)
                 return false;
 
@@ -364,17 +365,17 @@ namespace Funkin.NET.Game.Screens.Gameplay
             Console.WriteLine($"{IsPressed[value]}, {IsHeld[value]}");
 
             foreach (ScrollingArrowDrawable arrow in NotesAhead.SelectMany(arrowArray => arrowArray))
-                arrow.Press((KeyAction) (int) action, IsHeld[value]);
+                arrow.Press((KeyAction) (int) e.Action, IsHeld[value]);
 
             return true;
         }
 
-        public virtual void OnReleased(UniversalAction action)
+        public virtual void OnReleased(KeyBindingReleaseEvent<UniversalAction> e)
         {
-            if (!ArrowValues.Contains((KeyAction) (int) action))
+            if (!ArrowValues.Contains((KeyAction) (int) e.Action))
                 return;
 
-            int value = (int) action;
+            int value = (int) e.Action;
             if (value >= PlayerArrows.Length || NotesAhead.First is null)
                 return;
 
@@ -385,7 +386,7 @@ namespace Funkin.NET.Game.Screens.Gameplay
             IsHeld[value] = false;
 
             foreach (ScrollingArrowDrawable arrow in NotesAhead.SelectMany(arrowArray => arrowArray))
-                arrow.Release((KeyAction) (int) action);
+                arrow.Release((KeyAction) (int) e.Action);
         }
 
         protected virtual void Initialize()

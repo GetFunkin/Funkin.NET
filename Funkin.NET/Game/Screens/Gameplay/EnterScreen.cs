@@ -16,6 +16,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Input.Bindings;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
 
@@ -292,11 +293,11 @@ namespace Funkin.NET.Game.Screens.Gameplay
             AddInternal(ScreenFlashBang);
         }
 
-        public bool OnPressed(UniversalAction action) => false;
+        public bool OnPressed(KeyBindingPressEvent<UniversalAction> e) => false;
 
-        public void OnReleased(UniversalAction action)
+        public void OnReleased(KeyBindingReleaseEvent<UniversalAction> e)
         {
-            if (action != UniversalAction.Select)
+            if (e.Action != UniversalAction.Select)
                 return;
 
             switch (FinishedTextIntroduction)

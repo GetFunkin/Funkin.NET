@@ -33,9 +33,9 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
             PlaceholderText = "type to search";
         }
 
-        public override bool OnPressed(PlatformAction action)
+        public override bool OnPressed(KeyBindingPressEvent<PlatformAction> e)
         {
-            switch (action)
+            switch (e.Action)
             {
                 case PlatformAction.MoveBackwardLine:
                 case PlatformAction.MoveForwardLine:
@@ -46,7 +46,7 @@ namespace Funkin.NET.osuImpl.Graphics.UserInterface
                     return false;
             }
 
-            return base.OnPressed(action);
+            return base.OnPressed(e);
         }
 
         protected override bool OnKeyDown(KeyDownEvent e)
