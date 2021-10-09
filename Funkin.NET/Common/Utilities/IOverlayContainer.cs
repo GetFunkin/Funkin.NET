@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Funkin.NET.Intermediary.Utilities;
 using osu.Framework.Graphics.Containers;
 
 namespace Funkin.NET.Common.Utilities

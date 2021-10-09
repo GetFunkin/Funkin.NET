@@ -1,5 +1,4 @@
-﻿using System;
-using Funkin.NET.Common.Utilities;
+﻿using Funkin.NET.Common.Utilities;
 using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
