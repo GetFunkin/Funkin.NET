@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Funkin.NET.Core.API;
+using Funkin.NET.Core.API.ModTypes;
 using Funkin.NET.Intermediary.Utilities;
 
 namespace Funkin.NET.Core.ManiaContent

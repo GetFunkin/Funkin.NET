@@ -18,13 +18,13 @@ namespace Funkin.NET.Default.Screens.Gameplay
 {
     public class StartupIntroductionScreen : DefaultScreen
     {
-        public DefaultScreen NextScreen { get; }
+        public DefaultScreen NextScreen { get; set; }
 
         public TextFlowContainer TextFlow { get; protected set; }
 
         public FillFlowContainer FillContainer { get; protected set; }
 
-        public Sprite FloatingHead { get; protected set; }
+        public Sprite FloatingHead { get; set; }
 
         public override bool CursorVisible => false;
 
@@ -56,7 +56,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Y = -50f,
-                    Blending = BlendingParameters.Additive
+                    Blending = BlendingParameters.Inherit
                 },
 
                 FillContainer = new FillFlowContainer
@@ -140,7 +140,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
                     }
                     else
                         repeat = false;
-                }, 200D, repeat);
+                }, ModLoader.FinishedLoadingMods ? 50D : 200D, repeat);
             }, 3800D);
         }
 
@@ -166,7 +166,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
             if (QueuedText.Count > 0)
                 return;
 
-            if (!ModLoader.FinishedLoading || DelayedPush)
+            if (!ModLoader.FinishedLoadingContent || DelayedPush)
                 return;
 
             DelayedPush = true;
