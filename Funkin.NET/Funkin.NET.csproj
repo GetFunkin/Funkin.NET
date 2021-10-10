@@ -21,6 +21,8 @@
   <ItemGroup>
     <Folder Include="Common\Services\" />
     <Folder Include="Core\Music\Conductor\" />
+    <Folder Include="Core\API\" />
+    <Folder Include="Core\ManiaContent\" />
   </ItemGroup>
 
 </Project>
