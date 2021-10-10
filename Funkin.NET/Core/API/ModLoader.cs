@@ -41,8 +41,11 @@ namespace Funkin.NET.Core.API
             status.Invoke("Searching directories for loadable assemblies...");
             foreach (string dir in dirs)
             {
-                if (probe.GetFiles(dir).Contains(dir + ".dll"))
-                    loadedMods.Add(Path.Combine(dir, dir + ".dll"));
+                IEnumerable<string> files = probe.GetFiles(dir);
+                string expected = Path.Combine(dir, dir.Split(Path.DirectorySeparatorChar)[1] + ".dll");
+
+                if (files.Contains(expected))
+                    loadedMods.Add(expected);
                 else
                     status.Invoke("No loadable dll found in: " + dir);
             }
@@ -64,11 +67,11 @@ namespace Funkin.NET.Core.API
                 switch (modTypes.Length)
                 {
                     case 0:
-                        status.Invoke("Could not load mod because there are no IMod types: " + modAssembly.FullName);
+                        status.Invoke("No IMod types: " + modAssembly.GetName().Name);
                         continue;
 
                     case > 1:
-                        status.Invoke("Could not load mod because there is more than one IMod type: " + modAssembly.FullName);
+                        status.Invoke("More than one IMod type: " + modAssembly.GetName().Name);
                         continue;
                 }
 
@@ -76,13 +79,13 @@ namespace Funkin.NET.Core.API
 
                 if (loadedMod is null)
                 {
-                    status.Invoke("Could not load mod because loaded mod was null: " + modAssembly.FullName);
+                    status.Invoke("Loaded mod was null: " + modAssembly.GetName().Name);
                     continue;
                 }
 
                 loadedMod.Assembly = modAssembly;
 
-                status.Invoke("Loaded mod: " + modAssembly.FullName);
+                status.Invoke("Loaded mod: " + modAssembly.GetName().Name);
                 LoadedMods.Add(loadedMod);
             }
 
