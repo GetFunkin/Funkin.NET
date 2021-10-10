@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Intermediary.Screens;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics.Audio;
@@ -17,8 +15,6 @@ namespace Funkin.NET.Default.Screens
 
         public virtual DrawableTrack Music { get; protected set; }
 
-        public MusicConductor Conductor { get; protected set; }
-
         public new FunkinGame Game => (FunkinGame) base.Game;
 
         public double CurrentBeat;
@@ -27,14 +23,6 @@ namespace Funkin.NET.Default.Screens
         protected MusicScreen()
         {
             MusicBpm = new Bindable<double>();
-            MusicBpm.ValueChanged += d =>
-            {
-                // Null-safe because value is not immediately changed.
-                // ReSharper disable once PossibleNullReferenceException
-                Conductor.Bpm = d.NewValue;
-            };
-
-            Conductor = new MusicConductor(0D);
         }
 
         protected override void Update()
@@ -56,7 +44,7 @@ namespace Funkin.NET.Default.Screens
             if (Music is null || !Music.IsRunning)
                 return;
 
-            Conductor.CurrentSongPosition = Music.CurrentTime;
+            /*Conductor.CurrentSongPosition = Music.CurrentTime;
 
             IBpmChange lastChange = new BpmChange(0, 0D, 0D);
 
@@ -67,7 +55,7 @@ namespace Funkin.NET.Default.Screens
             double crochet = (Conductor.CurrentSongPosition - lastChange.SongTime) / Conductor.StepCrochet;
             double flooredCrochet = Math.Floor(crochet);
 
-            CurrentStep = lastChange.StepTime + flooredCrochet;
+            CurrentStep = lastChange.StepTime + flooredCrochet;*/
         }
 
         protected virtual void UpdateBeat() => CurrentBeat = Math.Floor(CurrentStep / 4D);

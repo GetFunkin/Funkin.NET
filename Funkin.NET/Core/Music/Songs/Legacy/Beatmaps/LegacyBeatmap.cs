@@ -12,7 +12,7 @@ namespace Funkin.NET.Core.Music.Songs.Legacy.Beatmaps
 
         public BeatmapInfo Info { get; }
 
-        public LegacyBeatmap(ITrack song)
+        public LegacyBeatmap(LegacyTrack song)
         {
             List<NoteControlPoint> legacyControlPoints = (
                 from section
@@ -42,8 +42,8 @@ namespace Funkin.NET.Core.Music.Songs.Legacy.Beatmaps
                     in section.SectionNotes
                 select new BeatmapObject
                 {
-                    StartTime = note.Offset,
-                    HoldTime = note.HoldLength
+                    StartTime = note.Item1,
+                    HoldTime = note.Item3
                 }
             ).ToList();
 

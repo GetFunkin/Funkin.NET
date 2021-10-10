@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Funkin.NET.Intermediary.Input;
 using osu.Framework.Graphics;
 using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
@@ -8,13 +7,16 @@ using osu.Framework.Platform;
 
 namespace Funkin.NET.Common.Input
 {
-    public class UniversalActionContainer : StoredKeyBindingContainer<UniversalAction>, IHandleGlobalKeyboardInput
+    public class UniversalActionContainer : KeyBindingContainer<UniversalAction>, IHandleGlobalKeyboardInput
     {
         private readonly Drawable Handler;
         private InputManager ParentInputManager;
 
-        public UniversalActionContainer(Storage storage, Drawable game) : base(storage, SimultaneousBindingMode.All,
-            KeyCombinationMatchingMode.Modifiers)
+        public UniversalActionContainer(Storage storage, Drawable game) :
+            base(
+                SimultaneousBindingMode.All,
+                KeyCombinationMatchingMode.Modifiers
+            )
         {
             if (game is IKeyBindingHandler<UniversalAction>)
                 Handler = game;
@@ -27,7 +29,9 @@ namespace Funkin.NET.Common.Input
             ParentInputManager = GetContainingInputManager();
         }
 
-        public override IEnumerable<IKeyBinding> FallbackKeyBindings => ArrowKeyBinds.Concat(SelectionKeyBinds);
+        // public override IEnumerable<IKeyBinding> FallbackKeyBindings => ArrowKeyBinds.Concat(SelectionKeyBinds);
+
+        public override IEnumerable<IKeyBinding> DefaultKeyBindings => ArrowKeyBinds.Concat(SelectionKeyBinds);
 
         protected override bool SendRepeats => true;
 

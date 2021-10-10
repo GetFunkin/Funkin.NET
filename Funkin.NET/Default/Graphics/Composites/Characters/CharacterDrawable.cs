@@ -117,11 +117,11 @@ namespace Funkin.NET.Default.Graphics.Composites.Characters
                 if (Character == "dad")
                     multiplier = 6.1f;
 
-                if (HoldTimer >= Game.Conductor.StepCrochet * multiplier * 0.001D)
+                /*if (HoldTimer >= Game.Conductor.StepCrochet * multiplier * 0.001D)
                 {
                     HitDance();
                     HoldTimer = 0;
-                }
+                }*/
             }
 
             if (Character == "gf" && CurrentAnimationCopy.Item1 == "hairFall" &&

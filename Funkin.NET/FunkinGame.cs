@@ -3,7 +3,6 @@ using System.Reflection;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Graphics.Containers;
 using Funkin.NET.Common.Input;
-using Funkin.NET.Core.Music.Conductor;
 using Funkin.NET.Default.Graphics.Containers.Cursor;
 using Funkin.NET.Default.Screens;
 using Funkin.NET.Default.Screens.Gameplay;
@@ -53,7 +52,7 @@ namespace Funkin.NET
 
         [CanBeNull] public MusicScreen CurrentMusicScreen { get; protected set; }
 
-        public MusicConductor Conductor => CurrentMusicScreen?.Conductor ?? new MusicConductor(120D);
+        // public MusicConductor Conductor => CurrentMusicScreen?.Conductor ?? new MusicConductor(120D);
 
         protected override Container<Drawable> Content => Containers[FunkinContainers.Content];
 
