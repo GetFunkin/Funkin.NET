@@ -7,7 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 
-namespace Funkin.NET.Game.Graphics.Composites.Gameplay
+namespace Funkin.NET.Default.Graphics.Composites.Gameplay
 {
     /// <summary>
     ///     Static, drawn arrow keys for the key screen.

@@ -6,7 +6,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
 
-namespace Funkin.NET.Game.Graphics.Composites.Characters
+namespace Funkin.NET.Default.Graphics.Composites.Characters
 {
     public class HealthIconDrawable : CompositeDrawable
     {

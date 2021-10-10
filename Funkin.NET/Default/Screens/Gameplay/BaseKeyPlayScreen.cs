@@ -5,8 +5,8 @@ using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Screens.Backgrounds;
 using Funkin.NET.Core.Music.Songs;
 using Funkin.NET.Core.Music.Songs.Legacy;
-using Funkin.NET.Game.Graphics.Composites.Characters;
-using Funkin.NET.Game.Graphics.Composites.Gameplay;
+using Funkin.NET.Default.Graphics.Composites.Characters;
+using Funkin.NET.Default.Graphics.Composites.Gameplay;
 using Funkin.NET.Intermediary.Screens.Backgrounds;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -22,7 +22,7 @@ using osuTK;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Game.Screens.Gameplay
+namespace Funkin.NET.Default.Screens.Gameplay
 {
     public class BaseKeyPlayScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {

@@ -2,7 +2,7 @@
 using Funkin.NET.Common.Input;
 using Funkin.NET.Common.Screens.Backgrounds;
 using Funkin.NET.Common.Services;
-using Funkin.NET.Game.Graphics.Composites;
+using Funkin.NET.Default.Graphics.Composites;
 using Funkin.NET.Intermediary.Screens.Backgrounds;
 using Funkin.NET.Resources;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,7 @@ using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
 
-namespace Funkin.NET.Game.Screens.Gameplay
+namespace Funkin.NET.Default.Screens.Gameplay
 {
     public class EnterScreen : MusicScreen, IKeyBindingHandler<UniversalAction>
     {

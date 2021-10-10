@@ -2,7 +2,7 @@
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Cursor;
 
-namespace Funkin.NET.osuImpl.Graphics.Cursor
+namespace Funkin.NET.Default.Graphics.Containers.Cursor
 {
     /// <summary>
     ///     See: osu!'s IProvideCursor. <br />

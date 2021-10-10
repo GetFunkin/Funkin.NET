@@ -1,4 +1,4 @@
-﻿namespace Funkin.NET.Game.Graphics.Composites.Characters
+﻿namespace Funkin.NET.Default.Graphics.Composites.Characters
 {
     public enum CharacterType
     {

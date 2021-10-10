@@ -14,7 +14,7 @@ using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 
-namespace Funkin.NET.Game.Screens.Gameplay
+namespace Funkin.NET.Default.Screens.Gameplay
 {
     public class StartupIntroductionScreen : DefaultScreen
     {

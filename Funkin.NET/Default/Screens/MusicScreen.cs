@@ -6,7 +6,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics.Audio;
 using osu.Framework.Screens;
 
-namespace Funkin.NET.Game.Screens
+namespace Funkin.NET.Default.Screens
 {
     /// <summary>
     ///     Basic Music-playing screen. Allows for conductor integration.

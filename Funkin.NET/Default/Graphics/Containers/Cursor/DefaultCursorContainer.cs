@@ -4,7 +4,7 @@ using osu.Framework.Graphics.Cursor;
 using osu.Framework.Input;
 using osu.Framework.Input.StateChanges;
 
-namespace Funkin.NET.osuImpl.Graphics.Cursor
+namespace Funkin.NET.Default.Graphics.Containers.Cursor
 {
     /// <summary>
     ///     See: osu!'s MenuCursorContainer. <br />

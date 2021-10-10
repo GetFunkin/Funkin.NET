@@ -94,5 +94,8 @@ namespace Funkin.NET.Intermediary.ResourceStores
 
             return TextureAtlasCache[atlas][textureName];
         }
+
+        public Texture GetTexture(string atlas, string textureName, int frame) =>
+            GetTexture(atlas, textureName + PathHelper.Atlas.FrameAsString(frame));
     }
 }

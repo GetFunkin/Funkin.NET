@@ -4,7 +4,7 @@ using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Textures;
 using osuTK;
 
-namespace Funkin.NET.Game.Graphics.Composites.Characters
+namespace Funkin.NET.Default.Graphics.Composites.Characters
 {
     public static class FunkinCharacterAnimator
     {

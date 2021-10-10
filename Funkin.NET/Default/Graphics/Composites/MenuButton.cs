@@ -3,7 +3,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 
-namespace Funkin.NET.Game.Graphics.Composites
+namespace Funkin.NET.Default.Graphics.Composites
 {
     /// <summary>
     ///     Simple button class that allows for beat hit-pulsing and hovering.

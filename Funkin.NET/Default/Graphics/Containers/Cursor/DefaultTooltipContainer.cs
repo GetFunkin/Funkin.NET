@@ -8,7 +8,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Localisation;
 using osuTK;
 
-namespace Funkin.NET.osuImpl.Graphics.Cursor
+namespace Funkin.NET.Default.Graphics.Containers.Cursor
 {
     /// <summary>
     ///     See: osu!'s OsuTooltipContainer.

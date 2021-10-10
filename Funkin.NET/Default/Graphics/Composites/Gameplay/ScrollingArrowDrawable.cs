@@ -1,7 +1,7 @@
 ﻿using System;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Core.Music.Songs;
-using Funkin.NET.Game.Screens.Gameplay;
+using Funkin.NET.Default.Screens.Gameplay;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -11,7 +11,7 @@ using osuTK;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Game.Graphics.Composites.Gameplay
+namespace Funkin.NET.Default.Graphics.Composites.Gameplay
 {
     /// <summary>
     ///     Scrolling arrows for the key screen.

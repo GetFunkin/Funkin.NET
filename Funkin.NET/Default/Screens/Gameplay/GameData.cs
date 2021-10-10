@@ -4,7 +4,7 @@ using System.Linq;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace Funkin.NET.Game.Screens.Gameplay
+namespace Funkin.NET.Default.Screens.Gameplay
 {
     // TODO: turn HitAccuracyType into an interface-based OOP design to simplify adding your own note types and stuff
     public class GameData : IGameData

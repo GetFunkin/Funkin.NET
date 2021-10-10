@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Funkin.NET.Game.Screens.Gameplay
+namespace Funkin.NET.Default.Screens.Gameplay
 {
     public interface IGameData
     {

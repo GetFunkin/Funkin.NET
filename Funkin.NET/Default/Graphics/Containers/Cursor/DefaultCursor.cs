@@ -8,11 +8,10 @@ using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osuTK;
 
-namespace Funkin.NET.osuImpl.Graphics.Cursor
+namespace Funkin.NET.Default.Graphics.Containers.Cursor
 {
     /// <summary>
     ///     See: osu!'s MenuCursorContainer.
@@ -85,7 +84,7 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
             {
                 CursorDown = new Sprite
                 {
-                    Texture = textures.GetTexture(PathHelper.Texture.CursorXml, "arrow click0000"),
+                    Texture = textures.GetTexture(PathHelper.Texture.CursorXml, "arrow click", 0),
                     AlwaysPresent = true
                 };
 
@@ -96,10 +95,11 @@ namespace Funkin.NET.osuImpl.Graphics.Cursor
                     Loop = true
                 };
 
-                Texture Jiggle(int frame) => textures.GetTexture(PathHelper.Texture.CursorXml, $"arrow jiggle{PathHelper.Atlas.FrameAsString(frame)}");
-
                 for (int i = 0; i < 6; i++)
-                    CursorAnimation.AddFrame(Jiggle(i), 1D / 24D * 1000D);
+                    CursorAnimation.AddFrame(
+                        textures.GetTexture(PathHelper.Texture.CursorXml, "arrow jiggle", i),
+                        1D / 24D * 1000D
+                    );
 
                 Children = new Drawable[]
                 {

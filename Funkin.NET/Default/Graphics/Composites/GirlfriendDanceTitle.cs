@@ -6,7 +6,7 @@ using osu.Framework.Graphics.Animations;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 
-namespace Funkin.NET.Game.Graphics.Composites
+namespace Funkin.NET.Default.Graphics.Composites
 {
     /// <summary>
     ///     Animation for the girlfriend as she appears on the title screen.

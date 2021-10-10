@@ -5,7 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Textures;
 using osuTK;
 
-namespace Funkin.NET.Game.Graphics.Composites.Characters
+namespace Funkin.NET.Default.Graphics.Composites.Characters
 {
     public class CharacterDrawable : CompositeDrawable
     {
