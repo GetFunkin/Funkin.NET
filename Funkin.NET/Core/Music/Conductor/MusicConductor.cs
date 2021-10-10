@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Funkin.NET.Core.Music.Songs;
+using Funkin.NET.Core.Music.Songs.Legacy;
 using osu.Framework.Logging;
 
 namespace Funkin.NET.Core.Music.Conductor

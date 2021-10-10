@@ -22,7 +22,8 @@ namespace Funkin.NET.Default.Graphics.Composites
             {
                 Origin = Anchor.BottomLeft,
                 Anchor = Anchor.Centre,
-                IsPlaying = true
+                IsPlaying = true,
+                AlwaysPresent = true
             };
 
             Texture Get(string name) => textures.GetTexture(PathHelper.Texture.LogoBumpinXml, name);

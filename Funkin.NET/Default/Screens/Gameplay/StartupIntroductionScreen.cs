@@ -18,7 +18,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
 {
     public class StartupIntroductionScreen : DefaultScreen
     {
-        public DefaultScreen NextScreen { get; set; }
+        public IScreen NextScreen { get; set; }
 
         public TextFlowContainer TextFlow { get; protected set; }
 
@@ -28,8 +28,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
 
         public override bool CursorVisible => false;
 
-        [Resolved]
-        private Storage Storage { get; set; }
+        [Resolved] private Storage Storage { get; set; }
 
         public List<string> QueuedText = new();
         public bool LoadingInitiated;
@@ -115,7 +114,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
                 double newDelay = 200D;
 
                 foreach (Drawable drawable in TextFlow)
-                    drawable.Delay(newDelay += 20).FadeTo(0.001f,400D);
+                    drawable.Delay(newDelay += 20).FadeTo(0.001f, 400D);
             }, 3000D);
 
             Scheduler.AddDelayed(() =>
@@ -179,6 +178,7 @@ namespace Funkin.NET.Default.Screens.Gameplay
             );
         }
 
-        public override IBackgroundScreen CreateBackground() => new DefaultBackgroundScreen(DefaultBackgroundType.Purple);
+        public override IBackgroundScreen CreateBackground() =>
+            new DefaultBackgroundScreen(DefaultBackgroundType.Purple);
     }
 }

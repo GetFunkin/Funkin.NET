@@ -14,7 +14,7 @@ namespace Funkin.NET.Core.Music.Songs.Legacy
 
         [JsonPropertyName("sectionNotes")]
         [JsonConverter(typeof(NoteConverter))]
-        public List<Note> SectionNotes { get; set; }
+        public List<LegacyNote> SectionNotes { get; set; }
 
         [JsonPropertyName("bpm")] public int? Bpm { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Core.Music.Songs;
+using Funkin.NET.Core.Music.Songs.Legacy;
 using Funkin.NET.Default.Screens.Gameplay;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -31,8 +32,6 @@ namespace Funkin.NET.Default.Graphics.Composites.Gameplay
         public virtual bool IsEnemyArrow { get; }
 
         public virtual bool HasBeenHit { get; protected set; }
-
-        public virtual IGameData.HitAccuracyType? AccuracyType { get; protected set; }
 
         protected Sprite ArrowSprite { get; }
         protected Sprite HoldEndSprite { get; }
@@ -70,7 +69,7 @@ namespace Funkin.NET.Default.Graphics.Composites.Gameplay
             LifetimeEnd = TargetTime + (2 * 1000 + holdTime); // Lifetime ends 2 seconds + hold length after target
         }
 
-        public ScrollingArrowDrawable(Note note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
+        public ScrollingArrowDrawable(LegacyNote note, Vector2 targetPos, double songSpeed = 1, bool isEnemyArrow = false,
             double startOffset = 0) :
             this(note.Key, note.Offset + startOffset, note.HoldLength, targetPos, songSpeed, isEnemyArrow)
         {
@@ -94,9 +93,6 @@ namespace Funkin.NET.Default.Graphics.Composites.Gameplay
 
             UpdateArrowPos();
             UpdateHoldPos();
-
-            if (Position.Y < -250f && !IsEnemyArrow && AccuracyType is null)
-                AccuracyType = IGameData.HitAccuracyType.Missed;
 
             // TODO: sustain note support
             if (!(Position.Y <= -200f) || !IsEnemyArrow)
@@ -185,34 +181,11 @@ namespace Funkin.NET.Default.Graphics.Composites.Gameplay
             Console.WriteLine("6");
             // TODO: better removal technique
             Alpha = 0f;
-
-            IGameData.HitAccuracyType? hitType = Position.Y switch
-            {
-                >= -210f and <= -190f => IGameData.HitAccuracyType.Sick,
-                >= -220f and <= -180f => IGameData.HitAccuracyType.Good,
-                >= -245f and <= -165f => IGameData.HitAccuracyType.Bad,
-                >= -250f and <= -150f => IGameData.HitAccuracyType.Shit,
-                _ => null
-            };
-
-            AccuracyType = hitType;
         }
 
         public virtual void Release(KeyAction action)
         {
             IsHeld = false;
-        }
-
-        public virtual void UpdateGameData(ref IGameData gameData)
-        {
-            if (RegisteredAccuracyType || !AccuracyType.HasValue || IsEnemyArrow)
-                return;
-
-            RegisteredAccuracyType = true;
-            gameData.NoteHits.Add(AccuracyType.Value);
-            // Console.WriteLine(AccuracyType);
-            gameData.AddToScore(AccuracyType.Value);
-            gameData.ModifyHealth(AccuracyType.Value);
         }
 
         // TODO: move to own class

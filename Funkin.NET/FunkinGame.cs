@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Funkin.NET.Common.Configuration;
 using Funkin.NET.Common.Graphics.Containers;
@@ -58,8 +57,6 @@ namespace Funkin.NET
 
         protected override Container<Drawable> Content => Containers[FunkinContainers.Content];
 
-        public List<OverlayContainer> VisibleBlockingOverlays { get; } = new();
-
         protected FunkinConfigManager Configuration;
         protected DependencyContainer DependencyContainer;
         protected Bindable<bool> ShowFpsDisplay;
@@ -116,7 +113,7 @@ namespace Funkin.NET
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             DependencyContainer = new DependencyContainer(base.CreateChildDependencies(parent));
 
-        public override Container CreateScalingContainer() =>
+        public override Container CreateScalingContainer() => 
             Containers[FunkinContainers.ScalingContainer] = new ScalingContainer(FunkinConfigManager.ScalingMode.On);
 
         public override void SetHost(GameHost host)
@@ -196,8 +193,10 @@ namespace Funkin.NET
                 || Containers[FunkinContainers.ScalingContainer] is null)
                 return;
 
-            Containers.As<ScalingContainer>(FunkinContainers.ScalingContainer).BackgroundStack
-                ?.Push(backgroundProvider.CreateBackground());
+            Containers.As<ScalingContainer>(FunkinContainers.ScalingContainer)
+                .BackgroundStack?
+                .Push(backgroundProvider.CreateBackground());
+
             ScreenStack.SetParallax(backgroundProvider);
             ScreenStack.BackgroundScreenStack.Push(backgroundProvider.CreateBackground());
         }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Funkin.NET.Core.Music.Songs
+namespace Funkin.NET.Core.Music.Songs.Legacy
 {
     public interface ISection
     {
@@ -10,7 +10,7 @@ namespace Funkin.NET.Core.Music.Songs
 
         int LengthInSteps { get; }
 
-        List<Note> SectionNotes { get; }
+        List<LegacyNote> SectionNotes { get; }
 
         int? Bpm { get; }
 

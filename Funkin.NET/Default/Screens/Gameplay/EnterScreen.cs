@@ -17,7 +17,6 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.Transforms;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
-using osu.Framework.Screens;
 using osuTK;
 
 namespace Funkin.NET.Default.Screens.Gameplay
@@ -74,13 +73,8 @@ namespace Funkin.NET.Default.Screens.Gameplay
             if (SelectedEnter && TimeOnEntering == TimeSpan.Zero.Milliseconds)
                 TimeOnEntering = Clock.CurrentTime;
 
-            if (SelectedEnter /*&& ScreenFlashBang?.Alpha >= 1f*/)
-            {
-                // this.Push(new SimpleKeyScreen(RootTrack.GetTrackFromFile("Json/Songs/bopeebo/bopeebo.json").Song));
-
-                // Music.Stop();
+            if (SelectedEnter) 
                 EnteredRealMenu = true;
-            }
         }
 
         protected void DoCoolMenuStuff()
@@ -458,8 +452,6 @@ namespace Funkin.NET.Default.Screens.Gameplay
                 {
                     0 => () =>
                     {
-                        this.Push(BaseKeyPlayScreen.GetPlayScreen("Json/Songs/Bopeebo/bopeebo-normal.json",
-                            "Songs/Bopeebo/Inst.ogg", "Songs/Bopeebo/Voices.ogg"));
                     },
                     // 2 => game.Containers[FunkinContainers.Settings].Show,
                     _ => null

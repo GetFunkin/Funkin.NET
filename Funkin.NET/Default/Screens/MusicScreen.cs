@@ -29,6 +29,8 @@ namespace Funkin.NET.Default.Screens
             MusicBpm = new Bindable<double>();
             MusicBpm.ValueChanged += d =>
             {
+                // Null-safe because value is not immediately changed.
+                // ReSharper disable once PossibleNullReferenceException
                 Conductor.Bpm = d.NewValue;
             };
 
@@ -84,7 +86,7 @@ namespace Funkin.NET.Default.Screens
         {
             base.OnSuspending(next);
 
-            Music.Stop();
+            Music.Reset();
         }
     }
 }

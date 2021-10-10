@@ -5,12 +5,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Funkin.NET.Common.Input;
 using Funkin.NET.Core.Music.Songs;
+using Funkin.NET.Core.Music.Songs.Legacy;
 
 namespace Funkin.NET.Core.Json
 {
-    public class NoteConverter : JsonConverter<List<Note>>
+    public class NoteConverter : JsonConverter<List<LegacyNote>>
     {
-        public override List<Note> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override List<LegacyNote> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartArray)
                 throw new JsonException();
@@ -23,7 +24,7 @@ namespace Funkin.NET.Core.Json
                 let offset = noteArray[0].GetInt32()
                 let key = noteArray[1].GetInt32()
                 let holdTime = noteArray[2].GetInt32()
-                select new Note
+                select new LegacyNote
                 {
                     Offset = offset,
                     Key = (KeyAction) key,
@@ -31,7 +32,7 @@ namespace Funkin.NET.Core.Json
                 }).ToList();
         }
 
-        public override void Write(Utf8JsonWriter writer, List<Note> value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, List<LegacyNote> value, JsonSerializerOptions options)
         {
             // TODO: Implement serialization of Note
             throw new NotImplementedException();

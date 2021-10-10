@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Funkin.NET.Core.Music.Songs
+namespace Funkin.NET.Core.Music.Songs.Legacy
 {
     public interface ITrack
     {

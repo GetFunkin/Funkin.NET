@@ -1,8 +1,8 @@
 ﻿using Funkin.NET.Common.Input;
 
-namespace Funkin.NET.Core.Music.Songs
+namespace Funkin.NET.Core.Music.Songs.Legacy
 {
-    public class Note
+    public class LegacyNote
     {
         /// <summary>
         /// The time when the note has to be pressed (in milliseconds)
