@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using Funkin.NET.Intermediary.Injection.Services;
 using Funkin.NET.Resources;
+using Newtonsoft.Json;
 
 namespace Funkin.NET.Common.Services
 {
@@ -12,7 +12,7 @@ namespace Funkin.NET.Common.Services
 
         public SplashTextService(string jsonPath)
         {
-            SplashTextList = JsonSerializer.Deserialize<List<string[]>>(jsonPath);
+            SplashTextList = JsonConvert.DeserializeObject<List<string[]>>(jsonPath);
         }
 
         public string[] GetSplashText() => SplashTextList[new Random().Next(0, SplashTextList.Count)];

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using osu.Framework.Input.Bindings;
+using JsonException = Newtonsoft.Json.JsonException;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace Funkin.NET.Intermediary.Json
 {
@@ -12,10 +13,34 @@ namespace Funkin.NET.Intermediary.Json
     /// <typeparam name="T"></typeparam>
     public class KeyBindingConverter<T> : JsonConverter<IKeyBinding>
     {
-        public override IKeyBinding Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override void WriteJson(
+            JsonWriter writer, IKeyBinding? value, JsonSerializer serializer)
+        {
+            // {
+            writer.WriteStartObject();
+
+            // write the element account to the beginning
+            // currently unused, but can be helpful later on
+            // was originally used for reading, but we just check for the end object now
+            int elemCount = value.KeyCombination.Keys.Length;
+
+            // write the name of the button press
+            writer.WriteValue(value.Action.ToString());
+
+            // write all the keys associated with the action, which we use to map to bindings when deserializing
+            for (int i = 0; i < elemCount; i++)
+                writer.WriteValue(value.KeyCombination.Keys[i].ToString());
+
+            // }
+            writer.WriteEndObject();
+        }
+
+        public override IKeyBinding? ReadJson(JsonReader reader, Type objectType, IKeyBinding? existingValue,
+            bool hasExistingValue,
+            JsonSerializer serializer)
         {
             // ensure a start object ('{') exists
-            if (reader.TokenType != JsonTokenType.StartObject)
+            if (reader.TokenType != JsonToken.StartObject)
                 throw new JsonException();
 
             int jsonCycle = 0;
@@ -28,23 +53,23 @@ namespace Funkin.NET.Intermediary.Json
             while (reader.Read())
             {
                 // exit out of the loop after the end object
-                if (reader.TokenType == JsonTokenType.EndObject)
+                if (reader.TokenType == JsonToken.EndObject)
                     break;
 
-                // ignore property names
-                if (reader.TokenType == JsonTokenType.PropertyName)
+                // Ignore property names (LEGACY)
+                if (reader.TokenType == JsonToken.PropertyName)
                     continue;
 
                 switch (jsonCycle)
                 {
                     // at the beginning, get the name of the action
                     case 0:
-                        actionString = reader.GetString();
+                        actionString = reader.ReadAsString() ?? "";
                         break;
 
                     // if it isn't the beginning, parse the InputKey enum
                     default:
-                        keys.Add(Enum.Parse<InputKey>(reader.GetString() ?? ""));
+                        keys.Add(Enum.Parse<InputKey>(reader.ReadAsString() ?? ""));
                         break;
                 }
 
@@ -56,27 +81,6 @@ namespace Funkin.NET.Intermediary.Json
             object enumAction = Enum.Parse(typeof(T), actionString ?? throw new InvalidOperationException());
 
             return new KeyBinding(combo, enumAction);
-        }
-
-        public override void Write(Utf8JsonWriter writer, IKeyBinding value, JsonSerializerOptions options)
-        {
-            // {
-            writer.WriteStartObject();
-
-            // write the element account to the beginning
-            // currently unused, but can be helpful later on
-            // was originally used for reading, but we just check for the end object now
-            int elemCount = value.KeyCombination.Keys.Length;
-
-            // write the name of the button press
-            writer.WriteString("action", value.Action.ToString());
-
-            // write all the keys associated with the action, which we use to map to bindings when deserializing
-            for (int i = 0; i < elemCount; i++)
-                writer.WriteString($"key{i}", value.KeyCombination.Keys[i].ToString());
-
-            // }
-            writer.WriteEndObject();
         }
     }
 }

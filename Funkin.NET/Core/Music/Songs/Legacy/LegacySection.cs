@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using Funkin.NET.Core.Json;
+using Newtonsoft.Json;
 
 namespace Funkin.NET.Core.Music.Songs.Legacy
 {
-    public class LegacySection : ISection
+    public class LegacySection
     {
-        [JsonPropertyName("mustHitSection")] public bool MustHitSection { get; set; }
+        [JsonProperty("mustHitSection")] public bool MustHitSection { get; set; }
 
-        [JsonPropertyName("typeOfSection")] public int TypeOfSection { get; set; }
+        [JsonProperty("typeOfSection")] public int TypeOfSection { get; set; }
 
-        [JsonPropertyName("lengthInSteps")] public int LengthInSteps { get; set; }
+        [JsonProperty("lengthInSteps")] public int LengthInSteps { get; set; }
 
-        [JsonPropertyName("sectionNotes")]
-        [JsonConverter(typeof(NoteConverter))]
-        public List<LegacyNote> SectionNotes { get; set; }
+        [JsonProperty("sectionNotes")]
+        public List<(double, int, int)> SectionNotes { get; set; }
 
-        [JsonPropertyName("bpm")] public int? Bpm { get; set; }
+        [JsonProperty("bpm")] public int? Bpm { get; set; }
 
-        [JsonPropertyName("changeBPM")] public bool? ChangeBpm { get; set; }
+        [JsonProperty("changeBPM")] public bool? ChangeBpm { get; set; }
     }
 }

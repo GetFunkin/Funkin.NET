@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using Funkin.NET.Intermediary.Json;
+using Newtonsoft.Json;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Platform;
 
@@ -46,16 +46,15 @@ namespace Funkin.NET.Intermediary.Input
                     return FallbackKeyBindings;
 
                 // Deserialize the existing JSON file.
-                JsonSerializerOptions options = new()
+                JsonSerializerSettings options = new()
                 {
-                    WriteIndented = true,
-
+                    Formatting = Formatting.Indented,
                     // Use a custom JSON converter
                     Converters = {new KeyBindingConverter<T>()}
                 };
 
                 // Deserialize into a collection if IKeyBindings
-                return JsonSerializer.Deserialize<IEnumerable<IKeyBinding>>(File.ReadAllText(Location), options);
+                return JsonConvert.DeserializeObject<IEnumerable<IKeyBinding>>(File.ReadAllText(Location), options)!;
             }
         }
 
