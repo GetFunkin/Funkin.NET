@@ -16,18 +16,4 @@
     <EmbeddedResource Remove=".obj\**\*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Textures\Cursor\cursorwhatever.png" />
-    <None Remove="Textures\Cursor\cursorwhatever.xml" />
-    <None Remove="Textures\Shared\freeplay white.png" />
-    <None Remove="Textures\Shared\logoBumpin.png" />
-    <None Remove="Textures\Shared\logoBumpin.xml" />
-    <None Remove="Textures\Shared\options white.png" />
-    <None Remove="Textures\Shared\story mode white.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Textures\Icon.ico" />
-  </ItemGroup>
-
 </Project>
