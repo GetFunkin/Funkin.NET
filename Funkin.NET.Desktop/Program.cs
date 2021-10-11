@@ -1,7 +1,6 @@
 ﻿using osu.Framework;
 using osu.Framework.Platform;
 
-// TODO: modding layer
 namespace Funkin.NET.Desktop
 {
     /// <summary>

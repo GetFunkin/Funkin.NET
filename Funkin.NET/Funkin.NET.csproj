@@ -19,10 +19,4 @@
     <ProjectReference Include="..\Funkin.NET.Intermediary\Funkin.NET.Intermediary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Services\" />
-    <Folder Include="Core\ManiaContent\" />
-    <Folder Include="Core\Music\Songs\Legacy\Beatmaps\" />
-  </ItemGroup>
-
 </Project>
