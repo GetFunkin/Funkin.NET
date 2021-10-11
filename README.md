@@ -11,11 +11,14 @@ Funkin.NET is an experimental, unfaithful, and heavily-W.I.P. Friday Night Funki
 Most of the code here is either written by me, adapted from FNF's source code, or adapted from osu!lazer's code under the MIT license.
 
 # Project Structures
-| Project                      | Function                                                                                                                   |
-|------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `Funkin.NET.Desktop`         | Desktop host for `Funkin.NET`, works on Windows, MacOS, and Linux.                                                         |
-| `Funkin.NET.Intermediary`    | Intermediate code that operates as a backend for `Funkin.NET` but does not use code exclusive to it. Meant to be reusable. |
-| `Funkin.NET.Resources`       | Assembly holding resource files used in `Funkin.NET`.                                                                      |
-| `Funkin.NET`                 | Main game assembly. Contains a majority of game functionality.                                                             |
-| `GetFunkin.AdobeNecromancer` | Sparrow Atlas parser used for managing Sparrow Atlas images and extracting frame data from them.                           |
-| `osu-framework`              | Forked `osu-framework` sub-module that we rely on instead of the NuGet package so we can make small tweaks as needed.      |
+| Project                            | Function                                                                                                                   |
+|------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `Funkin.NET.Desktop`               | Desktop host for `Funkin.NET`, works on Windows, MacOS, and Linux.                                                         |
+| `Funkin.NET.Intermediary`          | Intermediate code that operates as a backend for `Funkin.NET` but does not use code exclusive to it. Meant to be reusable. |
+| `Funkin.NET.Resources`             | Assembly holding resource files used in `Funkin.NET`.                                                                      |
+| `Funkin.NET`                       | Main game assembly. Contains a majority of game functionality.                                                             |
+| [`GetFunkin.AdobeNecromancer`][gf] | Sparrow Atlas parser used for managing Sparrow Atlas images and extracting frame data from them.                           |
+| [`osu-framework`][of]   | Forked `osu-framework` sub-module that we rely on instead of the NuGet package so we can make small tweaks as needed.      |
+
+[gf]: https://github.com/GetFunkin/GetFunkin.AdobeNecromancer
+[of]: https://github.com/GetFunkin/osu-framework
