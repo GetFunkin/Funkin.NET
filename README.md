@@ -18,7 +18,7 @@ Most of the code here is either written by me, adapted from FNF's source code, o
 | `Funkin.NET.Resources`             | Assembly holding resource files used in `Funkin.NET`.                                                                      |
 | `Funkin.NET`                       | Main game assembly. Contains a majority of game functionality.                                                             |
 | [`GetFunkin.AdobeNecromancer`][gf] | Sparrow Atlas parser used for managing Sparrow Atlas images and extracting frame data from them.                           |
-| [`osu-framework`][of]   | Forked `osu-framework` sub-module that we rely on instead of the NuGet package so we can make small tweaks as needed.      |
+| [`osu-framework`][of]              | Forked `osu-framework` sub-module that we rely on instead of the NuGet package so we can make small tweaks as needed.      |
 
 [gf]: https://github.com/GetFunkin/GetFunkin.AdobeNecromancer
 [of]: https://github.com/GetFunkin/osu-framework
