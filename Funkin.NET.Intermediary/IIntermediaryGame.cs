@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Funkin.NET.Intermediary.Injection;
-using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Utilities;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
@@ -12,9 +11,9 @@ namespace Funkin.NET.Intermediary
 {
     public interface IIntermediaryGame : IServiceHoster
     {
-        Storage Storage { get; set; }
+        Storage? Storage { get; set; }
 
-        DefaultScreenStack ScreenStack { get; set; }
+        ScreenStack? ScreenStack { get; set; }
 
         IEnumerable<IResourceStore<byte[]>> ResourceStores { get; }
 
@@ -29,7 +28,5 @@ namespace Funkin.NET.Intermediary
         void OnBackgroundDependencyLoad();
 
         void ScreenChanged(IScreen current, IScreen newScreen);
-
-        Container CreateScalingContainer();
     }
 }

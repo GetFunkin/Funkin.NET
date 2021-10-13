@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu.Framework", "osu-framework\osu.Framework\osu.Framework.csproj", "{3E451AE7-FE5D-48CA-9982-8027F8E47105}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funkin.NET.Tests", "Funkin.NET.Tests\Funkin.NET.Tests.csproj", "{F64ACB0A-C015-4D09-9540-50C20401E348}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{3E451AE7-FE5D-48CA-9982-8027F8E47105}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E451AE7-FE5D-48CA-9982-8027F8E47105}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E451AE7-FE5D-48CA-9982-8027F8E47105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64ACB0A-C015-4D09-9540-50C20401E348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F64ACB0A-C015-4D09-9540-50C20401E348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F64ACB0A-C015-4D09-9540-50C20401E348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F64ACB0A-C015-4D09-9540-50C20401E348}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,6 +8,9 @@ using osuTK;
 
 namespace Funkin.NET.Intermediary.Graphics.Containers
 {
+    /// <summary>
+    ///     Parallax container based on the cursor position.
+    /// </summary>
     public class ParallaxContainer : Container, IRequireHighFrequencyMousePosition
     {
         public const float DefaultParallaxAmount = 0.02f;
@@ -24,7 +27,7 @@ namespace Funkin.NET.Intermediary.Graphics.Containers
         public float ParallaxDuration = DefaultParallaxDuration;
 
         protected readonly Container ContainerContent;
-        protected InputManager InputManager;
+        protected InputManager? InputManager;
 
         protected override Container<Drawable> Content => ContainerContent;
 
@@ -53,7 +56,7 @@ namespace Funkin.NET.Intermediary.Graphics.Containers
 
             Vector2 offset = Vector2.Zero;
 
-            if (InputManager.CurrentState.Mouse is not null)
+            if (InputManager?.CurrentState.Mouse is not null)
             {
                 Vector2 sizeDiv2 = DrawSize / 2f;
                 Vector2 relativeAmount = ToLocalSpace(InputManager.CurrentState.Mouse.Position) - sizeDiv2;
@@ -70,13 +73,13 @@ namespace Funkin.NET.Intermediary.Graphics.Containers
                 offset = relativeAmount * sizeDiv2 * ParallaxAmount;
             }
 
-            double elapsed = Math.Clamp(Clock.ElapsedFrameTime, 0, ParallaxDuration);
+            double elapsed = Math.Clamp(Clock.ElapsedFrameTime, 0D, ParallaxDuration);
 
             Vector2 pos = Interpolation.ValueAt(elapsed, ContainerContent.Position,
-                offset, 0, ParallaxDuration, Easing.OutQuint);
+                offset, 0D, ParallaxDuration, Easing.OutQuint);
 
             Vector2 scale = Interpolation.ValueAt(elapsed, ContainerContent.Scale,
-                new Vector2(1 + Math.Abs(ParallaxAmount)), 0, 1000, Easing.OutQuint);
+                new Vector2(1f + Math.Abs(ParallaxAmount)), 0D, 1000D, Easing.OutQuint);
 
             ContainerContent.Position = pos;
             ContainerContent.Scale = scale;

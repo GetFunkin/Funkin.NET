@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Funkin.NET.Intermediary.Injection.Services;
-using Funkin.NET.Intermediary.Screens;
 using Funkin.NET.Intermediary.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using osu.Framework;
@@ -18,9 +17,9 @@ namespace Funkin.NET.Intermediary
 {
     public abstract class IntermediaryGame : Game, IIntermediaryGame
     {
-        public Storage Storage { get; set; }
+        public Storage? Storage { get; set; }
 
-        public DefaultScreenStack ScreenStack { get; set; }
+        public ScreenStack? ScreenStack { get; set; }
 
         public virtual IEnumerable<IResourceStore<byte[]>> ResourceStores { get; } =
             Array.Empty<ResourceStore<byte[]>>();
@@ -44,8 +43,6 @@ namespace Funkin.NET.Intermediary
         {
         }
 
-        public abstract Container CreateScalingContainer();
-
         public abstract void OnBackgroundDependencyLoad();
 
         [BackgroundDependencyLoader]
@@ -65,15 +62,13 @@ namespace Funkin.NET.Intermediary
                     continue;
                 
                 MethodInfo[] provider = type.GetMethods().Where(x => x.GetCustomAttribute<ProvidesServiceAttribute>() != null).ToArray();
-                IService service;
 
-                if (provider.Length > 1)
-                    throw new Exception("Multiple methods marked with ProvidesServiceAttribute.");
-
-                if (provider[0] is not null)
-                    service = (IService)provider[0].Invoke(null, null);
-                else
-                    service = (IService) Activator.CreateInstance(type);
+                IService? service = provider.Length switch
+                {
+                    > 1 => throw new Exception("Multiple methods marked with ProvidesServiceAttribute."),
+                    1 => (IService?) provider[0].Invoke(null, null),
+                    _ => (IService?) Activator.CreateInstance(type)
+                };
 
                 if (service is null)
                     throw new NullReferenceException($"Failed to create service of type: {type.Name}");
@@ -87,6 +82,9 @@ namespace Funkin.NET.Intermediary
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            if (ScreenStack is null)
+                return;
 
             ScreenStack.ScreenPushed += ScreenPushed;
             ScreenStack.ScreenExited += ScreenExited;

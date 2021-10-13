@@ -96,6 +96,6 @@ namespace Funkin.NET.Intermediary.ResourceStores
         }
 
         public Texture GetTexture(string atlas, string textureName, int frame) =>
-            GetTexture(atlas, textureName + PathHelper.Atlas.FrameAsString(frame));
+            GetTexture(atlas, textureName + Atlas.FrameAsString(frame));
     }
 }
