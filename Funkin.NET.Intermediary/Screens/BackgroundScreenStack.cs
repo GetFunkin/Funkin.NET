@@ -1,11 +1,12 @@
 ﻿using Funkin.NET.Intermediary.Screens.Backgrounds;
 using osu.Framework.Graphics;
+using osu.Framework.Screens;
 using osuTK;
 // ReSharper disable VirtualMemberCallInConstructor
 
 namespace Funkin.NET.Intermediary.Screens
 {
-    public class BackgroundScreenStack : DefaultScreenStack
+    public class BackgroundScreenStack : ScreenStack
     {
         public BackgroundScreenStack() : base(false)
         {

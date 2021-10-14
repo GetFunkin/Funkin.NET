@@ -25,7 +25,7 @@ namespace Funkin.NET.Intermediary
 
         void InitializeContent();
 
-        void OnBackgroundDependencyLoad();
+        void InterceptBackgroundDependencyLoad();
 
         void ScreenChanged(IScreen current, IScreen newScreen);
     }

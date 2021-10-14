@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Funkin.NET.Intermediary.Utilities
 {
@@ -7,15 +9,26 @@ namespace Funkin.NET.Intermediary.Utilities
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class CastDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+    public class CastDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : notnull
     {
         public new TValue this[TKey key]
         {
-            get => ContainsKey(key) ? base[key] : default;
+            [CanBeNull] get => PrivateGet(key)!;
 
             set => base[key] = value;
         }
 
-        public T As<T>(TKey key) where T : TValue => (T) this[key];
+        public T? As<T>(TKey key, bool forgiveNull = false) where T : TValue =>
+            (T?) (PrivateGet(key) ?? ThrowNull(key, forgiveNull));
+
+        private TValue? PrivateGet(TKey key) => ContainsKey(key) ? base[key] : default;
+
+        private static TValue ThrowNull(TKey key, bool throwNull)
+        {
+            if (throwNull)
+                throw new NullReferenceException(key + " was null during dictionary retrieval.");
+
+            return default!;
+        }
     }
 }

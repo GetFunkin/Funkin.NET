@@ -19,7 +19,7 @@ namespace Funkin.NET.Tests
 
             AddRange(new Drawable[]
             {
-                new TestBrowser("Funkin.NET"),
+                new TestBrowser("Funkin.NET.Tests"),
                 new CursorContainer()
             });
 

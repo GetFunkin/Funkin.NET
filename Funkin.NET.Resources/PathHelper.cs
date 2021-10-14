@@ -31,4 +31,15 @@ namespace Funkin.NET.Resources
             return sanitize ? SanitizeForResources(builder.ToString()) : builder.ToString();
         }
     }
+
+    public static class Textures
+    {
+        public static string GetTexture(string path, bool sanitize = true, bool includeStart = false) =>
+            PathHelper.GetPath(path, sanitize, includeStart, "Textures");
+
+        public static class Backgrounds
+        {
+            public static string DesaturatedMenu => GetTexture("Backgrounds/DesaturatedMenu");
+        }
+    }
 }

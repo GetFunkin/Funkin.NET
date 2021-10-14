@@ -16,4 +16,8 @@
     <EmbeddedResource Remove=".obj\**\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Textures\Backgrounds\DesaturatedMenu.png" />
+  </ItemGroup>
+
 </Project>

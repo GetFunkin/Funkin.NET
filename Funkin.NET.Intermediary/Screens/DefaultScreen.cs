@@ -1,5 +1,4 @@
 ﻿using Funkin.NET.Intermediary.Screens.Backgrounds;
-using JetBrains.Annotations;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
@@ -24,13 +23,11 @@ namespace Funkin.NET.Intermediary.Screens
         /// </summary>
         public virtual float BackgroundParallaxAmount { get; set; } = 1f;
 
-        public IBackgroundScreen OwnedBackground { get; set; }
+        public IBackgroundScreen? OwnedBackground { get; set; }
 
-        public IBackgroundScreen Background { get; set; }
+        public IBackgroundScreen? Background { get; set; }
 
-        [Resolved(CanBeNull = true)]
-        [CanBeNull]
-        public BackgroundScreenStack BackgroundStack { get; private set; }
+        [Resolved(CanBeNull = true)] public BackgroundScreenStack? BackgroundStack { get; private set; }
 
         protected DefaultScreen()
         {

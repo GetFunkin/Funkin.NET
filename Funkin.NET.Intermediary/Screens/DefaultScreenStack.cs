@@ -1,4 +1,5 @@
 ﻿using Funkin.NET.Intermediary.Graphics.Containers;
+using Funkin.NET.Intermediary.Screens.Backgrounds;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Screens;
@@ -13,18 +14,17 @@ namespace Funkin.NET.Intermediary.Screens
         protected ParallaxContainer ParallaxContainer;
         public BackgroundScreenStack? BackgroundScreenStack;
 
-        public DefaultScreenStack(bool withBackground = true)
+        public DefaultScreenStack() : base(false)
         {
             InternalChild = ParallaxContainer = new ParallaxContainer
             {
-                RelativeSizeAxes = Axes.Both
-            };
+                RelativeSizeAxes = Axes.Both,
 
-            if (withBackground)
-                ParallaxContainer.Child = BackgroundScreenStack = new BackgroundScreenStack
+                Child = BackgroundScreenStack = new BackgroundScreenStack
                 {
                     RelativeSizeAxes = Axes.Both
-                };
+                }
+            };
         }
 
         public virtual void SetParallax(IScreen? next)
@@ -38,5 +38,7 @@ namespace Funkin.NET.Intermediary.Screens
             float parallaxAmount = ParallaxContainer.DefaultParallaxAmount * screen.BackgroundParallaxAmount;
             ParallaxContainer.ParallaxAmount = parallaxAmount;
         }
+
+        public virtual void PushBackground(IBackgroundScreen? background) => BackgroundScreenStack?.Push(background);
     }
 }

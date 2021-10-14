@@ -19,7 +19,7 @@ namespace Funkin.NET.Intermediary.ResourceStores
         protected readonly Dictionary<string, List<SubTexture>> SubTextures = new();
         protected readonly Dictionary<string, Dictionary<string, Texture>> TextureAtlasCache = new();
 
-        public SparrowAtlasStore(IResourceStore<byte[]> store = null) : base(store)
+        public SparrowAtlasStore(IResourceStore<byte[]>? store = null) : base(store)
         {
             AddExtension("xml");
         }

@@ -20,7 +20,7 @@ namespace Funkin.NET.Intermediary.Screens.Backgrounds
 
         public float BlurScale { get; set; } = DefaultBlurScale;
 
-        public BufferedContainer BufferedContainer { get; protected set; }
+        public BufferedContainer? BufferedContainer { get; protected set; }
 
         public Background(string spriteName, Texture texture)
         {
@@ -65,10 +65,11 @@ namespace Funkin.NET.Intermediary.Screens.Backgrounds
                     ? Vector2.One
                     : new Vector2(BlurScale);
 
-            return BufferedContainer?.BlurTo(newBlurSigma * BlurScale, duration, easing);
+            return BufferedContainer?.BlurTo(newBlurSigma * BlurScale, duration, easing) ??
+                   new TransformSequence<BufferedContainer>(new BufferedContainer());
         }
 
-        public virtual bool Equals(Background other)
+        public virtual bool Equals(Background? other)
         {
             if (ReferenceEquals(null, other))
                 return false;

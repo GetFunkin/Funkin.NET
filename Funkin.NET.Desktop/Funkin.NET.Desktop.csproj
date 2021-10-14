@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="Funkin.NET.Properties.AssemblyAttributes.AssemblyConfigurationAttribute">
+      <_Parameter1>$(Configuration)</_Parameter1>
+      <_Parameter2>$(Platform)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Icon.ico" />
   </ItemGroup>
 

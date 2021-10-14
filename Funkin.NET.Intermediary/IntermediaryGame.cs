@@ -43,7 +43,7 @@ namespace Funkin.NET.Intermediary
         {
         }
 
-        public abstract void OnBackgroundDependencyLoad();
+        public abstract void InterceptBackgroundDependencyLoad();
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -51,7 +51,7 @@ namespace Funkin.NET.Intermediary
             foreach (IResourceStore<byte[]> store in ResourceStores)
                 Resources.AddStore(store);
 
-            OnBackgroundDependencyLoad();
+            InterceptBackgroundDependencyLoad();
 
             foreach ((ResourceStore<byte[]> resources, string fontPath) in FontStore)
                 AddFont(resources, fontPath);

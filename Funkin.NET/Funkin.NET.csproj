@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -12,7 +12,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="Funkin.NET.Properties.AssemblyAttributes.AssemblyConfigurationAttribute">
+      <_Parameter1>$(Configuration)</_Parameter1>
+      <_Parameter2>$(Platform)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MonoMod.RuntimeDetour" Version="21.7.8.3" />
+    <PackageReference Include="Realm" Version="10.6.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace Funkin.NET.Desktop
     ///     Desktop <see cref="FunkinGame"/> instance. <br />
     ///     Provides window title, cursor settings, and icon.
     /// </summary>
-    public class FunkinDesktop : Game
+    public class FunkinDesktop : FunkinGame
     {
         public override void SetHost(GameHost host)
         {

@@ -11,7 +11,7 @@ namespace Funkin.NET.Desktop
         /// <summary>
         ///     Host name used to get a suitable host (<see cref="Host.GetSuitableHost"/>
         /// </summary>
-        public const string SuitableHostName = "funkin.net";
+        public const string SuitableHostName = FunkinGameBase.ClientName;
 
         /// <summary>
         ///     Entry-point method, runs the game with a <see cref="Host"/> instance.

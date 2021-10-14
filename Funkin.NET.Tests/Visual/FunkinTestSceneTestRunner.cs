@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Funkin.NET.Intermediary.Screens;
 using osu.Framework.Testing;
 
 namespace Funkin.NET.Tests.Visual
@@ -10,9 +9,9 @@ namespace Funkin.NET.Tests.Visual
 
         private TestSceneTestRunner.TestRunner Runner;
 
-        public override void OnBackgroundDependencyLoad()
+        public override void InterceptBackgroundDependencyLoad()
         {
-            ScreenStack = new DefaultScreenStack();
+            base.InterceptBackgroundDependencyLoad();
 
             Add(Runner = new TestSceneTestRunner.TestRunner());
         }

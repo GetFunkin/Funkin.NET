@@ -4,11 +4,11 @@ namespace Funkin.NET.Intermediary.Screens.Backgrounds
 {
     public interface IBackgroundProvider
     {
-        IBackgroundScreen OwnedBackground { get; }
+        IBackgroundScreen? OwnedBackground { get; }
 
-        IBackgroundScreen Background { get; }
+        IBackgroundScreen? Background { get; }
 
-        BackgroundScreenStack BackgroundStack { get; }
+        BackgroundScreenStack? BackgroundStack { get; }
 
         public void ApplyToBackground(Action<IBackgroundScreen> action)
         {
