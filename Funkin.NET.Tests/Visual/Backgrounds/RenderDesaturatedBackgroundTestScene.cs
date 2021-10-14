@@ -67,12 +67,12 @@ namespace Funkin.NET.Tests.Visual.Backgrounds
                 screen.OnUpdate += drawable =>
                 {
                     if (amp.Value < SampleTrack.CurrentAmplitudes.Average)
-                        amp.Value += 0.01f;
+                        amp.Value += 0.075f;
                     else
                         amp.Value -= 0.01f;
 
                     ColourInfo gradient = ColourInfo.GradientVertical(Colour4.Yellow, Colour4.Red);
-                    gradient.TopRight = gradient.TopLeft = gradient.Interpolate(new Vector2(amp.Value * 0.5f - 0.25f)) * gradient.TopRight;
+                    gradient.TopRight = gradient.TopLeft = gradient.Interpolate(new Vector2(amp.Value * 0.5f - 0.5f)) * gradient.TopRight;
 
                     drawable.Colour = gradient;
                 };

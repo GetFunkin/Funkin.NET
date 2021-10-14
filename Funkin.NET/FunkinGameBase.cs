@@ -7,6 +7,7 @@ using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
+using osu.Framework.Screens;
 using AssemblyAttribute = Funkin.NET.Properties.AssemblyAttributes.AssemblyConfigurationAttribute;
 
 namespace Funkin.NET
