@@ -42,4 +42,15 @@ namespace Funkin.NET.Resources
             public static string DesaturatedMenu => GetTexture("Backgrounds/DesaturatedMenu");
         }
     }
+
+    public static class Tracks
+    {
+        public static string GetTrack(string path, bool sanitize = true, bool includeStart = false) =>
+            PathHelper.GetPath(path, sanitize, includeStart, "Tracks");
+
+        public static class Menu
+        {
+            public static string FreakyMenu => GetTrack("Menu/FreakyMenu.ogg");
+        }
+    }
 }

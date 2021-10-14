@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <None Remove="Textures\Backgrounds\DesaturatedMenu.png" />
+    <None Remove="Tracks\Menu\FreakyMenu.ogg" />
   </ItemGroup>
 
 </Project>
