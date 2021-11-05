@@ -1,0 +1,1 @@
+﻿Mania is the core FNF mod provided by Funkin.NET, containing many fundamentally important components and the base game's content.
