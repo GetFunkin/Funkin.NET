@@ -32,6 +32,25 @@ namespace Funkin.NET.Resources
         }
     }
 
+    public static class Fonts
+    {
+        public static string GetTexture(string path, bool sanitize = true, bool includeStart = false) =>
+            PathHelper.GetPath(path, sanitize, includeStart, "Fonts");
+
+        public static class Torus
+        {
+            private static string Get(string path) => GetTexture("Torus/" + path);
+
+            public static string TorusBold => Get("Torus-Bold");
+
+            public static string TorusLight => Get("Torus-Light");
+
+            public static string TorusRegular => Get("Torus-Regular");
+
+            public static string TorusSemiBold => Get("Torus-SemiBold");
+        }
+    }
+
     public static class Textures
     {
         public static string GetTexture(string path, bool sanitize = true, bool includeStart = false) =>
@@ -40,6 +59,14 @@ namespace Funkin.NET.Resources
         public static class Backgrounds
         {
             public static string DesaturatedMenu => GetTexture("Backgrounds/DesaturatedMenu");
+        }
+
+        public static class General
+        {
+            public static class Cursors
+            {
+                public static string Cursor => GetTexture("General/Cursors/Cursor");
+            }
         }
     }
 

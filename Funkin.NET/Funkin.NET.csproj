@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Funkin.NET.Intermediary\Funkin.NET.Intermediary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Graphics\Utilities\" />
+  </ItemGroup>
+
 </Project>

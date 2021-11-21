@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Funkin.NET.Graphics.Cursor;
 using Funkin.NET.Intermediary;
 using Funkin.NET.Resources;
 using osu.Framework.Allocation;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Cursor;
 using osu.Framework.IO.Stores;
-using osu.Framework.Screens;
 using AssemblyAttribute = Funkin.NET.Properties.AssemblyAttributes.AssemblyConfigurationAttribute;
 
 namespace Funkin.NET
@@ -23,6 +25,14 @@ namespace Funkin.NET
         public override IEnumerable<IResourceStore<byte[]>> ResourceStores => new[]
         {
             new DllResourceStore(PathHelper.Assembly)
+        };
+
+        public override IEnumerable<(ResourceStore<byte[]>, string)> FontStore => new (ResourceStore<byte[]>, string)[]
+        {
+            (Resources, NET.Resources.Fonts.Torus.TorusBold),
+            (Resources, NET.Resources.Fonts.Torus.TorusLight),
+            (Resources, NET.Resources.Fonts.Torus.TorusRegular),
+            (Resources, NET.Resources.Fonts.Torus.TorusSemiBold)
         };
 
         public virtual string Version
@@ -41,10 +51,7 @@ namespace Funkin.NET
             }
         }
 
-        public override void InterceptBackgroundDependencyLoad()
-        {
-            base.Content.Add(CreateScalingContainer());
-        }
+        protected virtual BasicCursorContainer CursorContainer { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -55,6 +62,21 @@ namespace Funkin.NET
                 );
 
             GameDependencies.CacheAs(this);
+
+            Drawable[] mainContent =
+            {
+                CursorContainer = new BasicCursorContainer
+                {
+                    RelativeSizeAxes = Axes.Both
+                }
+            };
+
+            CursorContainer.Child = OurContent = new TooltipContainer(CursorContainer.Cursor)
+            {
+                RelativeSizeAxes = Axes.Both
+            };
+
+            base.Content.Add(CreateScalingContainer().WithChildren(mainContent));
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>

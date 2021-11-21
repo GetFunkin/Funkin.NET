@@ -17,7 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Torus\Torus-Bold.bin" />
+    <None Remove="Fonts\Torus\Torus-Bold_0.png" />
+    <None Remove="Fonts\Torus\Torus-Light.bin" />
+    <None Remove="Fonts\Torus\Torus-Light_0.png" />
+    <None Remove="Fonts\Torus\Torus-Regular.bin" />
+    <None Remove="Fonts\Torus\Torus-Regular_0.png" />
+    <None Remove="Fonts\Torus\Torus-SemiBold.bin" />
+    <None Remove="Fonts\Torus\Torus-SemiBold_0.png" />
     <None Remove="Textures\Backgrounds\DesaturatedMenu.png" />
+    <None Remove="Textures\General\Cursors\Cursor.png" />
+    <None Remove="Textures\General\Cursors\Cursor.xml" />
     <None Remove="Tracks\Menu\FreakyMenu.ogg" />
   </ItemGroup>
 
