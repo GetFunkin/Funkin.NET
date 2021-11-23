@@ -24,7 +24,7 @@ namespace Funkin.NET.Resources
             StringBuilder builder = new();
 
             if (includeStart)
-                builder.Append(start);
+                builder.Append(start + '/');
 
             builder.Append(path);
 
@@ -34,7 +34,7 @@ namespace Funkin.NET.Resources
 
     public static class Fonts
     {
-        public static string GetTexture(string path, bool sanitize = true, bool includeStart = false) =>
+        public static string GetTexture(string path, bool sanitize = true, bool includeStart = true) =>
             PathHelper.GetPath(path, sanitize, includeStart, "Fonts");
 
         public static class Torus

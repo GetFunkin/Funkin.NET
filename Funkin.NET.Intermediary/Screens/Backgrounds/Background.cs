@@ -54,7 +54,7 @@ namespace Funkin.NET.Intermediary.Screens.Backgrounds
                 AddInternal(BufferedContainer = new BufferedContainer
                 {
                     RelativeSizeAxes = Axes.Both,
-                    CacheDrawnFrameBuffer = true,
+                    // CacheDrawnFrameBuffer = true,
                     RedrawOnScale = false,
                     Child = Sprite
                 });

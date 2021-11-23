@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Funkin.NET.Graphics.Cursor;
 using Funkin.NET.Intermediary;
+using Funkin.NET.Intermediary.ResourceStores;
 using Funkin.NET.Resources;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -51,7 +52,11 @@ namespace Funkin.NET
             }
         }
 
-        protected virtual BasicCursorContainer CursorContainer { get; set; }
+        private Container? OurContent;
+
+        protected override Container<Drawable> Content => OurContent ?? new Container();
+
+        protected virtual BasicCursorContainer? CursorContainer { get; set; }
 
         [BackgroundDependencyLoader]
         private void Load()
@@ -62,7 +67,9 @@ namespace Funkin.NET
                 );
 
             GameDependencies.CacheAs(this);
-
+            GameDependencies.CacheAs(Dependencies);
+            GameDependencies.CacheAs(new SparrowAtlasStore(Resources));
+            
             Drawable[] mainContent =
             {
                 CursorContainer = new BasicCursorContainer
@@ -82,6 +89,6 @@ namespace Funkin.NET
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             GameDependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
-        public virtual Container CreateScalingContainer() => new DrawSizePreservingFillContainer();
+        protected virtual Container CreateScalingContainer() => new DrawSizePreservingFillContainer();
     }
 }

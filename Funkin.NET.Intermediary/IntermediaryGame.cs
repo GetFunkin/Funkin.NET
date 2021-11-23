@@ -39,7 +39,7 @@ namespace Funkin.NET.Intermediary
         {
         }
 
-        public virtual void ScreenChanged(IScreen current, IScreen newScreen)
+        public virtual void ScreenChanged(IScreen? current, IScreen? newScreen)
         {
         }
 
@@ -90,13 +90,13 @@ namespace Funkin.NET.Intermediary
             ScreenStack.ScreenExited += ScreenExited;
         }
 
-        protected virtual void ScreenPushed(IScreen lastScreen, IScreen newScreen)
+        protected virtual void ScreenPushed(IScreen? lastScreen, IScreen? newScreen)
         {
             ScreenChanged(lastScreen, newScreen);
             Logger.Log($"Screen ({lastScreen}) pushed to → {newScreen}");
         }
 
-        protected virtual void ScreenExited(IScreen lastScreen, IScreen newScreen)
+        protected virtual void ScreenExited(IScreen? lastScreen, IScreen? newScreen)
         {
             ScreenChanged(lastScreen, newScreen);
             Logger.Log($"Screen ({lastScreen}) exited to → {newScreen}");

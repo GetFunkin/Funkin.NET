@@ -11,8 +11,6 @@ namespace Funkin.NET.Tests.Visual
 
         public override void InterceptBackgroundDependencyLoad()
         {
-            base.InterceptBackgroundDependencyLoad();
-
             Add(Runner = new TestSceneTestRunner.TestRunner());
         }
 

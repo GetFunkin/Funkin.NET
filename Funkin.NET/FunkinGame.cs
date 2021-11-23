@@ -7,6 +7,10 @@ namespace Funkin.NET
     {
         public override Assembly Assembly => typeof(FunkinGame).Assembly;
 
+        public override void InterceptBackgroundDependencyLoad()
+        {
+        }
+
         protected override void LoadComplete()
         {
             LoadComponentAsync(ScreenStack = new DefaultScreenStack(), AddInternal);

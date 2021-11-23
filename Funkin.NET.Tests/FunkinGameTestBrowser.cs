@@ -11,6 +11,10 @@ namespace Funkin.NET.Tests
     {
         public override Assembly Assembly => typeof(FunkinGameTestBrowser).Assembly;
 
+        public override void InterceptBackgroundDependencyLoad()
+        {
+        }
+
         protected override void LoadComplete()
         {
             // base.LoadComplete();
