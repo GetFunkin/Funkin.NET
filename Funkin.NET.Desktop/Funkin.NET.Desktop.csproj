@@ -3,15 +3,17 @@
     <TargetFramework>net5.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <AssemblyName>Funkin.NET</AssemblyName>
-    <ApplicationIcon>game.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Version>0.0.0</Version>
     <FileVersion>0.0.0</FileVersion>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup Label="Project References">
     <ProjectReference Include="..\Funkin.NET.Game\Funkin.NET.Game.csproj" />
   </ItemGroup>
-  <ItemGroup Label="Resources">
-    <EmbeddedResource Include="game.ico" />
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
 </Project>

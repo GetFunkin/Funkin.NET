@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Platform;
 using osu.Framework;
-using Funkin.NET.Game;
 
 namespace Funkin.NET.Desktop
 {
@@ -11,7 +10,7 @@ namespace Funkin.NET.Desktop
         public static void Main()
         {
             using GameHost host = Host.GetSuitableHost(HOST_NAME);
-            using osu.Framework.Game game = new FunkinGame();
+            using osu.Framework.Game game = new FunkinGameDesktop();
             host.Run(game);
         }
     }

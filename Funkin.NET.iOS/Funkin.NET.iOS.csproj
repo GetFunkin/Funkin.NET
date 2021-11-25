@@ -18,6 +18,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Funkin.NET.iOS</RootNamespace>
     <AssemblyName>Funkin.NET</AssemblyName>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -17,7 +17,10 @@ namespace Funkin.NET.Game
                 new Box
                 {
                     Colour = Color4.Violet,
-                    RelativeSizeAxes = Axes.Both,
+                    Width = 400,
+                    Height = 400,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre
                 },
                 new SpriteText
                 {
