@@ -27,7 +27,7 @@ namespace Funkin.NET.Game
                     Y = 20,
                     Text = "Main Screen",
                     Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
+                    Origin = Anchor.Centre,
                     Font = FontUsage.Default.With(size: 40)
                 },
                 new SpinningBox
