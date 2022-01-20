@@ -1,0 +1,34 @@
+name: Build Funkin.NET
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Master
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          
+      - name: Build Release & Debug
+        shell: bash
+        run: |
+          dotnet restore Funkin.NET.sln
+          dotnet build ./Funkin/Funkin.sln --configuration DEBUG
+          dotnet build ./Funkin/Funkin.sln --configuration RELEASE
+          
+      - name: Upload Debug Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Debug Build
+          path: |
+            ./Funkin/Funkin.Desktop/bin/Debug/
+            
+      - name: Upload Release Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Release Build
+          path: |
+            ./Funkin/Funkin.Desktop/bin/Release/

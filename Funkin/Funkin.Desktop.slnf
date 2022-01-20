@@ -1,0 +1,11 @@
+﻿{
+  "solution": {
+    "path": "Funkin.sln",
+    "projects": [
+      "Funkin.Desktop\\Funkin.Desktop.csproj",
+      "Funkin.Game\\Funkin.Game.csproj",
+      "Funkin.Game.Tests\\Funkin.Game.Tests.csproj",
+      "Funkin.Resources\\Funkin.Resources.csproj"
+    ]
+  }
+}
