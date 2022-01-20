@@ -15,7 +15,7 @@ jobs:
       - name: Build Release & Debug
         shell: bash
         run: |
-          dotnet restore Funkin.NET.sln
+          dotnet restore ./Funkin/Funkin.sln
           dotnet build ./Funkin/Funkin.sln --configuration DEBUG
           dotnet build ./Funkin/Funkin.sln --configuration RELEASE
           
