@@ -2,8 +2,8 @@
 name: Bug Report
 about: Create a bug report to inform us of issues with our software.
 title: ''
-labels: ''
-assignees: ''
+labels: 'type: bug'
+assignees: Steviegt6
 
 ---
 
