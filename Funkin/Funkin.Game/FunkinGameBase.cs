@@ -1,3 +1,5 @@
+using Funkin.Game.API.DependencyInjection;
+using Funkin.Game.Graphics.Containers;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -15,20 +17,29 @@ namespace Funkin.Game
 
         protected override Container<Drawable> Content { get; }
 
+        private DependencyContainer dependencies = null!; // Won't be null when this object is accessed.
+
+        protected readonly DependencyInjectionDispatcher InjectionDispatcher = new();
+
         protected FunkinGameBase()
         {
             // Ensure game and tests scale with window size and screen DPI.
-            base.Content.Add(Content = new DrawSizePreservingFillContainer
+            base.Content.Add(Content = new RelativeScalingRatioPreservingContainer
             {
                 // You may want to change TargetDrawSize to your "default" resolution, which will decide how things scale and position when using absolute coordinates.
-                TargetDrawSize = new Vector2(1366, 768)
+                TargetDrawSize = new Vector2(1280f, 720f),
             });
         }
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
+            dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         [BackgroundDependencyLoader]
         private void load()
         {
             Resources.AddStore(new DllResourceStore(typeof(FunkinResources).Assembly));
+
+            dependencies.CacheAs(InjectionDispatcher);
         }
     }
 }
