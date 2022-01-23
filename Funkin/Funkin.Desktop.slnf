@@ -5,7 +5,8 @@
       "Funkin.Desktop\\Funkin.Desktop.csproj",
       "Funkin.Game\\Funkin.Game.csproj",
       "Funkin.Game.Tests\\Funkin.Game.Tests.csproj",
-      "Funkin.Resources\\Funkin.Resources.csproj"
+      "Funkin.Resources\\Funkin.Resources.csproj",
+      "Funkin.Game.Mod.Mania\\Funkin.Game.Mod.Mania.csproj"
     ]
   }
 }

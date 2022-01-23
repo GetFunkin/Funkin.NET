@@ -33,7 +33,7 @@ namespace Funkin.Game.API
         /// </summary>
         /// <param name="content">The content's name.</param>
         public Identifier(string content)
-            : this(Constants.ManiaName, content)
+            : this(Constants.MANIA_NAME, content)
         {
         }
 

@@ -1,3 +1,4 @@
+using Funkin.Game.API;
 using Funkin.Game.API.DependencyInjection;
 using Funkin.Game.Graphics.Containers;
 using osu.Framework.Allocation;
@@ -6,6 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using osuTK;
 using Funkin.Resources;
+using osu.Framework.Platform;
 
 namespace Funkin.Game
 {
@@ -21,6 +23,10 @@ namespace Funkin.Game
 
         protected readonly DependencyInjectionDispatcher InjectionDispatcher = new();
 
+        protected Storage? Storage { get; set; }
+
+        protected ModStore ModStore { get; private set; } = null!;
+
         protected FunkinGameBase()
         {
             // Ensure game and tests scale with window size and screen DPI.
@@ -34,12 +40,21 @@ namespace Funkin.Game
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
+        public override void SetHost(GameHost host)
+        {
+            base.SetHost(host);
+
+            Storage ??= host.Storage;
+        }
+
         [BackgroundDependencyLoader]
         private void load()
         {
             Resources.AddStore(new DllResourceStore(typeof(FunkinResources).Assembly));
 
             dependencies.CacheAs(InjectionDispatcher);
+            dependencies.CacheAs(ModStore = new ModStore(Storage));
+            dependencies.CacheAs(Storage);
         }
     }
 }
