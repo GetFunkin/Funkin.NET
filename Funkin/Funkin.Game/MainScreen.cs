@@ -17,10 +17,7 @@ namespace Funkin.Game
                 new Box
                 {
                     Colour = Color4.Violet,
-                    Width = 250,
-                    Height = 250,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre
+                    RelativeSizeAxes = Axes.Both,
                 },
                 new SpriteText
                 {

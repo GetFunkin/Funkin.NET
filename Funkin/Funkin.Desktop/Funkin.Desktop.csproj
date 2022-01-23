@@ -11,6 +11,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup Label="Project References">
+    <ProjectReference Include="..\Funkin.Game.Mod.Mania\Funkin.Game.Mod.Mania.csproj" />
     <ProjectReference Include="..\Funkin.Game\Funkin.Game.csproj" />
   </ItemGroup>
   <ItemGroup Label="Resources">
