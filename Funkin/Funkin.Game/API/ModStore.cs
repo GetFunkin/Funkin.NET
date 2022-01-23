@@ -104,7 +104,16 @@ namespace Funkin.Game.API
 
         private Assembly? resolveModDependencyAssembly(object? sender, ResolveEventArgs args)
         {
-            throw new NotImplementedException();
+            Assembly? domainAssembly = AppDomain.CurrentDomain.GetAssemblies().Where(x =>
+                                                {
+                                                    string? name = x.GetName().Name;
+
+                                                    return name is not null && args.Name.Contains(name, StringComparison.Ordinal);
+                                                })
+                                                .OrderByDescending(x => x.GetName().Version)
+                                                .FirstOrDefault();
+
+            return domainAssembly ?? loadedAssemblies.Keys.FirstOrDefault(x => x.FullName == new AssemblyName(args.Name).FullName);
         }
 
         public void Dispose() => AppDomain.CurrentDomain.AssemblyResolve -= resolveModDependencyAssembly;
